@@ -10,6 +10,7 @@
 		2FD9276B2159D82B00368A6B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276A2159D82B00368A6B /* SettingsViewController.swift */; };
 		2FD9276D215A6DFA00368A6B /* SdatePickerviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276C215A6DFA00368A6B /* SdatePickerviewController.swift */; };
 		2FD9276F215B17F100368A6B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276E215B17F100368A6B /* Settings.swift */; };
+		2FD92771215B2B9800368A6B /* ClassName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD92770215B2B9800368A6B /* ClassName.swift */; };
 		2FE88D28215744F0004BB3C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D27215744F0004BB3C9 /* AppDelegate.swift */; };
 		2FE88D2A215744F0004BB3C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D29215744F0004BB3C9 /* ViewController.swift */; };
 		2FE88D2D215744F0004BB3C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE88D2B215744F0004BB3C9 /* Main.storyboard */; };
@@ -42,6 +43,7 @@
 		2FD9276A2159D82B00368A6B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2FD9276C215A6DFA00368A6B /* SdatePickerviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdatePickerviewController.swift; sourceTree = "<group>"; };
 		2FD9276E215B17F100368A6B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		2FD92770215B2B9800368A6B /* ClassName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassName.swift; sourceTree = "<group>"; };
 		2FE88D24215744F0004BB3C9 /* camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = camera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE88D27215744F0004BB3C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE88D29215744F0004BB3C9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				2FE88D27215744F0004BB3C9 /* AppDelegate.swift */,
 				2FE88D29215744F0004BB3C9 /* ViewController.swift */,
 				2FE88D2B215744F0004BB3C9 /* Main.storyboard */,
+				2FD92770215B2B9800368A6B /* ClassName.swift */,
 				2FD9276E215B17F100368A6B /* Settings.swift */,
 				2FD9276C215A6DFA00368A6B /* SdatePickerviewController.swift */,
 				2FE88D5921576BC3004BB3C9 /* JViewController.swift */,
@@ -272,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FE88D2A215744F0004BB3C9 /* ViewController.swift in Sources */,
+				2FD92771215B2B9800368A6B /* ClassName.swift in Sources */,
 				2FE88D5A21576BC3004BB3C9 /* JViewController.swift in Sources */,
 				2FD9276D215A6DFA00368A6B /* SdatePickerviewController.swift in Sources */,
 				2FE88D58215755AD004BB3C9 /* CustomCell.swift in Sources */,

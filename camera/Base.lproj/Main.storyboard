@@ -75,7 +75,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="F65-xJ-910" customClass="CustomCell" customModule="camera" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="Cell" id="F65-xJ-910" customClass="CustomCell" customModule="camera" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -92,6 +92,7 @@
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" red="0.72577613943096808" green="0.98492147020725385" blue="0.95252515338456634" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <size key="customSize" width="50" height="50"/>
                                         <connections>
                                             <outlet property="lblSample" destination="sis-jA-MUn" id="6gl-hE-Hwk"/>
                                         </connections>
@@ -278,6 +279,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cv" destination="Rbk-oP-TQb" id="MDL-fw-YPT"/>
                         <outlet property="one_class" destination="JTP-Hd-tEq" id="UH2-L0-uCr"/>
                     </connections>
                 </viewController>
@@ -335,7 +337,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="AuX-YX-VPy">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="AuX-YX-VPy">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AuX-YX-VPy" id="S7T-s9-zhC">
