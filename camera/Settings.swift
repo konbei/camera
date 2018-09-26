@@ -29,12 +29,12 @@ class Settings: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+       //セクション数設定
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        // 行数設定
         return 2
     }
 
@@ -54,6 +54,21 @@ class Settings: UITableViewController {
         
         return cell
     }
+    
+   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        switch indexPath.row {
+        case 0:
+            self.performSegue(withIdentifier: "timetable", sender: nil)
+        case 1:
+            self.performSegue(withIdentifier: "classname", sender: nil)
+        default: break
+            
+    }
+        
+    }
+    
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
