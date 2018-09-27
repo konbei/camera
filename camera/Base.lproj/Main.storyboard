@@ -331,7 +331,7 @@
         <!--授業名称設定-->
         <scene sceneID="3IV-Ol-ms2">
             <objects>
-                <tableViewController title="授業名称設定" id="16G-tw-rXh" sceneMemberID="viewController">
+                <tableViewController title="授業名称設定" id="16G-tw-rXh" customClass="ClassName" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="haQ-b1-cOr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
