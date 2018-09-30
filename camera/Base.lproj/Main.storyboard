@@ -56,7 +56,7 @@
         <!--時間割-->
         <scene sceneID="ajR-0E-Mrf">
             <objects>
-                <viewController storyboardIdentifier="jPage" id="Q79-DO-Odz" customClass="JViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="jPage" id="Q79-DO-Odz" customClass="JikanwariViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="e3g-5d-9ib">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -75,17 +75,17 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="Cell" id="F65-xJ-910" customClass="CustomCell" customModule="camera" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="Cell" id="F65-xJ-910">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sis-jA-MUn">
-                                                    <rect key="frame" x="4" y="15" width="0.0" height="0.0"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="a" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sis-jA-MUn">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -93,9 +93,6 @@
                                         </view>
                                         <color key="backgroundColor" red="0.72577613943096808" green="0.98492147020725385" blue="0.95252515338456634" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <size key="customSize" width="50" height="50"/>
-                                        <connections>
-                                            <outlet property="lblSample" destination="sis-jA-MUn" id="6gl-hE-Hwk"/>
-                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -280,17 +277,16 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cv" destination="Rbk-oP-TQb" id="MDL-fw-YPT"/>
-                        <outlet property="one_class" destination="JTP-Hd-tEq" id="UH2-L0-uCr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JuX-eF-ndQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1338" y="136"/>
+            <point key="canvasLocation" x="1336.8" y="135.38230884557723"/>
         </scene>
         <!--設定-->
         <scene sceneID="28n-os-br5">
             <objects>
-                <tableViewController title="設定" id="Mf7-1L-baT" customClass="Settings" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="設定" id="Mf7-1L-baT" customClass="SettingsTopViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="W18-bo-zJc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -331,7 +327,7 @@
         <!--授業名称設定-->
         <scene sceneID="3IV-Ol-ms2">
             <objects>
-                <tableViewController title="授業名称設定" id="16G-tw-rXh" customClass="ClassName" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="授業名称設定" id="16G-tw-rXh" customClass="ClassNameSettingViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="haQ-b1-cOr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -351,15 +347,28 @@
                             <outlet property="delegate" destination="16G-tw-rXh" id="dhI-Id-3In"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="授業名称設定" id="HZ3-cU-S6O">
+                        <barButtonItem key="rightBarButtonItem" title="授業名称設定" style="plain" id="VtQ-pp-VO1">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
+                                <rect key="frame" x="276" y="5.5" width="83" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="保存"/>
+                                <connections>
+                                    <action selector="SaveBotton" destination="16G-tw-rXh" eventType="touchUpInside" id="TaI-2P-s4L"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmA-u1-nK7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2908" y="-674"/>
+            <point key="canvasLocation" x="2908" y="-674.21289355322347"/>
         </scene>
         <!--時刻設定-->
         <scene sceneID="dE4-DP-wAp">
             <objects>
-                <tableViewController title="時刻設定" id="sYq-gA-OSh" customClass="SettingsViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="時刻設定" id="sYq-gA-OSh" customClass="ClassTimeSettingViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="U6l-qH-nnU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -391,6 +400,7 @@
                             <outlet property="delegate" destination="sYq-gA-OSh" id="SCe-Pi-uAR"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="時刻設定" id="xlD-68-KRP"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VLt-7a-RVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

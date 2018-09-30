@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F750FBC215F652900C02F3B /* SettingsData2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FBA215F652900C02F3B /* SettingsData2.xcdatamodeld */; };
+		2F750FC3215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC1215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift */; };
+		2F750FC4215F68AC00C02F3B /* SettingsData2+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC2215F68AC00C02F3B /* SettingsData2+CoreDataProperties.swift */; };
+		2F750FC721609FCC00C02F3B /* SettingsTime+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC521609FCC00C02F3B /* SettingsTime+CoreDataClass.swift */; };
+		2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */; };
 		2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F84409A215C8812007A7549 /* ClassNameTableCell.swift */; };
 		2F84409D215C8812007A7549 /* ClassNameTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F84409B215C8812007A7549 /* ClassNameTableCell.xib */; };
-		2FD9276B2159D82B00368A6B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276A2159D82B00368A6B /* SettingsViewController.swift */; };
+		2FD9276B2159D82B00368A6B /* ClassTimeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */; };
 		2FD9276D215A6DFA00368A6B /* SdatePickerviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276C215A6DFA00368A6B /* SdatePickerviewController.swift */; };
-		2FD9276F215B17F100368A6B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276E215B17F100368A6B /* Settings.swift */; };
-		2FD92771215B2B9800368A6B /* ClassName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD92770215B2B9800368A6B /* ClassName.swift */; };
+		2FD9276F215B17F100368A6B /* SettingsTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */; };
+		2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */; };
 		2FE88D28215744F0004BB3C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D27215744F0004BB3C9 /* AppDelegate.swift */; };
 		2FE88D2A215744F0004BB3C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D29215744F0004BB3C9 /* ViewController.swift */; };
 		2FE88D2D215744F0004BB3C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE88D2B215744F0004BB3C9 /* Main.storyboard */; };
@@ -20,8 +25,7 @@
 		2FE88D32215744F0004BB3C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE88D30215744F0004BB3C9 /* LaunchScreen.storyboard */; };
 		2FE88D3D215744F0004BB3C9 /* cameraTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D3C215744F0004BB3C9 /* cameraTests.swift */; };
 		2FE88D48215744F1004BB3C9 /* cameraUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D47215744F1004BB3C9 /* cameraUITests.swift */; };
-		2FE88D58215755AD004BB3C9 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D57215755AD004BB3C9 /* CustomCell.swift */; };
-		2FE88D5A21576BC3004BB3C9 /* JViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D5921576BC3004BB3C9 /* JViewController.swift */; };
+		2FE88D5A21576BC3004BB3C9 /* JikanwariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,12 +46,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F750FBB215F652900C02F3B /* SettingsData2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SettingsData2.xcdatamodel; sourceTree = "<group>"; };
+		2F750FC1215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsData2+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2F750FC2215F68AC00C02F3B /* SettingsData2+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsData2+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2F750FC521609FCC00C02F3B /* SettingsTime+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTime+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTime+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2F84409A215C8812007A7549 /* ClassNameTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameTableCell.swift; sourceTree = "<group>"; };
 		2F84409B215C8812007A7549 /* ClassNameTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassNameTableCell.xib; sourceTree = "<group>"; };
-		2FD9276A2159D82B00368A6B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTimeSettingViewController.swift; sourceTree = "<group>"; };
 		2FD9276C215A6DFA00368A6B /* SdatePickerviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdatePickerviewController.swift; sourceTree = "<group>"; };
-		2FD9276E215B17F100368A6B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		2FD92770215B2B9800368A6B /* ClassName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassName.swift; sourceTree = "<group>"; };
+		2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopViewController.swift; sourceTree = "<group>"; };
+		2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameSettingViewController.swift; sourceTree = "<group>"; };
 		2FE88D24215744F0004BB3C9 /* camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = camera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE88D27215744F0004BB3C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE88D29215744F0004BB3C9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,8 +70,7 @@
 		2FE88D43215744F1004BB3C9 /* cameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE88D47215744F1004BB3C9 /* cameraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cameraUITests.swift; sourceTree = "<group>"; };
 		2FE88D49215744F1004BB3C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2FE88D57215755AD004BB3C9 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
-		2FE88D5921576BC3004BB3C9 /* JViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JViewController.swift; sourceTree = "<group>"; };
+		2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JikanwariViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +101,10 @@
 		2FE88D1B215744F0004BB3C9 = {
 			isa = PBXGroup;
 			children = (
+				2F750FC521609FCC00C02F3B /* SettingsTime+CoreDataClass.swift */,
+				2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */,
+				2F750FC1215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift */,
+				2F750FC2215F68AC00C02F3B /* SettingsData2+CoreDataProperties.swift */,
 				2FE88D26215744F0004BB3C9 /* camera */,
 				2FE88D3B215744F0004BB3C9 /* cameraTests */,
 				2FE88D46215744F1004BB3C9 /* cameraUITests */,
@@ -113,20 +125,20 @@
 		2FE88D26215744F0004BB3C9 /* camera */ = {
 			isa = PBXGroup;
 			children = (
-				2FD9276A2159D82B00368A6B /* SettingsViewController.swift */,
-				2FE88D57215755AD004BB3C9 /* CustomCell.swift */,
+				2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */,
 				2FE88D27215744F0004BB3C9 /* AppDelegate.swift */,
 				2FE88D29215744F0004BB3C9 /* ViewController.swift */,
 				2FE88D2B215744F0004BB3C9 /* Main.storyboard */,
-				2FD92770215B2B9800368A6B /* ClassName.swift */,
 				2F84409A215C8812007A7549 /* ClassNameTableCell.swift */,
+				2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */,
 				2F84409B215C8812007A7549 /* ClassNameTableCell.xib */,
-				2FD9276E215B17F100368A6B /* Settings.swift */,
+				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
 				2FD9276C215A6DFA00368A6B /* SdatePickerviewController.swift */,
-				2FE88D5921576BC3004BB3C9 /* JViewController.swift */,
+				2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */,
 				2FE88D2E215744F0004BB3C9 /* Assets.xcassets */,
 				2FE88D30215744F0004BB3C9 /* LaunchScreen.storyboard */,
 				2FE88D33215744F0004BB3C9 /* Info.plist */,
+				2F750FBA215F652900C02F3B /* SettingsData2.xcdatamodeld */,
 			);
 			path = camera;
 			sourceTree = "<group>";
@@ -282,14 +294,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FE88D2A215744F0004BB3C9 /* ViewController.swift in Sources */,
-				2FD92771215B2B9800368A6B /* ClassName.swift in Sources */,
-				2FE88D5A21576BC3004BB3C9 /* JViewController.swift in Sources */,
+				2F750FBC215F652900C02F3B /* SettingsData2.xcdatamodeld in Sources */,
+				2F750FC721609FCC00C02F3B /* SettingsTime+CoreDataClass.swift in Sources */,
+				2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */,
+				2F750FC3215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift in Sources */,
+				2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */,
+				2FE88D5A21576BC3004BB3C9 /* JikanwariViewController.swift in Sources */,
+				2F750FC4215F68AC00C02F3B /* SettingsData2+CoreDataProperties.swift in Sources */,
 				2FD9276D215A6DFA00368A6B /* SdatePickerviewController.swift in Sources */,
 				2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */,
-				2FE88D58215755AD004BB3C9 /* CustomCell.swift in Sources */,
-				2FD9276B2159D82B00368A6B /* SettingsViewController.swift in Sources */,
+				2FD9276B2159D82B00368A6B /* ClassTimeSettingViewController.swift in Sources */,
 				2FE88D28215744F0004BB3C9 /* AppDelegate.swift in Sources */,
-				2FD9276F215B17F100368A6B /* Settings.swift in Sources */,
+				2FD9276F215B17F100368A6B /* SettingsTopViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,12 +481,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 56Y7AKFTRD;
 				INFOPLIST_FILE = camera/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kohei.camera;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kohei.cameraintern;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -482,12 +499,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 56Y7AKFTRD;
 				INFOPLIST_FILE = camera/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kohei.camera;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kohei.cameraintern;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -612,6 +630,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2F750FBA215F652900C02F3B /* SettingsData2.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2F750FBB215F652900C02F3B /* SettingsData2.xcdatamodel */,
+			);
+			currentVersion = 2F750FBB215F652900C02F3B /* SettingsData2.xcdatamodel */;
+			path = SettingsData2.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2FE88D1C215744F0004BB3C9 /* Project object */;
 }

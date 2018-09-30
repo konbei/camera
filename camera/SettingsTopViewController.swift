@@ -8,10 +8,13 @@
 
 import UIKit
 
-class Settings: UITableViewController {
+
+
+class SettingsTopViewController: UITableViewController {
     
 
     var tableData:[String] = []
+   
     
     
     override func viewDidLoad() {

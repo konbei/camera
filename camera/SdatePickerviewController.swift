@@ -8,11 +8,14 @@
 
 import UIKit
 
-class SdatePickerviewController: UIViewController, UINavigationControllerDelegate {
 
+
+
+class SdatePickerviewController: UIViewController, UINavigationControllerDelegate {
+    
     var selctedsection:Int = 0
     var selectedrow:Int = 0
-    //var inputDatePicker = UIDatePicker()
+   
     
     
     @IBOutlet weak var Picker: UIDatePicker!
@@ -20,16 +23,18 @@ class SdatePickerviewController: UIViewController, UINavigationControllerDelegat
     //画面遷移
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
-        if let controller = viewController as? SettingsViewController {
-            let format = DateFormatter()
-            format.dateFormat = "HH:mm"
+        if let controller = viewController as? ClassTimeSettingViewController {
+            let format2 = DateFormatter()
+            format2.dateFormat = "Hmm"
+            let StringTime = format2.string(from: Picker.date)
+            let time = Int(StringTime)
             //開始時刻の行をタップした時
             if selectedrow == 0 {
-                controller.tableData[selctedsection][selectedrow] = "開始時刻：\(format.string(from: Picker.date))"
+                controller.startClassTime[selctedsection] = time!
             }else{
-                controller.tableData[selctedsection][selectedrow] = "終了時刻：\(format.string(from: Picker.date))"
+                controller.finishClassTime[selctedsection] = time!
             }
-            controller.tableView.reloadData()
+            controller.Save()
         }
     }
    
