@@ -9,80 +9,39 @@
 import UIKit
 import CoreData
 
-//曜日と時限数
-var daycounts = 5
-var classcounts = 6
-
-//数字に対応する曜日のStringを返す
-func numberday(num:Int) ->String{
-    switch num{
-    case 0:
-        return "Mon"
-    case 1:
-        return "Tues"
-    case 2:
-        return "Wednes"
-    case 3:
-        return "Thurs"
-    case 4:
-        return "Fri"
-    default:
-        return ""
-    }
-    
-}
-
-//曜日の名前と一週間の名前
-var MonClassName = ["","","","","",""]
-var TuesClassName = ["","","","","",""]
-var WedClassName = ["","","","","",""]
-var ThursClassName = ["","","","","",""]
-var FriClassName = ["","","","","",""]
-
-//Core Data から授業の名前を取ってくる
-func getData() {
-    for day in 0..<daycounts{
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<SettingsData2> = SettingsData2.fetchRequest()
-        let predicate = NSPredicate(format:"%K = %@","nameday",numberday(num: day)) //指定した曜日の名前データを取ってくる
-        fetchRequest.predicate = predicate
-        
-        let SettingsData = try! context.fetch(fetchRequest)
-        //曜日ごとの名前データを取得
-        if(!SettingsData.isEmpty){
-            for i in 0..<SettingsData.count{
-                switch day{
-                case 0:
-                    MonClassName[i] = SettingsData[i].classname!
-                    
-                case 1:
-                    TuesClassName[i] = SettingsData[i].classname!
-                    
-                case 2:
-                    WedClassName[i] = SettingsData[i].classname!
-                    
-                case 3:
-                    ThursClassName[i] = SettingsData[i].classname!
-                    
-                case 4:
-                    FriClassName[i] = SettingsData[i].classname!
-                    
-                default:
-                    break
-                }
-                
-                do{
-                    try context.save()
-                }catch{
-                    print(error)
-                }
-            }
-        }
-    }
-}
 
 class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
 
+    //曜日と時限数
+    var daycounts = 5
+    var classcounts = 6
+    
+    var MonClassName:[String] = []
+    var TuesClassName:[String] = []
+    var WedClassName:[String] = []
+    var ThursClassName:[String] = []
+    var FriClassName:[String] = []
+    
+    //数字に対応する曜日のStringを返す
+    func numberday(num:Int) ->String{
+        switch num{
+        case 0:
+            return "Mon"
+        case 1:
+            return "Tues"
+        case 2:
+            return "Wednes"
+        case 3:
+            return "Thurs"
+        case 4:
+            return "Fri"
+        default:
+            return ""
+        }
+        
+    }
+    
+    
     //数字に対応する曜日の配列を返す
     func dayname(num:Int)->[String]{
         switch num{
@@ -101,6 +60,47 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         }
     }
   
+    //Core Data から授業の名前を取ってくる
+    func getNmaeData() {
+        for day in 0..<daycounts{
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            let fetchRequest: NSFetchRequest<SettingsData2> = SettingsData2.fetchRequest()
+            let predicate = NSPredicate(format:"%K = %@","nameday",numberday(num: day)) //指定した曜日の名前データを取ってくる
+            fetchRequest.predicate = predicate
+            
+            let SettingsData = try! context.fetch(fetchRequest)
+            //曜日ごとの名前データを取得
+            if(!SettingsData.isEmpty){
+                for i in 0..<SettingsData.count{
+                    switch day{
+                    case 0:
+                        MonClassName[i] = SettingsData[i].classname!
+                        
+                    case 1:
+                        TuesClassName[i] = SettingsData[i].classname!
+                        
+                    case 2:
+                        WedClassName[i] = SettingsData[i].classname!
+                        
+                    case 3:
+                        ThursClassName[i] = SettingsData[i].classname!
+                        
+                    case 4:
+                        FriClassName[i] = SettingsData[i].classname!
+                        
+                    default:
+                        break
+                    }
+                    
+                    do{
+                        try context.save()
+                    }catch{
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
     //保存ボタン押した時にCoreDataに名前を保存する
     @IBAction func SaveBotton() {
         for day in 0..<daycounts {
@@ -145,7 +145,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる
-       getData()
+       getNmaeData()
         // ttableViewを再読み込みする
        tableView.reloadData()
     }
@@ -200,6 +200,12 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         //テーブルデータ初期化
         sectionTitles = ["月曜","火曜","水曜","木曜","金曜"]
         rowTitles = ["1限:","2限:","3限:","4限:","5限:","6限:"]
+        MonClassName = ["","","","","",""]
+        TuesClassName = ["","","","","",""]
+        WedClassName = ["","","","","",""]
+        ThursClassName = ["","","","","",""]
+        FriClassName = ["","","","","",""]
+        
         cellData = [MonClassName,TuesClassName,WedClassName,ThursClassName,FriClassName]
 
     

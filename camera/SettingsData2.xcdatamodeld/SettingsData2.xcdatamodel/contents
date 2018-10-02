@@ -2,17 +2,15 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="SettingsData2" representedClassName=".SettingsData2" syncable="YES">
         <attribute name="classname" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="ftime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="nameclass" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nameday" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="stime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="SettingsTime" representedClassName=".SettingsTime" syncable="YES">
         <attribute name="finishClassTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startClassTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SettingsData2" positionX="-45" positionY="0" width="128" height="120"/>
+        <element name="SettingsData2" positionX="-45" positionY="0" width="128" height="90"/>
         <element name="SettingsTime" positionX="-18" positionY="63" width="128" height="75"/>
     </elements>
 </model>

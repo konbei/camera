@@ -17,11 +17,10 @@ extension SettingsData2 {
         return NSFetchRequest<SettingsData2>(entityName: "SettingsData2")
     }
 
-    @NSManaged public var nameday: String?
-    @NSManaged public var nameclass: String?
-    @NSManaged public var classname: String?
-    @NSManaged public var stime: Int16
-    @NSManaged public var ftime: Int16
+    @NSManaged public var nameday: String?   //授業のの曜日
+    @NSManaged public var nameclass: String? //授業の時限
+    @NSManaged public var classname: String?  //授業の名前
+    
    
 
 }

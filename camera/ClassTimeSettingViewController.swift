@@ -15,6 +15,10 @@ import CoreData
 
 
 class ClassTimeSettingViewController: UITableViewController {
+    
+    var daycounts = 5
+    var classcounts = 6
+    
     //TableViewで扱う空の配列(ここで初期化したらコンパイル時にエラーはいたのでViewDidLoadで初期化
     var sectionTitle: [String] = []  //1限、2限...
     var startClassTime:[Int] = []   //時限ごとの開始時刻データ
@@ -69,7 +73,6 @@ class ClassTimeSettingViewController: UITableViewController {
             }
         }
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる
