@@ -12,21 +12,21 @@ import CoreData
 
 class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate {
     //曜日ごとの授業名称
-    var MonClassName:[String] = []
-    var TuesClassName:[String] = []
-    var WedClassName:[String] = []
-    var ThursClassName:[String] = []
-    var FriClassName:[String] = []
+    private var MonClassName:[String] = []
+    private var TuesClassName:[String] = []
+    private var WedClassName:[String] = []
+    private var ThursClassName:[String] = []
+    private var FriClassName:[String] = []
     
     //時間ごとの授業名称
-    var oneClassData:[String] = []
-    var twoClassData:[String] = []
-    var treeClassData:[String] = []
-    var fourClassData:[String] = []
-    var fiveClassData:[String] = []
-    var sixClassData:[String] = []
-    var zeroClassData:[String] = []
-    var classTimeName:[[String]] = []
+    private var oneClassData:[String] = []
+    private var twoClassData:[String] = []
+    private var treeClassData:[String] = []
+    private var fourClassData:[String] = []
+    private var fiveClassData:[String] = []
+    private var sixClassData:[String] = []
+    private var zeroClassData:[String] = []
+    private var classTimeName:[[String]] = []
     
     //曜日ごとの名前データを時限ごとの名前データに変換
     func convertNameData(){

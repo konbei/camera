@@ -13,14 +13,14 @@ import CoreData
 class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
 
     //曜日と時限数
-    var daycounts = 5
-    var classcounts = 6
+    private var daycounts = 5
+    private var classcounts = 6
     
-    var MonClassName:[String] = []
-    var TuesClassName:[String] = []
-    var WedClassName:[String] = []
-    var ThursClassName:[String] = []
-    var FriClassName:[String] = []
+    private var MonClassName:[String] = []
+    private var TuesClassName:[String] = []
+    private var WedClassName:[String] = []
+    private var ThursClassName:[String] = []
+    private var FriClassName:[String] = []
     
     //数字に対応する曜日のStringを返す
     func numberday(num:Int) ->String{
@@ -151,9 +151,9 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
     }
 
     //TableViewで扱う空の配列(ここで初期化したらコンパイル時にエラーはいたのでViewDidLoadで初期化
-    var sectionTitles: [String] = [] //月火...
-    var rowTitles:[String] = []     //1限,2限。...
-    var cellData:[[String]] = []    //曜日ごとの名前データ
+    private var sectionTitles: [String] = [] //月火...
+    private var rowTitles:[String] = []     //1限,2限。...
+    private var cellData:[[String]] = []    //曜日ごとの名前データ
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

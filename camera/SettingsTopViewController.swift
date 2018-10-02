@@ -13,7 +13,7 @@ import UIKit
 class SettingsTopViewController: UITableViewController {
     
 
-    var tableData:[String] = []
+    private var tableData:[String] = []
    
     
     

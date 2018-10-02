@@ -15,11 +15,12 @@ import CoreData
 
 
 class ViewController: UIViewController {
+    var a = UITableViewCell()
     
-    var daycounts = 5
-    var classcounts = 6
-    var startClassTime:[Int] = []   //時限ごとの開始時刻データ
-    var finishClassTime:[Int] = []
+    private var daycounts = 5
+    private var classcounts = 6
+    private var startClassTime:[Int] = []   //時限ごとの開始時刻データ
+    private var finishClassTime:[Int] = []
     
     func numberday(num:Int) ->String{
         switch num{
@@ -98,15 +99,15 @@ class ViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         makeDirectory()
         startClassTime = [0,0,0,0,0,0]
         finishClassTime = [0,0,0,0,0,0]
         
-        super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
+    
 
 }
 

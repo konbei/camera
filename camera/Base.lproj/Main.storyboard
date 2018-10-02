@@ -53,6 +53,21 @@
             </objects>
             <point key="canvasLocation" x="641" y="135"/>
         </scene>
+        <!--Test View Controller-->
+        <scene sceneID="fhd-5D-siV">
+            <objects>
+                <viewController id="RJx-2l-hXg" customClass="TestViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZBq-nO-abT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="oPv-m6-Ivg"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1c8-9P-ihW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1284" y="-537"/>
+        </scene>
         <!--時間割-->
         <scene sceneID="ajR-0E-Mrf">
             <objects>
@@ -349,7 +364,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="授業名称設定" id="HZ3-cU-S6O">
                         <barButtonItem key="rightBarButtonItem" title="授業名称設定" style="plain" id="VtQ-pp-VO1">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
                                 <rect key="frame" x="276" y="5.5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -390,9 +405,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="EiE-UI-Spt" kind="show" identifier="showdatepicker" id="jnP-Xl-WzQ"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -400,56 +412,17 @@
                             <outlet property="delegate" destination="sYq-gA-OSh" id="SCe-Pi-uAR"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="時刻設定" id="xlD-68-KRP"/>
+                    <navigationItem key="navigationItem" title="時刻設定" id="xlD-68-KRP">
+                        <barButtonItem key="rightBarButtonItem" title="保存" id="FU5-tI-UOh">
+                            <connections>
+                                <action selector="saveButton" destination="sYq-gA-OSh" id="WdM-M6-7Uf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VLt-7a-RVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3374" y="131"/>
-        </scene>
-        <!--Sdate Pickerview Controller-->
-        <scene sceneID="ljf-ly-PI3">
-            <objects>
-                <viewController id="EiE-UI-Spt" customClass="SdatePickerviewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="BkE-dj-rcB">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <datePicker contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZgJ-3U-hbz">
-                                <rect key="frame" x="0.0" y="178" width="375" height="216"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="216" id="DyX-4A-NIA"/>
-                                    <constraint firstAttribute="width" constant="375" id="xTB-We-you"/>
-                                </constraints>
-                                <date key="date" timeIntervalSinceReferenceDate="559580896.88207996">
-                                    <!--2018-09-25 15:08:16 +0000-->
-                                </date>
-                            </datePicker>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="時刻を設定後Backして下さい" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L11-r5-zEt">
-                                <rect key="frame" x="73" y="117" width="230" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="60M-Ol-nUe"/>
-                                    <constraint firstAttribute="width" constant="230" id="d9B-mN-Q21"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="L11-r5-zEt" firstAttribute="top" secondItem="zma-77-mKT" secondAttribute="top" constant="53" id="SOV-3j-Zzk"/>
-                            <constraint firstItem="ZgJ-3U-hbz" firstAttribute="top" secondItem="zma-77-mKT" secondAttribute="top" constant="114" id="i1H-WU-Jdg"/>
-                            <constraint firstItem="L11-r5-zEt" firstAttribute="leading" secondItem="zma-77-mKT" secondAttribute="leading" constant="73" id="mlo-aH-jXg"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="zma-77-mKT"/>
-                    </view>
-                    <connections>
-                        <outlet property="Picker" destination="ZgJ-3U-hbz" id="SMm-mJ-m5r"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HgU-Xa-NIV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4247" y="131"/>
         </scene>
     </scenes>
 </document>
