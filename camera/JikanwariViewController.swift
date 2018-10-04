@@ -139,8 +139,26 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         return 5; //曜日数
     }
     
-  
+    //タップされたセルのindexからディレクトリの名前を取得してビュワーに遷移
+    var directoryName = ""
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if(indexPath.section != 6){
+            directoryName = numberday(num: indexPath.row) + "\(indexPath.section+1)"
+           
+        }else{
+             directoryName = numberday(num: indexPath.row) + "0"
+        }
+         performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+    
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "directoryViewr"){
+            (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName
+        }
+    }
+    
+    
     
     
     override func viewDidLoad() {

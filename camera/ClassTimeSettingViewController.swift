@@ -225,8 +225,8 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
         //テーブルデータ初期化
         sectionTitle = ["1限","2限","3限","4限","5限","6限"]
 
-         startClassTime = [0,0,0,0,0,0]
-         finishClassTime = [0,0,0,0,0,0]
+         startClassTime = [2359,2359,2359,2359,2359,2359]
+         finishClassTime = [2359,2359,2359,2359,2359,2359]
         
     }
 }

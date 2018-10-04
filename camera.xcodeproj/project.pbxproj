@@ -18,7 +18,7 @@
 		2FD9276F215B17F100368A6B /* SettingsTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */; };
 		2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */; };
 		2FE88D28215744F0004BB3C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D27215744F0004BB3C9 /* AppDelegate.swift */; };
-		2FE88D2A215744F0004BB3C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D29215744F0004BB3C9 /* ViewController.swift */; };
+		2FE88D2A215744F0004BB3C9 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D29215744F0004BB3C9 /* CameraViewController.swift */; };
 		2FE88D2D215744F0004BB3C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE88D2B215744F0004BB3C9 /* Main.storyboard */; };
 		2FE88D2F215744F0004BB3C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE88D2E215744F0004BB3C9 /* Assets.xcassets */; };
 		2FE88D32215744F0004BB3C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE88D30215744F0004BB3C9 /* LaunchScreen.storyboard */; };
@@ -27,7 +27,8 @@
 		2FE88D5A21576BC3004BB3C9 /* JikanwariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */; };
 		2FE921D92163067A00021527 /* AnimatedDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921D82163067A00021527 /* AnimatedDatePickerView.swift */; };
 		2FE921DB216306DF00021527 /* DatePickerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921DA216306DF00021527 /* DatePickerViewDelegate.swift */; };
-		2FE921DD2163073500021527 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921DC2163073500021527 /* TestViewController.swift */; };
+		2FE921DF216346CF00021527 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921DE216346CF00021527 /* ExtensionViewController.swift */; };
+		2FE921E121644AB900021527 /* DirectoryViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921E021644AB900021527 /* DirectoryViewerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +61,7 @@
 		2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameSettingViewController.swift; sourceTree = "<group>"; };
 		2FE88D24215744F0004BB3C9 /* camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = camera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE88D27215744F0004BB3C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2FE88D29215744F0004BB3C9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		2FE88D29215744F0004BB3C9 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		2FE88D2C215744F0004BB3C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2FE88D2E215744F0004BB3C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FE88D31215744F0004BB3C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -74,7 +75,8 @@
 		2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JikanwariViewController.swift; sourceTree = "<group>"; };
 		2FE921D82163067A00021527 /* AnimatedDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedDatePickerView.swift; sourceTree = "<group>"; };
 		2FE921DA216306DF00021527 /* DatePickerViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewDelegate.swift; sourceTree = "<group>"; };
-		2FE921DC2163073500021527 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		2FE921DE216346CF00021527 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
+		2FE921E021644AB900021527 /* DirectoryViewerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryViewerController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,18 +131,19 @@
 		2FE88D26215744F0004BB3C9 /* camera */ = {
 			isa = PBXGroup;
 			children = (
-				2FE921DA216306DF00021527 /* DatePickerViewDelegate.swift */,
+				2FE88D2B215744F0004BB3C9 /* Main.storyboard */,
+				2FE88D27215744F0004BB3C9 /* AppDelegate.swift */,
+				2FE88D29215744F0004BB3C9 /* CameraViewController.swift */,
+				2FE921DE216346CF00021527 /* ExtensionViewController.swift */,
+				2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */,
+				2FE921E021644AB900021527 /* DirectoryViewerController.swift */,
+				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
+				2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */,
+				2F84409A215C8812007A7549 /* ClassNameTableCell.swift */,
+				2F84409B215C8812007A7549 /* ClassNameTableCell.xib */,
 				2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */,
 				2FE921D82163067A00021527 /* AnimatedDatePickerView.swift */,
-				2FE88D27215744F0004BB3C9 /* AppDelegate.swift */,
-				2FE88D29215744F0004BB3C9 /* ViewController.swift */,
-				2FE88D2B215744F0004BB3C9 /* Main.storyboard */,
-				2FE921DC2163073500021527 /* TestViewController.swift */,
-				2F84409A215C8812007A7549 /* ClassNameTableCell.swift */,
-				2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */,
-				2F84409B215C8812007A7549 /* ClassNameTableCell.xib */,
-				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
-				2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */,
+				2FE921DA216306DF00021527 /* DatePickerViewDelegate.swift */,
 				2FE88D2E215744F0004BB3C9 /* Assets.xcassets */,
 				2FE88D30215744F0004BB3C9 /* LaunchScreen.storyboard */,
 				2FE88D33215744F0004BB3C9 /* Info.plist */,
@@ -299,11 +302,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FE88D2A215744F0004BB3C9 /* ViewController.swift in Sources */,
+				2FE88D2A215744F0004BB3C9 /* CameraViewController.swift in Sources */,
 				2F750FBC215F652900C02F3B /* SettingsData2.xcdatamodeld in Sources */,
-				2FE921DD2163073500021527 /* TestViewController.swift in Sources */,
 				2FE921DB216306DF00021527 /* DatePickerViewDelegate.swift in Sources */,
+				2FE921DF216346CF00021527 /* ExtensionViewController.swift in Sources */,
 				2F750FC721609FCC00C02F3B /* SettingsTime+CoreDataClass.swift in Sources */,
+				2FE921E121644AB900021527 /* DirectoryViewerController.swift in Sources */,
 				2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */,
 				2F750FC3215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift in Sources */,
 				2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */,
