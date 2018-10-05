@@ -99,25 +99,30 @@
                                     <constraint firstAttribute="height" constant="603" id="aHZ-Aw-m1h"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Q6a-fh-WAe">
-                                    <size key="itemSize" width="152" height="166"/>
+                                    <size key="itemSize" width="81" height="79"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="clk-CV-cHC">
-                                        <rect key="frame" x="0.0" y="0.0" width="152" height="166"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="Cell" id="clk-CV-cHC" customClass="DirectoryViewrCell" customModule="camera" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="81" height="81"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="152" height="166"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="81" height="81"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ECL-mL-7de">
-                                                    <rect key="frame" x="0.0" y="0.0" width="152" height="166"/>
+                                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECL-mL-7de">
+                                                    <rect key="frame" x="0.0" y="0.0" width="81" height="81"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" red="0.4279830255" green="1" blue="0.3292996467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <size key="customSize" width="81" height="81"/>
+                                        <connections>
+                                            <outlet property="thumnailImagre" destination="ECL-mL-7de" id="gNq-xo-x2t"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>

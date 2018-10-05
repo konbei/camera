@@ -29,6 +29,7 @@
 		2FE921DB216306DF00021527 /* DatePickerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921DA216306DF00021527 /* DatePickerViewDelegate.swift */; };
 		2FE921DF216346CF00021527 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921DE216346CF00021527 /* ExtensionViewController.swift */; };
 		2FE921E121644AB900021527 /* DirectoryViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921E021644AB900021527 /* DirectoryViewerController.swift */; };
+		2FE921E3216603D000021527 /* DirectoryViewrCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE921E2216603D000021527 /* DirectoryViewrCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		2FE921DA216306DF00021527 /* DatePickerViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewDelegate.swift; sourceTree = "<group>"; };
 		2FE921DE216346CF00021527 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
 		2FE921E021644AB900021527 /* DirectoryViewerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryViewerController.swift; sourceTree = "<group>"; };
+		2FE921E2216603D000021527 /* DirectoryViewrCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryViewrCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 				2FE921DE216346CF00021527 /* ExtensionViewController.swift */,
 				2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */,
 				2FE921E021644AB900021527 /* DirectoryViewerController.swift */,
+				2FE921E2216603D000021527 /* DirectoryViewrCell.swift */,
 				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
 				2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */,
 				2F84409A215C8812007A7549 /* ClassNameTableCell.swift */,
@@ -313,6 +316,7 @@
 				2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */,
 				2FE88D5A21576BC3004BB3C9 /* JikanwariViewController.swift in Sources */,
 				2F750FC4215F68AC00C02F3B /* SettingsData2+CoreDataProperties.swift in Sources */,
+				2FE921E3216603D000021527 /* DirectoryViewrCell.swift in Sources */,
 				2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */,
 				2FD9276B2159D82B00368A6B /* ClassTimeSettingViewController.swift in Sources */,
 				2FE921D92163067A00021527 /* AnimatedDatePickerView.swift in Sources */,
