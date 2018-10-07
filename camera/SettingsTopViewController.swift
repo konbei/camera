@@ -12,7 +12,20 @@ import UIKit
 
 class SettingsTopViewController: UITableViewController {
     
-
+    // 画面を自動で回転させるか
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
+    
+    // 画面の向きを指定
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
+    }
+    
     private var tableData:[String] = []
    
     

@@ -86,7 +86,7 @@
         <!--Directory Viewer Controller-->
         <scene sceneID="p35-uI-nYP">
             <objects>
-                <viewController id="liW-DM-doI" customClass="DirectoryViewerController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="imageViewr" id="liW-DM-doI" customClass="DirectoryViewerController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CyM-YH-ZoL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -136,11 +136,70 @@
                     </view>
                     <connections>
                         <outlet property="cv" destination="VPK-Uj-mvV" id="8jT-bh-fqY"/>
+                        <segue destination="E4p-3l-hhN" kind="show" identifier="selectedImage" id="DF5-fn-uAR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cN3-UU-jaf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1344.8" y="-625.63718140929541"/>
+            <point key="canvasLocation" x="911" y="-738"/>
+        </scene>
+        <!--Selected Image View Controller-->
+        <scene sceneID="sYb-wV-jwU">
+            <objects>
+                <viewController id="E4p-3l-hhN" customClass="SelectedImageViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="x8j-EB-40L">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1f2-ON-620">
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="559" id="D0K-SW-jSm"/>
+                                    <constraint firstAttribute="width" constant="375" id="Gfr-hD-1bc"/>
+                                </constraints>
+                            </imageView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xax-c0-4tT">
+                                <rect key="frame" x="0.0" y="915" width="83" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="5AD-lR-La5"/>
+                                    <constraint firstAttribute="width" constant="375" id="zU2-Ch-Idw"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem systemItem="action" id="zp2-tx-iaW">
+                                        <connections>
+                                            <action selector="shareAction:" destination="E4p-3l-hhN" id="uky-Aw-gOk"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="286" style="plain" systemItem="fixedSpace" id="2Sd-a3-fdB"/>
+                                    <barButtonItem title="削除" id="z0c-AK-vyb">
+                                        <connections>
+                                            <action selector="DeleteImage:" destination="E4p-3l-hhN" id="tnr-DX-lHK"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="top" secondItem="T6f-iR-Dfc" secondAttribute="top" id="0mg-0A-VmF"/>
+                            <constraint firstItem="Xax-c0-4tT" firstAttribute="trailing" secondItem="T6f-iR-Dfc" secondAttribute="trailing" id="1Kg-5V-SLK"/>
+                            <constraint firstItem="Xax-c0-4tT" firstAttribute="top" secondItem="1f2-ON-620" secondAttribute="bottom" id="2yR-gn-dCP"/>
+                            <constraint firstItem="Xax-c0-4tT" firstAttribute="top" secondItem="1f2-ON-620" secondAttribute="bottom" id="JxH-hW-MVh"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="leading" secondItem="T6f-iR-Dfc" secondAttribute="leading" id="SW1-fs-03I"/>
+                            <constraint firstItem="Xax-c0-4tT" firstAttribute="leading" secondItem="T6f-iR-Dfc" secondAttribute="leading" id="Twn-zg-MZb"/>
+                            <constraint firstItem="Xax-c0-4tT" firstAttribute="bottom" secondItem="T6f-iR-Dfc" secondAttribute="bottom" id="elU-px-8E4"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="trailing" secondItem="T6f-iR-Dfc" secondAttribute="trailing" id="fMJ-yu-R4J"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="T6f-iR-Dfc"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="1f2-ON-620" id="tpG-my-KBt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AN9-Bl-W5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1741.5999999999999" y="-738.08095952023996"/>
         </scene>
         <!--時間割-->
         <scene sceneID="ajR-0E-Mrf">
@@ -439,7 +498,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="授業名称設定" id="HZ3-cU-S6O">
                         <barButtonItem key="rightBarButtonItem" title="授業名称設定" style="plain" id="VtQ-pp-VO1">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
                                 <rect key="frame" x="276" y="5.5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>

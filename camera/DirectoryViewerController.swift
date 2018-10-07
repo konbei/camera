@@ -10,25 +10,43 @@ import UIKit
 
 //リサイズ方法拡張
 extension UIImage {
-    func resize(size _size: CGSize) -> UIImage? {
-        let widthRatio = _size.width / size.width
-        let heightRatio = _size.height / size.height
-        let ratio = widthRatio < heightRatio ? widthRatio : heightRatio
-        
-        let resizedSize = CGSize(width: size.width * ratio, height: size.height * ratio)
-        
-        UIGraphicsBeginImageContextWithOptions(resizedSize, true, 0.0)
-        draw(in: CGRect(origin: .zero, size: resizedSize))
-        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return resizedImage
+    func reSizeImage(reSize:CGSize)->UIImage {
+        //UIGraphicsBeginImageContext(reSize);
+        UIGraphicsBeginImageContextWithOptions(reSize,true,0.0/*UIScreen.main.scale*/);
+        self.draw(in: CGRect(x: 0, y: 0, width: reSize.width, height: reSize.height));
+        let reSizeImage:UIImage! = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return reSizeImage;
     }
+    
 }
 
 
 class DirectoryViewerController: UIViewController,UICollectionViewDataSource,
-UICollectionViewDelegate {
+UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
+    
+    // 画面を自動で回転させるか
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
+    
+    // 画面の向きを指定
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
+    }
+    
+    var thumbmnailImages:[UIImage] = []
+    
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+    
+        
+    }
+    
     
     @IBOutlet weak var cv: UICollectionView!
     
@@ -38,6 +56,7 @@ UICollectionViewDelegate {
     private var fileNames:[String] = []
     private var fileImages:[UIImage] = []
     private let DocumentPath = NSHomeDirectory() + "/Documents"
+    
     //タップされた授業の写真を取ってくる
     func loadImage(){
         let holderDirectory = DocumentPath + "/" + selectedDirectoryName
@@ -53,9 +72,10 @@ UICollectionViewDelegate {
         if fileNames.count != 0{
             for i in 0..<fileNames.count{
                 let fileDirectory = holderDirectory + "/" + fileNames[i]
-            fileImages.append( UIImage(contentsOfFile:fileDirectory)!)
+                fileImages.append(UIImage(contentsOfFile:fileDirectory)!)
             }
         }
+  
         
     }
     
@@ -77,11 +97,15 @@ UICollectionViewDelegate {
         group.enter()
         queue.async(group: group) {
             //サムネイル作成方法変更
-            thumbnail = cellImage.resize(size: CGSize(width: 81, height: 81))
+            thumbnail = cellImage.reSizeImage(reSize:CGSize(width: 81, height: 81))
+            
                 group.leave()
             }
             group.notify(queue: .main){
                 cell.thumnailImagre.image = thumbnail
+               /* if cellImage.size.height < cellImage.size.width{
+                    cell.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI/2))
+                }*/
             }
         
         return cell
@@ -102,29 +126,47 @@ UICollectionViewDelegate {
         return fileNames.count
     }
     
+    var selectImage:UIImage!
+    var selectImagePath:String!
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //選択した写真のパス
+        selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + fileNames[indexPath.row]
+        // [indexPath.row] から画像名を探し、UImage を設定
+        selectImage = fileImages[indexPath.row]
+        if selectImage != nil {
+            // SubViewController へ遷移するために Segue を呼び出す
+            performSegue(withIdentifier: "selectedImage",sender: nil)
+        }
+    }
+    
+    //選択した写真と写真のパス送る
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "selectedImage"){
+            (segue.destination as! SelectedImageViewController).selectedImage = selectImage
+            (segue.destination as! SelectedImageViewController).selectedImagePath = selectImagePath
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         loadImage()
+        thumbmnailImages = []
         cv.reloadData()
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         cv.delegate = self
         cv.dataSource = self
         // Do any additional setup after loading the view.
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+
 
 }
 

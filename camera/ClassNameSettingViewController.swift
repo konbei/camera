@@ -11,7 +11,21 @@ import CoreData
 
 
 class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
-
+    
+    // 画面を自動で回転させるか
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
+    
+    // 画面の向きを指定
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
+    }
+    
     //曜日と時限数
     private var daycounts = 5
     private var classcounts = 6

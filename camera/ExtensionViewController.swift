@@ -7,6 +7,52 @@
 //
 
 import Photos
+//回転機能実装
+extension UIImage {
+    func rotated(degrees: CGFloat,width:CGFloat,height:CGFloat) -> UIImage? {
+        
+        let degreesToRadians: (CGFloat) -> CGFloat = { (degrees: CGFloat) in
+            return degrees / 180.0 * CGFloat.pi
+        }
+        
+        // Calculate the size of the rotated view's containing box for our drawing space
+        let rotatedViewBox: UIView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        
+        rotatedViewBox.transform = CGAffineTransform(rotationAngle: degreesToRadians(degrees))
+        let rotatedSize: CGSize = rotatedViewBox.frame.size
+        
+        // Create the bitmap context
+        UIGraphicsBeginImageContextWithOptions(rotatedSize, false, 0.0)
+        
+        guard let bitmap: CGContext = UIGraphicsGetCurrentContext(), let unwrappedCgImage: CGImage = cgImage else {
+            return nil
+        }
+        
+        // Move the origin to the middle of the image so we will rotate and scale around the center.
+        bitmap.translateBy(x: rotatedSize.width/2.0, y: rotatedSize.height/2.0)
+        
+        // Rotate the image context
+        bitmap.rotate(by: degreesToRadians(degrees))
+        
+        bitmap.scaleBy(x: CGFloat(1.0), y: -1.0)
+        
+        let rect: CGRect = CGRect(
+            x: -width/2,
+            y: -height/2,
+            width: width,
+            height: height)
+        
+        bitmap.draw(unwrappedCgImage, in: rect)
+        
+        guard let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() else {
+            return nil
+        }
+        
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+}
 
 // デリゲート部分を拡張する
 extension CameraViewController:AVCapturePhotoCaptureDelegate {
@@ -18,7 +64,19 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
             return
         }
         // Dataから写真イメージを作る
-        if let stillImage = UIImage(data: photoData) {
+        if var stillImage = UIImage(data: photoData){
+            //AVCapturePhotoOutputで持ってきたUIImageの向きはlandscapcLeftで固定されてしまうので向きによってUIImage回転
+            
+            switch UIDevice.current.orientation{
+            case .portraitUpsideDown:
+                stillImage = stillImage.rotated(degrees: 270, width: stillImage.size.height, height: stillImage.size.width)!
+            case .landscapeRight:
+                stillImage = stillImage.rotated(degrees: 180, width: stillImage.size.width, height: stillImage.size.height)!
+            case .portrait, .faceUp, .faceUp:
+                stillImage = stillImage.rotated(degrees: 90, width: stillImage.size.height, height: stillImage.size.width)!
+            default: break
+            }
+
             // ディレクトリに写真を保存する
             saveImage(image: stillImage)
         }

@@ -14,6 +14,7 @@
 		2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */; };
 		2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F84409A215C8812007A7549 /* ClassNameTableCell.swift */; };
 		2F84409D215C8812007A7549 /* ClassNameTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F84409B215C8812007A7549 /* ClassNameTableCell.xib */; };
+		2FD2077521687F1E00B2495B /* SelectedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */; };
 		2FD9276B2159D82B00368A6B /* ClassTimeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */; };
 		2FD9276F215B17F100368A6B /* SettingsTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */; };
 		2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */; };
@@ -57,6 +58,7 @@
 		2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTime+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2F84409A215C8812007A7549 /* ClassNameTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameTableCell.swift; sourceTree = "<group>"; };
 		2F84409B215C8812007A7549 /* ClassNameTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassNameTableCell.xib; sourceTree = "<group>"; };
+		2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageViewController.swift; sourceTree = "<group>"; };
 		2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTimeSettingViewController.swift; sourceTree = "<group>"; };
 		2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopViewController.swift; sourceTree = "<group>"; };
 		2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameSettingViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */,
 				2FE921E021644AB900021527 /* DirectoryViewerController.swift */,
 				2FE921E2216603D000021527 /* DirectoryViewrCell.swift */,
+				2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */,
 				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
 				2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */,
 				2F84409A215C8812007A7549 /* ClassNameTableCell.swift */,
@@ -306,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FE88D2A215744F0004BB3C9 /* CameraViewController.swift in Sources */,
+				2FD2077521687F1E00B2495B /* SelectedImageViewController.swift in Sources */,
 				2F750FBC215F652900C02F3B /* SettingsData2.xcdatamodeld in Sources */,
 				2FE921DB216306DF00021527 /* DatePickerViewDelegate.swift in Sources */,
 				2FE921DF216346CF00021527 /* ExtensionViewController.swift in Sources */,

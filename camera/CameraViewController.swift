@@ -17,6 +17,20 @@ import AVFoundation
 class CameraViewController: UIViewController {
     var a = UITableViewCell()
     
+    // 画面を自動で回転させるか
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
+    
+    // 画面の向きを指定
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
+    }
+    
     private var daycounts = 5
     private var classcounts = 6
     private var startClassTime:[Int] = []   //時限ごとの開始時刻データ
@@ -53,8 +67,6 @@ class CameraViewController: UIViewController {
                     }catch{
                         print("error")
                     }
-                }else{
-                    print("file exsist")
                 }
             }
         }
@@ -91,7 +103,6 @@ class CameraViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる
         getClassTimeData()
-        print(startClassTime)
     }
     
     override func viewDidLoad() {
@@ -102,6 +113,7 @@ class CameraViewController: UIViewController {
         finishClassTime = [2359,2359,2359,2359,2359,2359]
         
         //カメラ起動〜実行
+        
         // セッション実行中ならば中断する
         if session.isRunning {
             return
@@ -141,8 +153,9 @@ class CameraViewController: UIViewController {
     
     // 入出力の設定
     func setupInputOutput(){
-        //解像度の指定
-        session.sessionPreset = AVCaptureSession.Preset.photo
+        photoOutputObj.connection(with: AVMediaType.video)?.videoOrientation = .landscapeLeft
+        //解像度の指定:以前は4k以上の解像度で保存されていた（20-30MB)ので重かった。hd(3-5MB)で出力、FHDだと(15-20MB)かかり重くなるので考え中
+        session.sessionPreset = AVCaptureSession.Preset.hd1280x720
         
         // 入力の設定
         do {

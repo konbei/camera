@@ -11,6 +11,20 @@ import CoreData
 //時限ごとの名前
 
 class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate {
+    
+    // 画面を自動で回転させるか
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
+    
+    // 画面の向きを指定
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
+    }
     //曜日ごとの授業名称
     private var MonClassName:[String] = []
     private var TuesClassName:[String] = []
