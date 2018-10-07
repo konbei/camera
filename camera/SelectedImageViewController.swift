@@ -11,7 +11,13 @@ import UIKit
 
 class SelectedImageViewController: UIViewController {
     
-
+    //ImageViewをタップした時barの表示/非表示変更
+    @IBAction func tapImageView(_ sender: UITapGestureRecognizer) {
+        editBar.isHidden = !editBar.isHidden
+        self.navigationController?.isNavigationBarHidden = !(self.navigationController?.isNavigationBarHidden)!
+    }
+    
+    @IBOutlet weak var editBar: UINavigationBar!
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -21,15 +27,22 @@ class SelectedImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //最初barは非表示
+        editBar.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         
         imageView.image = selectedImage
 
         imageView.contentMode =  UIView.ContentMode.scaleAspectFit
-    
+        
+        
+        //self.navigationController?.hidesBarsOnTap = true
+      
         // Do any additional setup after loading the view.
     }
-    
-
+    override var prefersStatusBarHidden: Bool {
+        return navigationController?.isNavigationBarHidden == true
+    }
     //画像シェア機能
     @IBAction func shareAction(_ sender: Any) {
         let activities = [selectedImage] as [Any]

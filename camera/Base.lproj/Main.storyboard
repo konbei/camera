@@ -151,55 +151,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1f2-ON-620">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1f2-ON-620">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="559" id="D0K-SW-jSm"/>
-                                    <constraint firstAttribute="width" constant="375" id="Gfr-hD-1bc"/>
-                                </constraints>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="OIp-3e-1mR" appends="YES" id="Xpr-xE-aih"/>
+                                </connections>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xax-c0-4tT">
-                                <rect key="frame" x="0.0" y="915" width="83" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="5AD-lR-La5"/>
-                                    <constraint firstAttribute="width" constant="375" id="zU2-Ch-Idw"/>
-                                </constraints>
+                            <navigationBar opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUr-E8-FoD">
+                                <rect key="frame" x="0.0" y="623" width="336" height="44"/>
                                 <items>
-                                    <barButtonItem systemItem="action" id="zp2-tx-iaW">
-                                        <connections>
-                                            <action selector="shareAction:" destination="E4p-3l-hhN" id="uky-Aw-gOk"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem width="286" style="plain" systemItem="fixedSpace" id="2Sd-a3-fdB"/>
-                                    <barButtonItem title="削除" id="z0c-AK-vyb">
-                                        <connections>
-                                            <action selector="DeleteImage:" destination="E4p-3l-hhN" id="tnr-DX-lHK"/>
-                                        </connections>
-                                    </barButtonItem>
+                                    <navigationItem id="qCT-ja-1ZR">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="zp2-tx-iaW">
+                                            <connections>
+                                                <action selector="shareAction:" destination="E4p-3l-hhN" id="uky-Aw-gOk"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="削除" id="z0c-AK-vyb">
+                                            <connections>
+                                                <action selector="DeleteImage:" destination="E4p-3l-hhN" id="tnr-DX-lHK"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
-                            </toolbar>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="1f2-ON-620" firstAttribute="top" secondItem="T6f-iR-Dfc" secondAttribute="top" id="0mg-0A-VmF"/>
-                            <constraint firstItem="Xax-c0-4tT" firstAttribute="trailing" secondItem="T6f-iR-Dfc" secondAttribute="trailing" id="1Kg-5V-SLK"/>
-                            <constraint firstItem="Xax-c0-4tT" firstAttribute="top" secondItem="1f2-ON-620" secondAttribute="bottom" id="2yR-gn-dCP"/>
-                            <constraint firstItem="Xax-c0-4tT" firstAttribute="top" secondItem="1f2-ON-620" secondAttribute="bottom" id="JxH-hW-MVh"/>
-                            <constraint firstItem="1f2-ON-620" firstAttribute="leading" secondItem="T6f-iR-Dfc" secondAttribute="leading" id="SW1-fs-03I"/>
-                            <constraint firstItem="Xax-c0-4tT" firstAttribute="leading" secondItem="T6f-iR-Dfc" secondAttribute="leading" id="Twn-zg-MZb"/>
-                            <constraint firstItem="Xax-c0-4tT" firstAttribute="bottom" secondItem="T6f-iR-Dfc" secondAttribute="bottom" id="elU-px-8E4"/>
-                            <constraint firstItem="1f2-ON-620" firstAttribute="trailing" secondItem="T6f-iR-Dfc" secondAttribute="trailing" id="fMJ-yu-R4J"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="bottom" secondItem="yUr-E8-FoD" secondAttribute="bottom" id="Dfc-be-pQJ"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="trailing" secondItem="yUr-E8-FoD" secondAttribute="trailing" id="IUD-ib-2Pa"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="bottom" secondItem="T6f-iR-Dfc" secondAttribute="bottom" id="O9P-PD-1fD"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="leading" secondItem="x8j-EB-40L" secondAttribute="leading" id="Q6g-ko-fUs"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="leading" secondItem="yUr-E8-FoD" secondAttribute="leading" id="SaF-oy-M8V"/>
+                            <constraint firstAttribute="trailing" secondItem="1f2-ON-620" secondAttribute="trailing" id="amE-tC-UqP"/>
+                            <constraint firstItem="1f2-ON-620" firstAttribute="top" secondItem="T6f-iR-Dfc" secondAttribute="top" id="tOM-87-ICD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="T6f-iR-Dfc"/>
                     </view>
                     <connections>
+                        <outlet property="EditBar" destination="yUr-E8-FoD" id="Aeb-ce-eet"/>
                         <outlet property="imageView" destination="1f2-ON-620" id="tpG-my-KBt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AN9-Bl-W5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="OIp-3e-1mR">
+                    <connections>
+                        <action selector="tapImageView:" destination="E4p-3l-hhN" id="7k7-Rp-xud"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1741.5999999999999" y="-738.08095952023996"/>
+            <point key="canvasLocation" x="1741.0794602698652" y="-738.39999999999998"/>
         </scene>
         <!--時間割-->
         <scene sceneID="ajR-0E-Mrf">
@@ -498,7 +500,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="授業名称設定" id="HZ3-cU-S6O">
                         <barButtonItem key="rightBarButtonItem" title="授業名称設定" style="plain" id="VtQ-pp-VO1">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
                                 <rect key="frame" x="276" y="5.5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
