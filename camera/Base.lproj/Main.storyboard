@@ -20,10 +20,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-UE-E4f">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="667" id="CbP-Jl-4t0"/>
                                     <constraint firstAttribute="width" constant="375" id="dMx-yi-JpD"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="aaH-xt-1mH" appends="YES" id="eyr-WQ-diX"/>
+                                </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hS4-Oh-JkA">
                                 <rect key="frame" x="297" y="547" width="46" height="30"/>
@@ -64,6 +68,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="aaH-xt-1mH">
+                    <connections>
+                        <action selector="pinchZoom:" destination="BYZ-38-t0r" id="yMv-G0-QZz"/>
+                    </connections>
+                </pinchGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-28" y="136.28185907046478"/>
         </scene>
@@ -160,7 +169,7 @@
                                 </connections>
                             </imageView>
                             <navigationBar opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUr-E8-FoD">
-                                <rect key="frame" x="0.0" y="623" width="336" height="44"/>
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
                                     <navigationItem id="qCT-ja-1ZR">
                                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="zp2-tx-iaW">

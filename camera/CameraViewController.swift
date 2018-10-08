@@ -219,7 +219,36 @@ class CameraViewController: UIViewController {
         }
     }
     
-    
-    
+    //ピンチで拡大縮小機能
+     var zoomFactor: CGFloat = 1.0
+    @IBAction func pinchZoom(_ sender: UIPinchGestureRecognizer) {
+        let device = AVCaptureDevice.default(
+            AVCaptureDevice.DeviceType.builtInWideAngleCamera,
+            for: AVMediaType.video, // ビデオ入力
+            position: AVCaptureDevice.Position.back) // バックカメラ
+        
+        func minMaxZoom(_ factor: CGFloat) -> CGFloat { return min(max(factor, 1.0), device!.activeFormat.videoMaxZoomFactor) }
+        
+        func update(scale factor: CGFloat) {
+            do {
+                try device!.lockForConfiguration()
+                defer { device!.unlockForConfiguration() }
+                device!.videoZoomFactor = factor
+            } catch {
+                debugPrint(error)
+            }
+        }
+        
+        let newScaleFactor = minMaxZoom(sender.scale * zoomFactor)
+        
+        switch sender.state {
+        case .began: fallthrough
+        case .changed: update(scale: newScaleFactor)
+        case .ended:
+            zoomFactor = minMaxZoom(newScaleFactor)
+            update(scale: zoomFactor)
+        default: break
+        }
+    }
 }
 
