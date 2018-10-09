@@ -250,5 +250,27 @@ class CameraViewController: UIViewController {
         default: break
         }
     }
+    var thumbnailPath:String!
+    @IBOutlet weak var thumbnailImage: UIImageView!
+
+    @IBAction func comeCamera (segue: UIStoryboardSegue){
+        
+    }
+    //選択した写真と写真のパス送る
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "previewImage"){
+            (segue.destination as! SelectedImageViewController).selectedImage = thumbnailImage.image
+            (segue.destination as! SelectedImageViewController).selectedImagePath = thumbnailPath
+            (segue.destination as! SelectedImageViewController).movedPreview = true
+        }
+    }
+    
+    
+    @IBAction func goToPreview(_ sender: Any) {
+        if thumbnailImage.image != nil{
+            performSegue(withIdentifier: "previewImage", sender: nil)
+        }
+    }
+    
 }
 

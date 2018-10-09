@@ -13,14 +13,24 @@ class SelectedImageViewController: UIViewController {
     
     //ImageViewをタップした時barの表示/非表示変更
     @IBAction func tapImageView(_ sender: UITapGestureRecognizer) {
+        if movedPreview == true{
+            buckComeraBar.isHidden = !buckComeraBar.isHidden
+        }
         editBar.isHidden = !editBar.isHidden
         self.navigationController?.isNavigationBarHidden = !(self.navigationController?.isNavigationBarHidden)!
     }
     
+
+        
+    @IBOutlet weak var buckComeraBar: UINavigationBar!
+    
     @IBOutlet weak var editBar: UINavigationBar!
     
     @IBOutlet weak var imageView: UIImageView!
+
     
+    //プレビュー画面かどうか
+    var movedPreview = false
     //選択した写真と写真のパス得る
     var selectedImage:UIImage!
     var selectedImagePath:String!
@@ -30,6 +40,7 @@ class SelectedImageViewController: UIViewController {
         //最初barは非表示
         editBar.isHidden = true
         self.navigationController?.isNavigationBarHidden = true
+        buckComeraBar.isHidden = true
         
         imageView.image = selectedImage
 
@@ -66,7 +77,12 @@ class SelectedImageViewController: UIViewController {
                     //エラー処理
                     print("error")
                 }
-               self.navigationController?.popViewController(animated: true)
+            if self.movedPreview == true{
+                self.performSegue(withIdentifier: "comeCamera", sender: self)
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
+            
         })
         // キャンセルボタン
         let cancelAction: UIAlertAction = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler:{
@@ -81,14 +97,11 @@ class SelectedImageViewController: UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if(segue.identifier == "comeCamera"){
+            (segue.destination as! CameraViewController).thumbnailImage.image = nil
+        }
     }
-    */
-
 }

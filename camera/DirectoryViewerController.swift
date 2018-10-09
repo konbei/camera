@@ -98,14 +98,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         queue.async(group: group) {
             //サムネイル作成方法変更
             thumbnail = cellImage.reSizeImage(reSize:CGSize(width: 81, height: 81))
-            
                 group.leave()
             }
             group.notify(queue: .main){
                 cell.thumnailImagre.image = thumbnail
-               /* if cellImage.size.height < cellImage.size.width{
-                    cell.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI/2))
-                }*/
             }
         
         return cell
@@ -146,6 +142,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         if(segue.identifier == "selectedImage"){
             (segue.destination as! SelectedImageViewController).selectedImage = selectImage
             (segue.destination as! SelectedImageViewController).selectedImagePath = selectImagePath
+            (segue.destination as! SelectedImageViewController).movedPreview = false
         }
     }
     

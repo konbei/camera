@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-UE-E4f">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-UE-E4f">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <gestureRecognizers/>
@@ -49,22 +49,34 @@
                                     <action selector="takePhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QrH-cQ-tw3"/>
                                 </connections>
                             </button>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Qh-Jc-boI" userLabel="thumbnailImage">
+                                <rect key="frame" x="30" y="555" width="80" height="80"/>
+                                <color key="backgroundColor" red="1" green="0.25462015500000001" blue="0.23705924880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="57g-FB-31v"/>
+                                    <constraint firstAttribute="width" constant="80" id="dkz-sv-CqX"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Ftv-ba-5hp" appends="YES" id="rOX-Zm-37v"/>
+                                </connections>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="jsd-UE-E4f" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="97k-uU-347"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hS4-Oh-JkA" secondAttribute="trailing" constant="32" id="L9t-cd-i8H"/>
                             <constraint firstItem="qME-NH-YbL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="150" id="Nxd-oK-SQ3"/>
-                            <constraint firstItem="jsd-UE-E4f" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="UMv-uK-F3H"/>
-                            <constraint firstItem="jsd-UE-E4f" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bZp-wa-sad"/>
                             <constraint firstItem="qME-NH-YbL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="533" id="d7v-k9-VDD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1Qh-Jc-boI" secondAttribute="bottom" constant="32" id="erx-lq-u7c"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hS4-Oh-JkA" secondAttribute="bottom" constant="90" id="lBH-bC-fDr"/>
-                            <constraint firstItem="jsd-UE-E4f" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="oYq-NG-5Tt"/>
+                            <constraint firstItem="1Qh-Jc-boI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="oyr-hP-vHV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="previewView" destination="jsd-UE-E4f" id="75Z-CE-lcw"/>
+                        <outlet property="thumbnailImage" destination="1Qh-Jc-boI" id="jeM-jf-avC"/>
+                        <segue destination="E4p-3l-hhN" kind="show" identifier="previewImage" id="VHF-vt-ovZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -73,8 +85,13 @@
                         <action selector="pinchZoom:" destination="BYZ-38-t0r" id="yMv-G0-QZz"/>
                     </connections>
                 </pinchGestureRecognizer>
+                <tapGestureRecognizer id="Ftv-ba-5hp">
+                    <connections>
+                        <action selector="goToPreview:" destination="BYZ-38-t0r" id="ZL1-YA-R4Z"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-28" y="136.28185907046478"/>
+            <point key="canvasLocation" x="-415.19999999999999" y="157.87106446776613"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GQ8-Bu-p42">
@@ -161,7 +178,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1f2-ON-620">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -185,6 +202,19 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wlr-QA-H1M">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Preview" id="WDZ-nm-Bcg">
+                                        <barButtonItem key="leftBarButtonItem" title="Buck" id="BWm-4w-kto">
+                                            <connections>
+                                                <segue destination="SP9-GJ-a8v" kind="unwind" identifier="comeCamera" unwindAction="comeCameraWithSegue:" id="rKc-BP-ZyK"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -200,17 +230,19 @@
                     </view>
                     <connections>
                         <outlet property="EditBar" destination="yUr-E8-FoD" id="Aeb-ce-eet"/>
+                        <outlet property="buckComeraBar" destination="wlr-QA-H1M" id="Ted-ig-Lqm"/>
                         <outlet property="imageView" destination="1f2-ON-620" id="tpG-my-KBt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AN9-Bl-W5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="SP9-GJ-a8v" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="OIp-3e-1mR">
                     <connections>
                         <action selector="tapImageView:" destination="E4p-3l-hhN" id="7k7-Rp-xud"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1741.0794602698652" y="-738.39999999999998"/>
+            <point key="canvasLocation" x="1817" y="-707"/>
         </scene>
         <!--時間割-->
         <scene sceneID="ajR-0E-Mrf">
@@ -573,4 +605,7 @@
     <resources>
         <image name="maru" width="60" height="60"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="VHF-vt-ovZ"/>
+    </inferredMetricsTieBreakers>
 </document>

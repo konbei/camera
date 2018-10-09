@@ -77,6 +77,7 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
             default: break
             }
 
+            
             // ディレクトリに写真を保存する
             saveImage(image: stillImage)
         }
@@ -117,6 +118,9 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         let url:URL = NSURL(string: path)! as URL
         print(path)
         
+        //サムネイルセット
+        thumbnailImage.image = image
+        thumbnailPath = DocumentPath + "/" + directoryName + "/" + fileName
         
         let pngImageData = image.pngData()
         
