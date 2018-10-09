@@ -14,6 +14,7 @@
 		2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */; };
 		2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F84409A215C8812007A7549 /* ClassNameTableCell.swift */; };
 		2F84409D215C8812007A7549 /* ClassNameTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F84409B215C8812007A7549 /* ClassNameTableCell.xib */; };
+		2FB96BBF216C74D0006E48E0 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB96BBE216C74D0006E48E0 /* NavigationViewController.swift */; };
 		2FD2077521687F1E00B2495B /* SelectedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */; };
 		2FD9276B2159D82B00368A6B /* ClassTimeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */; };
 		2FD9276F215B17F100368A6B /* SettingsTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */; };
@@ -58,6 +59,7 @@
 		2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTime+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2F84409A215C8812007A7549 /* ClassNameTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameTableCell.swift; sourceTree = "<group>"; };
 		2F84409B215C8812007A7549 /* ClassNameTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassNameTableCell.xib; sourceTree = "<group>"; };
+		2FB96BBE216C74D0006E48E0 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageViewController.swift; sourceTree = "<group>"; };
 		2FD9276A2159D82B00368A6B /* ClassTimeSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTimeSettingViewController.swift; sourceTree = "<group>"; };
 		2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				2FE921DE216346CF00021527 /* ExtensionViewController.swift */,
 				2FE88D5921576BC3004BB3C9 /* JikanwariViewController.swift */,
 				2FE921E021644AB900021527 /* DirectoryViewerController.swift */,
+				2FB96BBE216C74D0006E48E0 /* NavigationViewController.swift */,
 				2FE921E2216603D000021527 /* DirectoryViewrCell.swift */,
 				2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */,
 				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
@@ -316,6 +319,7 @@
 				2F750FC721609FCC00C02F3B /* SettingsTime+CoreDataClass.swift in Sources */,
 				2FE921E121644AB900021527 /* DirectoryViewerController.swift in Sources */,
 				2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */,
+				2FB96BBF216C74D0006E48E0 /* NavigationViewController.swift in Sources */,
 				2F750FC3215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift in Sources */,
 				2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */,
 				2FE88D5A21576BC3004BB3C9 /* JikanwariViewController.swift in Sources */,

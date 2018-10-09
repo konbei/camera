@@ -28,7 +28,7 @@ class SelectedImageViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
 
-    
+    var deleteImage = false
     //プレビュー画面かどうか
     var movedPreview = false
     //選択した写真と写真のパス得る
@@ -73,6 +73,7 @@ class SelectedImageViewController: UIViewController {
             (action: UIAlertAction!) -> Void in
                 do {
                     try FileManager.default.removeItem( atPath: self.selectedImagePath )
+                    self.deleteImage = true
                 } catch {
                     //エラー処理
                     print("error")
@@ -100,8 +101,9 @@ class SelectedImageViewController: UIViewController {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "comeCamera"){
+        if(segue.identifier == "comeCamera" && deleteImage == true){
             (segue.destination as! CameraViewController).thumbnailImage.image = nil
+            deleteImage = false
         }
     }
 }

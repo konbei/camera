@@ -93,10 +93,10 @@
             </objects>
             <point key="canvasLocation" x="-415.19999999999999" y="157.87106446776613"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation View Controller-->
         <scene sceneID="GQ8-Bu-p42">
             <objects>
-                <navigationController id="Iq7-YG-dTr" sceneMemberID="viewController">
+                <navigationController id="Iq7-YG-dTr" customClass="NavigationViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mDi-Nx-awd">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
