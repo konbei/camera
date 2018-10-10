@@ -192,11 +192,11 @@ class CameraViewController: UIViewController {
         // プレビューレイヤを作る
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
         
-      
-        previewLayer.frame = view.bounds
+        
+        previewLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
         
         previewLayer.masksToBounds = true
-        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspect
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         // previewViewに追加する
         previewView.layer.addSublayer(previewLayer)
     }

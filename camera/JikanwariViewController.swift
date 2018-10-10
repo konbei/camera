@@ -165,7 +165,12 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
          performSegue(withIdentifier: "directoryViewr", sender: nil)
     }
     
-
+    //全部表示ボタン
+    @IBAction func allButton(_ sender: Any) {
+        directoryName = "All"
+        performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "directoryViewr"){
             (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName
