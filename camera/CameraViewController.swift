@@ -88,7 +88,7 @@ class CameraViewController: UIViewController {
     //現時時刻から何限か返す
     func getClassTime(intTime:Int)->Int{
         for i in 0..<classcounts{
-            if(startClassTime[i] != 2359 && finishClassTime[i] != 2359 && startClassTime[i] <= finishClassTime[i]){
+            if startClassTime[i] != 9999 && finishClassTime[i] != 9999{
                 let  ClassTimeRange = startClassTime[i]...finishClassTime[i]
                 if ClassTimeRange.contains(intTime) == true{
                     let classTime = i+1
@@ -109,8 +109,8 @@ class CameraViewController: UIViewController {
         super.viewDidLoad()
         
         makeDirectory()
-        startClassTime = [2359,2359,2359,2359,2359,2359]
-        finishClassTime = [2359,2359,2359,2359,2359,2359]
+        startClassTime = [9999,9999,9999,9999,9999,9999]
+        finishClassTime = [9999,9999,9999,9999,9999,9999]
         
         //カメラ起動〜実行
         
