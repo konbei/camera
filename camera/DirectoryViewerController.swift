@@ -50,7 +50,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
     @IBOutlet weak var cv: UICollectionView!
     
-    var file:[(name:String,date:String)]!
+    var file:[(name:String,date:String,modify:Date,image:UIImage?)]!
     
      //タップされた授業の曜日と時間を取ってくる
     var selectedDirectoryName = ""
@@ -80,21 +80,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
     let fileManager = FileManager.default
     
-    func stringInt(int:String)->Int{
-        let splitNumbers = (int.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
-        let number = splitNumbers.joined()
-        return Int(number)!
-    }
-    
     //タップされた授業の写真を取ってくる
     func loadImage(){
-        var holderDirectory:String!
-        if selectedDirectoryName == "All"{
-             holderDirectory = DocumentPath
-        }else{
-             holderDirectory = DocumentPath + "/" + selectedDirectoryName
-        }
-        
+        let holderDirectory = DocumentPath + "/" + selectedDirectoryName
         fileNames = []
         fileImages = []
         file = []
@@ -108,7 +96,12 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
                         if fileNames.count != 0{
                             for i in 0..<fileNames.count{
-                                file.append((name: fileNames[i], date: numberday(num: day) + "\(classes)"))
+                                var item:NSDictionary?
+                                do{
+                                    item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
+                                }catch{
+                                }
+                                file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileModificationDate())!, image: nil))
                             }
                         }
                     }catch{
@@ -118,57 +111,45 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }else{
             do{
                 try fileNames = FileManager.default.contentsOfDirectory(atPath: holderDirectory)
+                for i in 0..<fileNames.count{
+                    var item:NSDictionary?
+                    do{
+                        item = try fileManager.attributesOfItem(atPath: holderDirectory + "/" + fileNames[i]) as NSDictionary?
+                    }catch{
+                    }
+                    file.append((name: fileNames[i], date: self.selectedDirectoryName, modify: (item?.fileModificationDate())!, image: nil))
+                }
             }catch{
                 fileNames = []
             }
         }
         
-      
-        
         //バブルソート・・・
-        if selectedDirectoryName == "All"{
-            for i in 0..<file.count{
-                for j in (i+1..<file.count).reversed(){
-                    if stringInt(int: file[j-1].name) < stringInt(int: file[j].name){
-                        let temp = file[j]
-                        file[j] = file[j-1]
-                        file[j-1] = temp
-                    }
-                }
-            }
-        }else{
-            for i in 0..<fileNames.count{
-                for j in (i+1..<fileNames.count).reversed(){
-                    if stringInt(int: fileNames[j-1]) < stringInt(int: fileNames[j]){
-                        let temp = fileNames[j]
-                        fileNames[j] = fileNames[j-1]
-                        fileNames[j-1] = temp
-                    }
+        for i in 0..<file.count{
+            for j in (i+1..<file.count).reversed(){
+                if file[j-1].modify < file[j].modify{
+                    let temp = file[j]
+                    file[j] = file[j-1]
+                    file[j-1] = temp
                 }
             }
         }
-        
-        
-        
-        
-        //ファイルパスからファイルデータ(写真イメージ)を取ってくる
 
+        //ファイルパスからファイルデータ(写真イメージ)を取ってくる
         if selectedDirectoryName == "All"{
             for i in 0..<file.count{
                 let filePath = DocumentPath + "/" + file[i].date + "/" + file[i].name
-                fileImages.append(UIImage(contentsOfFile:filePath)!)
+                file[i].image = UIImage(contentsOfFile:filePath)!
             }
         }else{
             for i in 0..<fileNames.count{
-                let fileDirectory = holderDirectory + "/" + fileNames[i]
-                fileImages.append(UIImage(contentsOfFile:fileDirectory)!)
+                let fileDirectory = holderDirectory + "/" + file[i].name
+                file[i].image = UIImage(contentsOfFile:fileDirectory)!
             }
         }
-       
-      
     }
     
-                
+    
 
     
     func collectionView(_ collectionView: UICollectionView,
@@ -179,7 +160,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
 
        
-        let cellImage = self.fileImages[indexPath.row]
+        let cellImage = self.file[indexPath.row].image!
         var thumbnail:UIImage? = nil
         let group = DispatchGroup()
         let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
@@ -208,7 +189,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         // 要素数を入れる、要素以上の数字を入れると表示でエラーとなる
-        return fileImages.count
+        return file.count
     }
     
     var selectImage:UIImage!
@@ -221,11 +202,11 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             print(selectImagePath)
         }else{
             //選択した写真のパス
-            selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + fileNames[indexPath.row]
+            selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
         }
         
         // [indexPath.row] から画像名を探し、UImage を設定
-        selectImage = fileImages[indexPath.row]
+        selectImage = file[indexPath.row].image
         if selectImage != nil {
             // SubViewController へ遷移するために Segue を呼び出す
             performSegue(withIdentifier: "selectedImage",sender: nil)
