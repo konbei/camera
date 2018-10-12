@@ -31,7 +31,7 @@ class CameraViewController: UIViewController {
         }
     }
     
-    private var daycounts = 5
+    private var daycounts = 7
     private var classcounts = 6
     private var startClassTime:[Int] = []   //時限ごとの開始時刻データ
     private var finishClassTime:[Int] = []
@@ -48,6 +48,10 @@ class CameraViewController: UIViewController {
             return "Thurs"
         case 4:
             return "Fri"
+        case 5:
+            return "Satur"
+        case 6:
+            return "Sun"
         default:
             return ""
         }
@@ -59,8 +63,8 @@ class CameraViewController: UIViewController {
         let fileManager = FileManager.default
         let DocumentPath = NSHomeDirectory() + "/Documents"
         for day in 0..<daycounts{
-            for classes in 0...classcounts{
-                let DirectoryPath = DocumentPath + "/" + numberday(num: day) + "\(classes)"
+            if daycounts > 4{
+                let DirectoryPath = DocumentPath + "/" + numberday(num: day)
                 if fileManager.fileExists(atPath: DirectoryPath) == false{
                     do{
                         try fileManager.createDirectory(atPath: DirectoryPath, withIntermediateDirectories: true, attributes: nil)
@@ -68,7 +72,19 @@ class CameraViewController: UIViewController {
                         print("error")
                     }
                 }
+            }else{
+                for classes in 0...classcounts{
+                    let DirectoryPath = DocumentPath + "/" + numberday(num: day) + "\(classes)"
+                    if fileManager.fileExists(atPath: DirectoryPath) == false{
+                        do{
+                            try fileManager.createDirectory(atPath: DirectoryPath, withIntermediateDirectories: true, attributes: nil)
+                        }catch{
+                            print("error")
+                        }
+                    }
+                }
             }
+            
         }
     }
     

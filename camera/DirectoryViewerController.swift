@@ -58,7 +58,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     private var fileImages:[UIImage] = []
     private let DocumentPath = NSHomeDirectory() + "/Documents"
     
-    private var daycounts = 5
+    private var daycounts = 7
     private var classcounts = 6
     func numberday(num:Int) ->String{
         switch num{
@@ -72,6 +72,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             return "Thurs"
         case 4:
             return "Fri"
+        case 5:
+            return "Satur"
+        case 6:
+            return "Sun"
         default:
             return ""
         }
@@ -86,10 +90,25 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         fileNames = []
         fileImages = []
         file = []
-        
+   
         //ディレクトリからファイルの名前を取ってくる
         if selectedDirectoryName == "All"{
             for day in 0..<daycounts{
+                let directoryPath = DocumentPath + "/" + numberday(num: day)
+                do{
+                    try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
+                    if fileNames.count != 0{
+                        for i in 0..<fileNames.count{
+                            var item:NSDictionary?
+                            do{
+                                item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
+                            }catch{
+                            }
+                            file.append((name: fileNames[i], date: numberday(num:day), modify: (item?.fileModificationDate())!, image: nil))
+                        }
+                    }
+                }catch{
+                }
                 for classes in 0...classcounts{
                     let directoryPath = DocumentPath + "/" + numberday(num: day) + "\(classes)"
                     do{
@@ -144,7 +163,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }else{
             for i in 0..<fileNames.count{
                 let fileDirectory = holderDirectory + "/" + file[i].name
-                file[i].image = UIImage(contentsOfFile:fileDirectory)!
+                if let image = UIImage(contentsOfFile:fileDirectory){
+                    file[i].image = image
+                }
             }
         }
     }
@@ -158,16 +179,21 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         //セルのクラス作ってそこでスクロールした時の初期化実装してます
         let cell:DirectoryViewrCell =
             collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
-
+        
+        var cellImage:UIImage?
+        if let image = self.file[indexPath.row].image{
+            cellImage = image
+        }else{
+            return cell
+        }
        
-        let cellImage = self.file[indexPath.row].image!
         var thumbnail:UIImage? = nil
         let group = DispatchGroup()
         let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
         group.enter()
         queue.async(group: group) {
             //サムネイル作成方法変更
-            thumbnail = cellImage.reSizeImage(reSize:CGSize(width: 81, height: 81))
+            thumbnail = cellImage?.reSizeImage(reSize:CGSize(width: 81, height: 81))
                 group.leave()
             }
             group.notify(queue: .main){
@@ -199,7 +225,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if selectedDirectoryName == "All"{
             selectImagePath = DocumentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
-            print(selectImagePath)
+        
         }else{
             //選択した写真のパス
             selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
@@ -223,6 +249,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        file = []
         loadImage()
         thumbmnailImages = []
         cv.reloadData()

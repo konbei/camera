@@ -108,8 +108,13 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         
         
       
-        
-        let directoryName = week + classTime    //保存するディレクトリの名前
+        var directoryName:String!
+        if week != "Satur" && week != "Sun"{
+             directoryName = week + classTime
+        }else{
+             directoryName = week
+        }
+            //保存するディレクトリの名前
         let fileName = defaultDayTime + ".png" //保存するファイルの名前
         
         let DocumentPath = NSHomeDirectory() + "/Documents"

@@ -171,6 +171,17 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         performSegue(withIdentifier: "directoryViewr", sender: nil)
     }
     
+    @IBAction func SaturdayButtun(_ sender: Any) {
+        directoryName = "Satur"
+        performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+
+    @IBAction func SundayButtun(_ sender: Any) {
+        directoryName = "Sun"
+        performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "directoryViewr"){
             (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName

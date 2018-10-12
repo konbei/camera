@@ -178,7 +178,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1f2-ON-620">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -203,7 +203,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wlr-QA-H1M">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Preview" id="WDZ-nm-Bcg">
                                         <barButtonItem key="leftBarButtonItem" title="Buck" id="BWm-4w-kto">
@@ -293,6 +293,20 @@
                                     <outlet property="delegate" destination="Q79-DO-Odz" id="pSb-lA-tH4"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQE-QF-cor">
+                                <rect key="frame" x="162.5" y="579" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.72577613939999996" green="0.98492147019999998" blue="0.95252515339999999" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="EZ6-ev-RfC"/>
+                                    <constraint firstAttribute="height" constant="50" id="XlR-gU-AdI"/>
+                                </constraints>
+                                <state key="normal" title="日曜">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="SundayButtun:" destination="Q79-DO-Odz" eventType="touchUpInside" id="2BT-IW-ths"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="月" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHf-4J-0OK">
                                 <rect key="frame" x="48" y="100" width="54" height="21"/>
                                 <color key="backgroundColor" red="0.4279830255" green="1" blue="0.3292996467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -425,15 +439,38 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uCP-cQ-Ne6">
-                                <rect key="frame" x="312" y="617" width="30" height="30"/>
-                                <state key="normal" title="All"/>
+                                <rect key="frame" x="250.5" y="579" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.72577613939999996" green="0.98492147019999998" blue="0.95252515339999999" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="WFa-nm-IZP"/>
+                                    <constraint firstAttribute="height" constant="50" id="x2N-4b-e4Y"/>
+                                </constraints>
+                                <state key="normal" title="All">
+                                    <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="allButton:" destination="Q79-DO-Odz" eventType="touchUpInside" id="0G6-ju-5ex"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bl0-d2-GDW">
+                                <rect key="frame" x="74.5" y="579" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.72577613939999996" green="0.98492147019999998" blue="0.95252515339999999" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="O5b-I1-fV1"/>
+                                    <constraint firstAttribute="height" constant="50" id="Xfb-aG-vcy"/>
+                                </constraints>
+                                <state key="normal" title="土曜">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="SaturdayButtun:" destination="Q79-DO-Odz" eventType="touchUpInside" id="0Wa-JI-KIF"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="aQE-QF-cor" firstAttribute="leading" secondItem="Bl0-d2-GDW" secondAttribute="trailing" constant="38" id="292-0j-QUC"/>
+                            <constraint firstItem="Yo0-01-kNT" firstAttribute="bottom" secondItem="uCP-cQ-Ne6" secondAttribute="bottom" constant="38" id="4N8-pS-rNj"/>
                             <constraint firstItem="KHf-4J-0OK" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="top" constant="36" id="5je-Vr-bW7"/>
                             <constraint firstItem="OOz-4c-bB3" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="top" constant="36" id="6cd-Pd-Nu4"/>
                             <constraint firstItem="gmv-uA-X27" firstAttribute="top" secondItem="JTP-Hd-tEq" secondAttribute="bottom" constant="8" id="6w5-bC-Lzg"/>
@@ -441,14 +478,16 @@
                             <constraint firstItem="WSo-26-of7" firstAttribute="top" secondItem="HpU-eD-0Ru" secondAttribute="bottom" constant="8" id="9ZV-WB-Hf3"/>
                             <constraint firstItem="KHf-4J-0OK" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="48" id="Bf5-qT-yz9"/>
                             <constraint firstItem="JTP-Hd-tEq" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="19" id="COY-NF-xiL"/>
-                            <constraint firstItem="Yo0-01-kNT" firstAttribute="bottom" secondItem="uCP-cQ-Ne6" secondAttribute="bottom" constant="20" id="FkB-RZ-poW"/>
+                            <constraint firstItem="Bl0-d2-GDW" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="74.5" id="DKq-aW-MoP"/>
                             <constraint firstItem="CSD-Wr-fGT" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="19" id="GZE-y4-HQj"/>
                             <constraint firstItem="Rbk-oP-TQb" firstAttribute="top" secondItem="KHf-4J-0OK" secondAttribute="bottom" constant="8" id="H6e-xI-G5q"/>
+                            <constraint firstItem="uCP-cQ-Ne6" firstAttribute="leading" secondItem="aQE-QF-cor" secondAttribute="trailing" constant="38" id="KYh-rx-k0P"/>
                             <constraint firstItem="Q6A-PU-UD5" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="top" constant="36" id="Ka8-zA-53b"/>
                             <constraint firstItem="55t-Ve-OUE" firstAttribute="top" secondItem="WSo-26-of7" secondAttribute="bottom" constant="8" id="OJg-4c-rID"/>
                             <constraint firstItem="Q6A-PU-UD5" firstAttribute="leading" secondItem="6Sp-Jg-bgh" secondAttribute="trailing" constant="10" id="PiO-u1-J1Z"/>
                             <constraint firstItem="Rbk-oP-TQb" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="50" id="Q3j-3D-WbG"/>
                             <constraint firstItem="WSo-26-of7" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="19" id="U06-le-mBw"/>
+                            <constraint firstItem="Yo0-01-kNT" firstAttribute="bottom" secondItem="aQE-QF-cor" secondAttribute="bottom" constant="38" id="V1S-iW-s8y"/>
                             <constraint firstItem="ZQB-oU-ZsZ" firstAttribute="top" secondItem="CSD-Wr-fGT" secondAttribute="bottom" constant="8" id="W6e-Kt-ohz"/>
                             <constraint firstItem="ZFN-bj-CKv" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="top" constant="36" id="WfU-O1-gNp"/>
                             <constraint firstItem="HpU-eD-0Ru" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="19" id="ZNu-ee-IZO"/>
@@ -458,7 +497,7 @@
                             <constraint firstItem="6Sp-Jg-bgh" firstAttribute="leading" secondItem="ZFN-bj-CKv" secondAttribute="trailing" constant="10" id="aJS-qx-Wb2"/>
                             <constraint firstItem="gmv-uA-X27" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="19" id="bvu-Ty-tV5"/>
                             <constraint firstItem="HpU-eD-0Ru" firstAttribute="top" secondItem="ZQB-oU-ZsZ" secondAttribute="bottom" constant="8" id="fPE-rP-rh3"/>
-                            <constraint firstItem="Yo0-01-kNT" firstAttribute="trailing" secondItem="uCP-cQ-Ne6" secondAttribute="trailing" constant="33" id="fY5-ei-VAH"/>
+                            <constraint firstItem="Yo0-01-kNT" firstAttribute="bottom" secondItem="Bl0-d2-GDW" secondAttribute="bottom" constant="38" id="j9o-Mn-SOY"/>
                             <constraint firstItem="ZQB-oU-ZsZ" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" constant="19" id="loU-E2-UtF"/>
                             <constraint firstItem="6Sp-Jg-bgh" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="top" constant="36" id="rmq-yj-AxR"/>
                             <constraint firstItem="CSD-Wr-fGT" firstAttribute="top" secondItem="gmv-uA-X27" secondAttribute="bottom" constant="8" id="xeH-SB-6i3"/>
@@ -617,6 +656,6 @@
         <image name="maru" width="60" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="VHF-vt-ovZ"/>
+        <segue reference="DF5-fn-uAR"/>
     </inferredMetricsTieBreakers>
 </document>
