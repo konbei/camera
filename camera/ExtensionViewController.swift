@@ -119,7 +119,7 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         
         let DocumentPath = NSHomeDirectory() + "/Documents"
         
-        let path = "file://" + DocumentPath + "/" + directoryName + "/" + fileName
+        let path = "file://" + DocumentPath + "/" + "Mon0"/*directoryName*/ + "/" + fileName
         let url:URL = NSURL(string: path)! as URL
         print(path)
         

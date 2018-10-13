@@ -63,7 +63,7 @@ class CameraViewController: UIViewController {
         let fileManager = FileManager.default
         let DocumentPath = NSHomeDirectory() + "/Documents"
         for day in 0..<daycounts{
-            if daycounts > 4{
+            if day > 4{
                 let DirectoryPath = DocumentPath + "/" + numberday(num: day)
                 if fileManager.fileExists(atPath: DirectoryPath) == false{
                     do{

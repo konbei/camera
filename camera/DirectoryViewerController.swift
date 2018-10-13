@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwiftyDropbox
 //リサイズ方法拡張
 extension UIImage {
     func reSizeImage(reSize:CGSize)->UIImage {
@@ -264,9 +264,159 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         // Do any additional setup after loading the view.
     }
     
+    //use DropBox
+    
+    let client = DropboxClientsManager.authorizedClient
+    
+    var holderName:[String] = []
+    var exsistFolderName:[String] = []
+    //var exsistDataName:[String] = []
+    
+ 
+    
 
+    @IBAction func signin(_ sender: Any) {
+        self.checkSignIn()
+        
+        var dattaName:[String] = []
+        
+        let _ = client?.files.listFolder(path: "").response { response, error in
+            if let error = error {
+                // エラーの場合、処理を終了します。
+                // 必要ならばエラー処理してください。
+                return
+            }
+            
+            guard let respone = response else{
+                return
+            }
+            
+            // エントリー数分繰り返します。
+            // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+            for entry in (response?.entries)!{
+                // 名前
+                let name = entry.name
+                dattaName.append(name)
+                //print(entry.name)
+            }
+            self.detectNewFolder(exsistFolder: dattaName)
+            
+            print(self.holderName)
+            for i in 0..<self.holderName.count{
+                self.makeFolder(path: "/" + self.holderName[i])
+            }
+        }
+        
+        
+    }
+    
 
+    
+    
+    @IBAction func upload(_ sender: Any) {
+        self.checkSignIn()
+        var dattaName:[String] = []
+    
+            //dattaName = self.exsistDirectoryData(path: "/" + self.selectedDirectoryName)
+        if selectedDirectoryName == "All"{
+            holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun"]
+            for j in 0..<holderName.count{
+                dattaName = []
+                let _ = client?.files.listFolder(path: "/" + holderName[j]).response { response, error in
+                    if let error = error {
+                        // エラーの場合、処理を終了します。
+                        // 必要ならばエラー処理してください。
+                        return
+                    }
+                    
+                    guard let respone = response else{
+                        return
+                    }
+                    
+                    // エントリー数分繰り返します。
+                    // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+                    for entry in (response?.entries)!{
+                        // 名前
+                        let name = entry.name
+                        dattaName.append(name)
+                        //print(entry.name)
+                    }
+                    
+                    
+                    
+                    var detta:[(name:String,date:String,modify:Date,image:UIImage?)] = []
+                    
+                    for i in 0..<self.file.count{
+                        if dattaName.contains(self.file[i].name) != true && self.file[i].date == self.holderName[j]{
+                            detta.append(self.file[i])
+                        }
+                    }
 
-
+                    for i in 0..<detta.count{
+                        let data:Data = detta[i].image!.pngData()!
+                        
+                        self.client?.files.upload(path: "/" + detta[i].date + "/" + detta[i].name, input: data).response { response, error in
+                            if let error = error {
+                                // エラーの場合、処理を終了します。
+                                // 必要ならばエラー処理してください。
+                                return
+                            }
+                            
+                            guard let response = response else {
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            let _ = client?.files.listFolder(path: "/" + self.selectedDirectoryName).response { response, error in
+                if let error = error {
+                    // エラーの場合、処理を終了します。
+                    // 必要ならばエラー処理してください。
+                    return
+                }
+                
+                guard let respone = response else{
+                    return
+                }
+                
+                // エントリー数分繰り返します。
+                // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+                for entry in (response?.entries)!{
+                    // 名前
+                    let name = entry.name
+                    dattaName.append(name)
+                    //print(entry.name)
+                }
+                
+                
+                
+                var detta:[(name:String,date:String,modify:Date,image:UIImage?)] = []
+                
+                for i in 0..<self.file.count{
+                    if dattaName.contains(self.file[i].name) != true{
+                        detta.append(self.file[i])
+                    }
+                }
+                
+                for i in 0..<detta.count{
+                    let data:Data = detta[i].image!.pngData()!
+                    
+                    self.client?.files.upload(path: "/" + detta[i].date + "/" + detta[i].name, input: data).response { response, error in
+                        if let error = error {
+                            // エラーの場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            return
+                        }
+                        
+                        guard let response = response else {
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
