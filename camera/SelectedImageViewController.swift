@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwiftyDropbox
 
 class SelectedImageViewController: UIViewController {
     
@@ -34,6 +34,7 @@ class SelectedImageViewController: UIViewController {
     //選択した写真と写真のパス得る
     var selectedImage:UIImage!
     var selectedImagePath:String!
+    var selectedImageDropboxPath:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +79,22 @@ class SelectedImageViewController: UIViewController {
                     //エラー処理
                     print("error")
                 }
+            
+            guard let client = DropboxClientsManager.authorizedClient else {
+                return
+            }
+            
+            client.files.deleteV2(path: self.selectedImageDropboxPath!).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                if let error = error {
+                    // エラーの場合、処理を終了します。
+                    // 必要ならばエラー処理してください。
+                    print("dropboxには無いよ〜")
+                    return
+                }
+                
+                // 正常終了の場合の処理を記述してください。
+            }
+            
             if self.movedPreview == true{
                 self.performSegue(withIdentifier: "comeCamera", sender: self)
             }else{

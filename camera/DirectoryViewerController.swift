@@ -122,8 +122,6 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 }catch{
                                 }
                                 
-                                let now:Date
-                                
                                 file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileCreationDate())!, image: nil))
                             }
                         }
@@ -224,15 +222,18 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
     var selectImage:UIImage!
     var selectImagePath:String!
+    var selectImageDropboxPath:String?
     //var selectFile:(date:String,name:String)
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if selectedDirectoryName == "All"{
             selectImagePath = DocumentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
+            selectImageDropboxPath = "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
         
         }else{
             //選択した写真のパス
             selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+            selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
         }
         
         // [indexPath.row] から画像名を探し、UImage を設定
@@ -248,7 +249,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         if(segue.identifier == "selectedImage"){
             (segue.destination as! SelectedImageViewController).selectedImage = selectImage
             (segue.destination as! SelectedImageViewController).selectedImagePath = selectImagePath
+            (segue.destination as! SelectedImageViewController).selectedImageDropboxPath = selectImageDropboxPath
             (segue.destination as! SelectedImageViewController).movedPreview = false
+            
         }
     }
     
