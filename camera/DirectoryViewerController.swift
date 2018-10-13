@@ -57,6 +57,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     private var fileNames:[String] = []
     private var fileImages:[UIImage] = []
     private let DocumentPath = NSHomeDirectory() + "/Documents"
+    let fileManager = FileManager.default
     
     private var daycounts = 7
     private var classcounts = 6
@@ -82,7 +83,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         
     }
     
-    let fileManager = FileManager.default
+    
     
     //タップされた授業の写真を取ってくる
     func loadImage(){
@@ -104,7 +105,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
                             }catch{
                             }
-                            file.append((name: fileNames[i], date: numberday(num:day), modify: (item?.fileModificationDate())!, image: nil))
+                            file.append((name: fileNames[i], date: numberday(num:day), modify: (item?.fileCreationDate())!, image: nil))
                         }
                     }
                 }catch{
@@ -120,7 +121,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                     item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
                                 }catch{
                                 }
-                                file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileModificationDate())!, image: nil))
+                                
+                                let now:Date
+                                
+                                file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileCreationDate())!, image: nil))
                             }
                         }
                     }catch{
@@ -136,7 +140,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         item = try fileManager.attributesOfItem(atPath: holderDirectory + "/" + fileNames[i]) as NSDictionary?
                     }catch{
                     }
-                    file.append((name: fileNames[i], date: self.selectedDirectoryName, modify: (item?.fileModificationDate())!, image: nil))
+                    file.append((name: fileNames[i], date: self.selectedDirectoryName, modify: (item?.fileCreationDate())!, image: nil))
                 }
             }catch{
                 fileNames = []
@@ -249,7 +253,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        file = []
+        
         loadImage()
         thumbmnailImages = []
         cv.reloadData()
@@ -418,5 +422,132 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             }
         }
     }
+    
+    @IBAction func download(_ sender: Any) {
+        var dattaName:[String] = []
+        let fileManager = FileManager.default
+        
+        if selectedDirectoryName == "All"{
+            holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun"]
+            for j in 0..<holderName.count{
+                dattaName = []
+                let _ = client?.files.listFolder(path: "/" + holderName[j]).response { response, error in
+                    if let error = error {
+                        // エラーの場合、処理を終了します。
+                        // 必要ならばエラー処理してください。
+                        return
+                    }
+                    
+                    guard let respone = response else{
+                        return
+                    }
+                    
+                    let localFolderDirectory = self.DocumentPath + "/" + self.holderName[j]
+                    
+                    // エントリー数分繰り返します。
+                    // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+                    for entry in (response?.entries)!{
+                        // 名前
+                        let name = entry.name
+                        
+                        if fileManager.fileExists(atPath: localFolderDirectory + "/" + name) != true{
+                            dattaName.append(name)
+                        }
+                    }
+                    print(dattaName)
+                    
+                    for i in 0..<dattaName.count{
+                        let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
+                            let path = "file://" + localFolderDirectory + "/" + dattaName[i]
+                            let directoryURL = NSURL(string: path)! as URL
+                            
+                            return directoryURL
+                        }
+                        
+                        self.client?.files.download(path: "/" + self.holderName[j] + "/" + dattaName[i], destination: destination).response { response, error in
+                            if let error = error {
+                                // エラーの場合、処理を終了します。
+                                // 必要ならばエラー処理してください。
+                                return
+                            }
+                            
+                            guard let response = response else {
+                                // レスポンスがない場合、処理を終了します。
+                                // 必要ならばエラー処理してください。
+                                return
+                            }
+                            self.loadImage()
+                            self.thumbmnailImages = []
+                            self.cv.reloadData()
+                        }
+                    }
+
+                    
+                    
+                }
+            }
+        }else{
+            
+            let _ = client?.files.listFolder(path: "/" + self.selectedDirectoryName).response { response, error in
+                if let error = error {
+                    // エラーの場合、処理を終了します。
+                    // 必要ならばエラー処理してください。
+                    return
+                }
+                
+                guard let respone = response else{
+                    return
+                }
+                
+                let localFolderDirectory = self.DocumentPath + "/" + self.selectedDirectoryName
+                
+                // エントリー数分繰り返します。
+                // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+                for entry in (response?.entries)!{
+                    // 名前
+                    let name = entry.name
+                    
+                    if fileManager.fileExists(atPath: localFolderDirectory + "/" + name) != true{
+                        dattaName.append(name)
+                    }
+                }
+                print(dattaName)
+                
+                for i in 0..<dattaName.count{
+                    let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
+                        let path = "file://" + localFolderDirectory + "/" + dattaName[i]
+                        let directoryURL = NSURL(string: path)! as URL
+                        
+                        return directoryURL
+                    }
+                    
+                    self.client?.files.download(path: "/" + self.selectedDirectoryName + "/" + dattaName[i], destination: destination).response { response, error in
+                        if let error = error {
+                            // エラーの場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            return
+                        }
+                        
+                        guard let response = response else {
+                            // レスポンスがない場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            return
+                        }
+                    }
+                    
+                    self.loadImage()
+                    self.thumbmnailImages = []
+                    self.cv.reloadData()
+                }
+                
+                
+                
+            }
+        }
+        
+        
+    }
+    
+    
 }
 

@@ -170,15 +170,24 @@
                                     <action selector="upload:" destination="liW-DM-doI" eventType="touchUpInside" id="ACi-xq-BkV"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W04-EW-Uuf">
+                                <rect key="frame" x="24" y="635" width="69" height="30"/>
+                                <state key="normal" title="Download"/>
+                                <connections>
+                                    <action selector="download:" destination="liW-DM-doI" eventType="touchUpInside" id="ec1-Eq-zV5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dRn-hm-Jv0" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" constant="313" id="COt-KR-5bl"/>
                             <constraint firstItem="VPK-Uj-mvV" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" id="G3E-MF-r4L"/>
                             <constraint firstItem="dRn-hm-Jv0" firstAttribute="top" secondItem="VPK-Uj-mvV" secondAttribute="bottom" constant="8" id="Ofz-lB-JWL"/>
+                            <constraint firstItem="W04-EW-Uuf" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" constant="24" id="U2d-3n-dWX"/>
                             <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="dRn-hm-Jv0" secondAttribute="bottom" constant="2" id="XbZ-xI-eRt"/>
                             <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="ttq-zi-nPN" secondAttribute="bottom" constant="2" id="ZLe-U2-yRR"/>
                             <constraint firstItem="ttq-zi-nPN" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" constant="163" id="koT-Fz-zm3"/>
+                            <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="W04-EW-Uuf" secondAttribute="bottom" constant="2" id="lcd-06-tuf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ay9-c7-yKO"/>
                     </view>
