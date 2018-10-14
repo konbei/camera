@@ -270,7 +270,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        AfterSyncLocalDetta = fetchLocalData()
+
         loadImage()
         thumbmnailImages = []
         cv.reloadData()
@@ -586,7 +586,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
     }
     
-   private var AfterSyncLocalDetta:[AfterSyncLocalData]?
+   
     
     
     
