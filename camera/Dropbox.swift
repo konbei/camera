@@ -8,33 +8,7 @@
 
 import UIKit
 import SwiftyDropbox
-
 extension DirectoryViewerController{
-    
-    func exsistDirectoryData(path:String)->[String]{
-        var exsistDataName:[String] = []
-        let _ = client?.files.listFolder(path: path).response { response, error in
-            if let error = error {
-                // エラーの場合、処理を終了します。
-                // 必要ならばエラー処理してください。
-                return
-            }
-            
-            guard let respone = response else{
-                return
-            }
-            
-            // エントリー数分繰り返します。
-            // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
-            for entry in (response?.entries)!{
-                // 名前
-                let name = entry.name
-                exsistDataName.append(name)
-                //print(entry.name)
-            }
-        }
-        return exsistDataName
-    }
     
     func makeFolder(path:String){
         self.client?.files.createFolderV2(path: path).response { response, error in

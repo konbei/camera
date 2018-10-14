@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyDropbox
+
 //リサイズ方法拡張
 extension UIImage {
     func reSizeImage(reSize:CGSize)->UIImage {
@@ -83,7 +84,11 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         
     }
     
-    
+    func stringInt(int:String)->Int{
+        let splitNumbers = (int.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
+        let number = splitNumbers.joined()
+        return Int(number)!
+    }
     
     //タップされた授業の写真を取ってくる
     func loadImage(){
@@ -145,7 +150,16 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             }
         }
         
-        //バブルソート・・・
+        for i in 0..<file.count{
+            for j in (i+1..<file.count).reversed(){
+                if stringInt(int: file[j-1].name) < stringInt(int: file[j].name){
+                    let temp = file[j]
+                    file[j] = file[j-1]
+                    file[j-1] = temp
+                }
+            }
+        }
+        /*/バブルソート・・・
         for i in 0..<file.count{
             for j in (i+1..<file.count).reversed(){
                 if file[j-1].modify < file[j].modify{
@@ -154,7 +168,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     file[j-1] = temp
                 }
             }
-        }
+        }*/
 
         //ファイルパスからファイルデータ(写真イメージ)を取ってくる
         if selectedDirectoryName == "All"{
@@ -256,7 +270,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        AfterSyncLocalDetta = fetchLocalData()
         loadImage()
         thumbmnailImages = []
         cv.reloadData()
@@ -277,6 +291,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         // Do any additional setup after loading the view.
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+        
+        
         
     }
     
@@ -568,6 +584,153 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
      @objc private func doneButtonTapped(){
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+    }
+    
+   private var AfterSyncLocalDetta:[AfterSyncLocalData]?
+    
+    
+    
+    @IBAction func syncDropbox(){
+        let defaults = UserDefaults.standard
+        
+        var dropboxFileName:[String] = []
+        
+        
+        if selectedDirectoryName == "All"{
+            self.holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun"]
+        }else{
+            self.holderName = [selectedDirectoryName]
+        }
+        for j in 0..<holderName.count{
+            
+            var directoryLocalData:[String] = defaults.stringArray(forKey: self.holderName[j]) ?? []
+            print(holderName[j])
+            
+            //dropboxのファイル一覧取得
+            let _ = client?.files.listFolder(path: "/" + self.holderName[j]).response { response, error in
+                if let error = error {
+                    // エラーの場合、処理を終了します。
+                    // 必要ならばエラー処理してください。
+                    return
+                }
+                
+                guard let respone = response else{
+                    return
+                }
+                
+                let localFolderDirectory = self.DocumentPath + "/" + self.holderName[j]
+                
+                // エントリー数分繰り返します。
+                // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+                for entry in (response?.entries)!{
+                    // 名前
+                    let name = entry.name
+                    dropboxFileName.append(name)
+                    print(name)
+                    
+                }
+                
+                
+                
+                //ドロップボックスから削除されたデータをローカルデータも削除
+                if directoryLocalData.isEmpty != true {
+                    for i in 0..<directoryLocalData.count{
+                        if dropboxFileName.contains(directoryLocalData[i]) != true{
+                            do {
+                                try FileManager.default.removeItem( atPath: localFolderDirectory + "/" + directoryLocalData[i])
+                                
+                                self.loadImage()
+                                self.cv.reloadData()
+                                
+                            } catch {
+                                //エラー処理
+                                print("error")
+                            }
+                        }
+                    }
+                }
+                
+                directoryLocalData = []
+                
+                //アップロードされていないデータ一覧取得&&現在ファイルの名前入れる
+                var uploadData:[(name:String,date:String,modify:Date,image:UIImage?)] = []
+                
+                for i in 0..<self.file.count{
+                    if dropboxFileName.contains(self.file[i].name) != true{
+                        uploadData.append(self.file[i])
+                    }
+                    directoryLocalData.append(self.file[i].name)
+                }
+                
+                //ローカルファイル名保存
+                self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
+                
+                //upload
+                for i in 0..<uploadData.count{
+                    let data:Data = uploadData[i].image!.pngData()!
+                    
+                    self.client?.files.upload(path: "/" + uploadData[i].date + "/" + uploadData[i].name, input: data).response { response, error in
+                        if let error = error {
+                            // エラーの場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            return
+                        }
+                        
+                        guard let response = response else {
+                            return
+                        }
+                    }
+                }
+                
+                //ローカルファイルになく、ドロップボックスにあるファイル一覧をの名前を取得
+                
+                var downloadFileName:[String] = []
+                
+                for i in 0..<dropboxFileName.count{
+                    if self.fileManager.fileExists(atPath: localFolderDirectory + "/" + dropboxFileName[i]) != true{
+                        downloadFileName.append(dropboxFileName[i])
+                    }
+                }
+                
+                //ダウンロード
+                
+                for i in 0..<downloadFileName.count{
+                    let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
+                        let path = "file://" + localFolderDirectory + "/" + downloadFileName[i]
+                        let directoryURL = NSURL(string: path)! as URL
+                        
+                        return directoryURL
+                    }
+                    
+                    self.client?.files.download(path: "/" + self.holderName[j] + "/" + downloadFileName[i], destination: destination).response { response, error in
+                        if let error = error {
+                            // エラーの場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            return
+                        }
+                        
+                        guard let response = response else {
+                            // レスポンスがない場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            return
+                        }
+                        
+                        directoryLocalData.append(downloadFileName[i])
+                        self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
+                        
+                        self.loadImage()
+                        self.thumbmnailImages = []
+                        self.cv.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
+    func userDefaultSave(data:[String],path:String){
+        let defaults = UserDefaults.standard
+        defaults.set(data, forKey: path)
+        defaults.synchronize()
     }
     
 }

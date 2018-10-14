@@ -177,6 +177,13 @@
                                     <action selector="download:" destination="liW-DM-doI" eventType="touchUpInside" id="ec1-Eq-zV5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YUm-vF-uta">
+                                <rect key="frame" x="242" y="635" width="34" height="30"/>
+                                <state key="normal" title="Sync"/>
+                                <connections>
+                                    <action selector="syncDropbox" destination="liW-DM-doI" eventType="touchUpInside" id="ClA-t1-eOf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -186,8 +193,10 @@
                             <constraint firstItem="W04-EW-Uuf" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" constant="24" id="U2d-3n-dWX"/>
                             <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="dRn-hm-Jv0" secondAttribute="bottom" constant="2" id="XbZ-xI-eRt"/>
                             <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="ttq-zi-nPN" secondAttribute="bottom" constant="2" id="ZLe-U2-yRR"/>
+                            <constraint firstItem="YUm-vF-uta" firstAttribute="leading" secondItem="ttq-zi-nPN" secondAttribute="trailing" constant="30" id="b7g-aX-ovR"/>
                             <constraint firstItem="ttq-zi-nPN" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" constant="163" id="koT-Fz-zm3"/>
                             <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="W04-EW-Uuf" secondAttribute="bottom" constant="2" id="lcd-06-tuf"/>
+                            <constraint firstItem="Ay9-c7-yKO" firstAttribute="bottom" secondItem="YUm-vF-uta" secondAttribute="bottom" constant="2" id="oiW-GR-V8h"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ay9-c7-yKO"/>
                     </view>

@@ -86,7 +86,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         
         let nameDay = self.numberday(num: indexPath.section)
         let period = String(indexPath.row + 1)
-        let matchedClass = self.classes?.first { $0.nameday == nameDay && $0.nameclass == period }
+        let matchedClass = self.classes?.last { $0.nameday == nameDay && $0.nameclass == period }
         cell.ClassNameText!.text = matchedClass?.classname ?? ""      //名前セット
         
         cell.delegate = self
@@ -144,6 +144,8 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         removeDuplicatedClass(newClass)
         self.classes?.append(newClass)
     }
+    
+    
     
     private func removeDuplicatedClass(_ target: SettingsData2) {
         // 同じ曜日、時限の授業を取り除く

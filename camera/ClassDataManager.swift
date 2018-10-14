@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-
 class ClassDataManager {
     public func fetchAllClasses() -> [SettingsData2] {
         // CoreDataから全授業を取ってくる
