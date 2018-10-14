@@ -263,12 +263,21 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     
+    
+
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         cv.delegate = self
         cv.dataSource = self
+        
         // Do any additional setup after loading the view.
+        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
+        self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+        
     }
     
     //use DropBox
@@ -551,6 +560,15 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         
     }
     
+    @objc private func editButtonTapped(){
+        let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneButtonTapped))
+        self.navigationItem.setRightBarButton(doneBarButtonItem, animated: true)
+    }
+    
+     @objc private func doneButtonTapped(){
+        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
+        self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+    }
     
 }
 
