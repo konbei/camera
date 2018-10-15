@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyDropbox
+import MBProgressHUD
 
 //リサイズ方法拡張
 extension UIImage {
@@ -587,10 +588,15 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
    
-    
+    var hud = MBProgressHUD()
     
     
     @IBAction func syncDropbox(){
+        
+        
+        hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = "同期中"
+        
         let defaults = UserDefaults.standard
         
         var dropboxFileName:[String] = []
@@ -601,10 +607,13 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }else{
             self.holderName = [selectedDirectoryName]
         }
+        
+        var directoryCount = 0
+        
         for j in 0..<holderName.count{
-            
+            hud.show(animated: false)
             var directoryLocalData:[String] = defaults.stringArray(forKey: self.holderName[j]) ?? []
-            print(holderName[j])
+
             
             //dropboxのファイル一覧取得
             let _ = client?.files.listFolder(path: "/" + self.holderName[j]).response { response, error in
@@ -622,6 +631,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 
                 // エントリー数分繰り返します。
                 // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+                
+                dropboxFileName = []
+                
                 for entry in (response?.entries)!{
                     // 名前
                     let name = entry.name
@@ -665,11 +677,39 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     directoryLocalData.append(directoryFile[i].name)
                 }
                 
+                //ローカルファイルになく、ドロップボックスにあるファイル一覧をの名前を取得
                 
+                var downloadFileName:[String]? = []
+                
+                for i in 0..<dropboxFileName.count{
+                    if self.fileManager.fileExists(atPath: localFolderDirectory + "/" + dropboxFileName[i]) != true{
+                        downloadFileName?.append(dropboxFileName[i])
+                    }
+                }
+
                 
                 //ローカルファイル名保存
                 self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
                 
+                var downloadcount = 0
+                var uploadcount = 0
+                
+                
+                
+                
+                if downloadFileName?.count == 0 && uploadData?.count == 0{
+                    directoryCount = directoryCount + 1
+                    
+                    if directoryCount == self.holderName.count{
+                        self.hud.hide(animated: false)
+                    }
+                }
+                
+                print("\(directoryCount)/\(self.holderName.count)")
+                print(self.holderName[j])
+                print(uploadData?.count)
+                
+                //アップロード
                 if uploadData != nil{
                     //upload
                     for i in 0..<uploadData!.count{
@@ -685,20 +725,20 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                             guard let response = response else {
                                 return
                             }
+                            uploadcount = uploadcount + 1
+                            if downloadcount == downloadFileName?.count && uploadcount == uploadData?.count{
+                                print("\(directoryCount)/\(self.holderName.count)")
+                                directoryCount = directoryCount + 1
+                                if directoryCount == self.holderName.count{
+                                    self.hud.hide(animated: false)
+                                }
+                            }
+                            
                         }
                     }
                 }
                 
                 
-                //ローカルファイルになく、ドロップボックスにあるファイル一覧をの名前を取得
-                
-                var downloadFileName:[String]? = []
-                
-                for i in 0..<dropboxFileName.count{
-                    if self.fileManager.fileExists(atPath: localFolderDirectory + "/" + dropboxFileName[i]) != true{
-                        downloadFileName?.append(dropboxFileName[i])
-                    }
-                }
                 
                 //ダウンロード
                 if downloadFileName != []{
@@ -723,6 +763,14 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 return
                             }
                             
+                            downloadcount = downloadcount + 1
+                            if downloadcount == downloadFileName?.count && uploadcount == uploadData?.count{
+                                directoryCount = directoryCount + 1
+                                if directoryCount == self.holderName.count{
+                                    self.hud.hide(animated: false)
+                                }
+                            }
+                            
                             directoryLocalData.append((downloadFileName?[i])!)
                             self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
                             
@@ -732,9 +780,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         }
                     }
                 }
-                
             }
         }
+        
+        
     }
     
     func userDefaultSave(data:[String],path:String){

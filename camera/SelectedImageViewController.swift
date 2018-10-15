@@ -9,7 +9,10 @@
 import UIKit
 import SwiftyDropbox
 
+
 class SelectedImageViewController: UIViewController {
+    
+    
     
     //ImageViewをタップした時barの表示/非表示変更
     @IBAction func tapImageView(_ sender: UITapGestureRecognizer) {
