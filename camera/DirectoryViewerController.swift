@@ -626,8 +626,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     // 名前
                     let name = entry.name
                     dropboxFileName.append(name)
-                    print(name)
-                    
+
                 }
                 
                 
@@ -653,76 +652,87 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 directoryLocalData = []
                 
                 //アップロードされていないデータ一覧取得&&現在ファイルの名前入れる
-                var uploadData:[(name:String,date:String,modify:Date,image:UIImage?)] = []
+                var uploadData:[(name:String,date:String,modify:Date,image:UIImage?)]? = []
                 
-                for i in 0..<self.file.count{
-                    if dropboxFileName.contains(self.file[i].name) != true{
-                        uploadData.append(self.file[i])
+                //ローカルディレクトリのデータ抽出
+                let directoryFile = self.file.filter {$0.date == self.holderName[j]}
+                
+                for i in 0..<directoryFile.count{
+                    if dropboxFileName.contains(directoryFile[i].name) != true{
+                        uploadData?.append(directoryFile[i])
+                        
                     }
-                    directoryLocalData.append(self.file[i].name)
+                    directoryLocalData.append(directoryFile[i].name)
                 }
+                
+                
                 
                 //ローカルファイル名保存
                 self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
                 
-                //upload
-                for i in 0..<uploadData.count{
-                    let data:Data = uploadData[i].image!.pngData()!
-                    
-                    self.client?.files.upload(path: "/" + uploadData[i].date + "/" + uploadData[i].name, input: data).response { response, error in
-                        if let error = error {
-                            // エラーの場合、処理を終了します。
-                            // 必要ならばエラー処理してください。
-                            return
-                        }
+                if uploadData != nil{
+                    //upload
+                    for i in 0..<uploadData!.count{
+                        let data:Data = (uploadData?[i].image!.pngData()!)!
                         
-                        guard let response = response else {
-                            return
+                        self.client?.files.upload(path: "/" + (uploadData?[i].date)! + "/" + (uploadData?[i].name)!, input: data).response { response, error in
+                            if let error = error {
+                                // エラーの場合、処理を終了します。
+                                // 必要ならばエラー処理してください。
+                                return
+                            }
+                            
+                            guard let response = response else {
+                                return
+                            }
                         }
                     }
                 }
                 
+                
                 //ローカルファイルになく、ドロップボックスにあるファイル一覧をの名前を取得
                 
-                var downloadFileName:[String] = []
+                var downloadFileName:[String]? = []
                 
                 for i in 0..<dropboxFileName.count{
                     if self.fileManager.fileExists(atPath: localFolderDirectory + "/" + dropboxFileName[i]) != true{
-                        downloadFileName.append(dropboxFileName[i])
+                        downloadFileName?.append(dropboxFileName[i])
                     }
                 }
                 
                 //ダウンロード
-                
-                for i in 0..<downloadFileName.count{
-                    let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
-                        let path = "file://" + localFolderDirectory + "/" + downloadFileName[i]
-                        let directoryURL = NSURL(string: path)! as URL
-                        
-                        return directoryURL
-                    }
-                    
-                    self.client?.files.download(path: "/" + self.holderName[j] + "/" + downloadFileName[i], destination: destination).response { response, error in
-                        if let error = error {
-                            // エラーの場合、処理を終了します。
-                            // 必要ならばエラー処理してください。
-                            return
+                if downloadFileName != []{
+                    for i in 0..<downloadFileName!.count{
+                        let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
+                            let path = "file://" + localFolderDirectory + "/" + (downloadFileName?[i])!
+                            let directoryURL = NSURL(string: path)! as URL
+                            
+                            return directoryURL
                         }
                         
-                        guard let response = response else {
-                            // レスポンスがない場合、処理を終了します。
-                            // 必要ならばエラー処理してください。
-                            return
+                        self.client?.files.download(path: "/" + self.holderName[j] + "/" + (downloadFileName?[i])!, destination: destination).response { response, error in
+                            if let error = error {
+                                // エラーの場合、処理を終了します。
+                                // 必要ならばエラー処理してください。
+                                return
+                            }
+                            
+                            guard let response = response else {
+                                // レスポンスがない場合、処理を終了します。
+                                // 必要ならばエラー処理してください。
+                                return
+                            }
+                            
+                            directoryLocalData.append((downloadFileName?[i])!)
+                            self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
+                            
+                            self.loadImage()
+                            self.thumbmnailImages = []
+                            self.cv.reloadData()
                         }
-                        
-                        directoryLocalData.append(downloadFileName[i])
-                        self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
-                        
-                        self.loadImage()
-                        self.thumbmnailImages = []
-                        self.cv.reloadData()
                     }
                 }
+                
             }
         }
     }

@@ -95,7 +95,7 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         
         //年日付時間曜日(ファイルの名前用)の出力
         let defaultFormat = DateFormatter()
-        defaultFormat.dateFormat = "y_M_d_k_H:m:s"
+        defaultFormat.dateFormat = "y_MM_dd_HH:mm:ss"
         let defaultDayTime = defaultFormat.string(from: now)
         
         //時間の出力
