@@ -72,7 +72,7 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         let period = String(indexPath.section + 1)
         
         // 特定の曜日、時限に当てはまる授業を探し出す
-        let matchedClass = self.classes?.last { $0.nameday == nameDay && $0.nameclass == period }
+        let matchedClass = self.classes?.first { $0.nameday == nameDay && $0.nameclass == period }
         label.text = matchedClass?.classname ?? ""
         
         return cell
