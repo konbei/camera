@@ -33,7 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // アプリキーを登録します。
         // アプリキーは事前準備で入手してください。
         DropboxClientsManager.setupWithAppKey("o95fn67p67nb8xr")
-     
+        let defaults = UserDefaults.standard
+        let boolArry = [Bool](repeating: false,count: 37)
+        
+        
+        defaults.set(boolArry, forKey: "selectedDirectorySync")
+        defaults.synchronize()
     
             // Override point for customization after application launch.
             return true
@@ -60,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 //saveContext()
+       
     }
 
    
