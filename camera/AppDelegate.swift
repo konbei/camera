@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import SwiftyDropbox
+import MBProgressHUD
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,16 +21,172 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
             switch authResult {
             case .success:
+                let defaults = UserDefaults.standard
+                defaults.set(true, forKey: "dropboxLogin")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.LoginResultHUD(bool: true)
+                    self.makeDropboxFolder()
+                }
                 print("Success! User is logged into Dropbox.")
             case .cancel:
+                LoginResultHUD(bool: false)
                 print("Authorization flow was manually canceled by user!")
             case .error(_, let description):
+                LoginResultHUD(bool: false)
                 print("Error: \(description)")
             }
         }
         return true
     }
 
+    var hud = MBProgressHUD()
+    let client = DropboxClientsManager.authorizedClient
+    var storyboard:UIStoryboard =  UIStoryboard(name: "Main",bundle:nil)
+    
+    func LoginResultHUD(bool:Bool){
+        self.hud = MBProgressHUD.showAdded(to: (self.getTopViewController()?.view)!, animated: true)
+        if bool{
+            self.hud.label.text = "ログイン成功"
+            self.hud.detailsLabel.numberOfLines = 2
+            self.hud.detailsLabel.text = "引き続きフォルダを設定しています\nお待ち下さい"
+            
+        }else{
+             self.hud.mode = .customView
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "ログイン失敗"
+            self.hud.detailsLabel.text = "ログインし直してください"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }
+    }
+    
+    func makeFolderResultHUD(bool:Bool){
+        self.hud.hide(animated: false)
+
+       
+        hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+        self.hud.mode = .customView
+        if bool{
+            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
+            self.hud.label.text = "フォルダ作成成功"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }else{
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "フォルダ作成失敗"
+            self.hud.detailsLabel.text = "フォルダ作成し直してください"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }
+        
+    }
+    
+    var finishCount = 0
+    var failed:Bool = false
+    func makeFolder(path:String,i:Int,count:Int){
+        let client = DropboxClientsManager.authorizedClient
+        client?.files.createFolderV2(path: path).response { response, error in
+            if let error = error {
+                self.failed = true
+                self.finishCount = self.finishCount + 1
+                if self.finishCount == count{
+                    self.makeFolderResultHUD(bool: false)
+                }
+                return
+            }
+            
+            guard let respone = response else{
+                self.failed = true
+                self.finishCount = self.finishCount + 1
+                if self.finishCount == count{
+                    self.makeFolderResultHUD(bool: false)
+                }
+                return
+            }
+            
+            self.finishCount = self.finishCount + 1
+            
+            if self.finishCount == count && !self.failed{
+                self.makeFolderResultHUD(bool: true)
+            }else if self.finishCount == count{
+                self.makeFolderResultHUD(bool: false)
+            }
+            
+            
+        }
+    }
+    
+    func detectNewFolder(exsistFolder:[String])->[String]{
+       var holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun","uploads","backup"]
+        for i in 0..<exsistFolder.count{
+            holderName.remove(at: holderName.index(of: exsistFolder[i])!)
+        }
+        return holderName
+    }
+    
+    func makeDropboxFolder(){
+        var dattaName:[String] = []
+        let client = DropboxClientsManager.authorizedClient
+        
+        let _ = client?.files.listFolder(path: "").response { response, error in
+            if let error = error {
+                self.makeFolderResultHUD(bool: false)
+                // エラーの場合、処理を終了します。
+                // 必要ならばエラー処理してください。
+                return
+            }
+            
+            
+            guard let respone = response else{
+                self.makeFolderResultHUD(bool: false)
+                return
+            }
+            
+            // エントリー数分繰り返します。
+            // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
+            for entry in (response?.entries)!{
+                // 名前
+                let name = entry.name
+                dattaName.append(name)
+                //print(entry.name)
+            }
+            let holderName = self.detectNewFolder(exsistFolder: dattaName)
+           self.finishCount = 0
+            self.failed = false
+            if holderName.count != 0{
+                for i in 0..<holderName.count{
+                    self.makeFolder(path: "/" + holderName[i],i:i,count:holderName.count)
+                    
+                }
+            }else{
+                self.makeFolderResultHUD(bool: true)
+            }
+            
+        }
+        
+    }
+    
+    
+    func getTopViewController() -> UIViewController? {
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            var topViewControlelr: UIViewController = rootViewController
+            
+            while let presentedViewController = topViewControlelr.presentedViewController {
+                topViewControlelr = presentedViewController
+            }
+            
+            return topViewControlelr
+        } else {
+            return nil
+        }
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // アプリキーを登録します。
         // アプリキーは事前準備で入手してください。

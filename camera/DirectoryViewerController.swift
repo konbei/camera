@@ -278,9 +278,115 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     
-    
 
+    @IBOutlet weak var underBar: UINavigationBar!
     
+    @IBOutlet weak var dropboxItem: UINavigationItem!
+    @objc func dropboxTapped(){
+        let alert = UIAlertController(title:"Dropboxアクション", message: "メッセージ", preferredStyle: UIAlertController.Style.alert)
+        
+        var title:String = ""
+        let defaults = UserDefaults.standard
+        if !defaults.bool(forKey: "dropboxLogin"){
+            title = "ログイン"
+        }else{
+            title = "ログアウト"
+        }
+        
+        let action1 = UIAlertAction(title: title, style: UIAlertAction.Style.default, handler: {
+            (action: UIAlertAction!) in
+            if title == "ログイン"{
+                self.checkSignIn()
+            }else{
+                self.signOut()
+            }
+        })
+        
+        let action2 = UIAlertAction(title: "フォルダ作成", style: UIAlertAction.Style.default, handler: {
+            (action: UIAlertAction!) in
+            self.makeDropboxFolder()
+            print("アクション２をタップした時の処理")
+        })
+        
+        let action3 = UIAlertAction(title: "バックアップ", style: UIAlertAction.Style.default, handler: {
+            (action: UIAlertAction!) in
+            self.upload(type: "backup", detta: self.file)
+            print("アクション３をタップした時の処理")
+        })
+        
+        let cancel = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler: {
+            (action: UIAlertAction!) in
+            print("キャンセルをタップした時の処理")
+        })
+        
+        alert.addAction(action1)
+        alert.addAction(action2)
+        alert.addAction(action3)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+
+
+    @IBAction func trash(_ sender: Any) {
+        let alert: UIAlertController = UIAlertController(title: "写真削除", message: selectedDirectoryName + "の写真を全て削除してもいいですか？", preferredStyle:  UIAlertController.Style.alert)
+        
+        
+        // 削除ボタン
+        let defaultAction: UIAlertAction = UIAlertAction(title: "削除", style: UIAlertAction.Style.default, handler:{
+            // ファイル削除
+            (action: UIAlertAction!) -> Void in
+            for i in 0..<self.file.count{
+                do {
+                    try FileManager.default.removeItem( atPath: self.DocumentPath + "/" + self.file[i].date + "/" + self.file[i].name )
+                } catch {
+                    //エラー処理
+                    print("error")
+                }
+                
+                guard let client = DropboxClientsManager.authorizedClient else {
+                    return
+                }
+                
+                client.files.deleteV2(path: "/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                    if let error = error {
+                        // エラーの場合、処理を終了します。
+                        // 必要ならばエラー処理してください。
+                        print("dropboxには無いよ〜")
+                        return
+                    }
+                }
+            }
+            self.loadImage()
+            self.cv.reloadData()
+        })
+        
+        let cancelAction: UIAlertAction = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler:{
+            
+            (action: UIAlertAction!) -> Void in
+            
+        })
+        
+        //  UIAlertControllerにActionを追加
+        alert.addAction(cancelAction)
+        alert.addAction(defaultAction)
+        
+        present(alert, animated: true, completion: nil)
+        
+        
+    }
+    
+     @IBAction func shareAction(_ sender: Any) {
+        var image:[UIImage] = []
+        for i in 0..<self.file.count{
+            image.append(file[i].image!)
+        }
+        let activities = image as [Any]
+        let activityViewController = UIActivityViewController(activityItems: activities, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+       // activityViewController.popoverPresentationController?.sourceRect = CGRect(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
+        self.present(activityViewController,animated: true,completion: nil)
+    }
     
     
     override func viewDidLoad() {
@@ -292,6 +398,17 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         // Do any additional setup after loading the view.
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+        let dropboxImage = UIImage(named: "Dropbox")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+        
+        let dropboxButton = UIBarButtonItem(image: dropboxImage, landscapeImagePhone: dropboxImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.dropboxTapped))
+        dropboxItem.setLeftBarButton(dropboxButton, animated: false)
+        
+        let syncImage = UIImage(named: "sync")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+        let syncButton = UIBarButtonItem(image: syncImage, landscapeImagePhone: syncImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.syncDropbox))
+        
+        let barButtonItems = [dropboxButton,syncButton]
+        
+        dropboxItem.setLeftBarButtonItems(barButtonItems, animated: false)
     }
     
     //use DropBox
@@ -302,22 +419,93 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     var exsistFolderName:[String] = []
     //var exsistDataName:[String] = []
     
- 
+    func makeFolderResultHUD(bool:Bool){
+        self.hud.hide(animated: false)
+        hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+        self.hud.mode = .customView
+        if bool{
+            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
+            self.hud.label.text = "フォルダ作成成功"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }else{
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "フォルダ作成失敗"
+            self.hud.detailsLabel.text = "フォルダ作成し直してください"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }
+        
+    }
     
-
-    @IBAction func signin(_ sender: Any) {
-        self.checkSignIn()
+    
+    var failed:Bool = false
+    var finishCount = 0
+    
+    func makeFolder(path:String,count:Int){
         
+        let client = DropboxClientsManager.authorizedClient
+        client?.files.createFolderV2(path: path).response { response, error in
+            if let error = error {
+                self.failed = true
+                self.finishCount = self.finishCount + 1
+                if self.finishCount == count{
+                    self.makeFolderResultHUD(bool: false)
+                }
+                return
+            }
+            
+            guard let respone = response else{
+                self.failed = true
+                self.finishCount = self.finishCount + 1
+                if self.finishCount == count{
+                    self.makeFolderResultHUD(bool: false)
+                }
+                return
+            }
+            
+            self.finishCount = self.finishCount + 1
+           
+            if self.finishCount == count && !self.failed{
+                self.makeFolderResultHUD(bool: true)
+            }else if self.finishCount == count{
+                self.makeFolderResultHUD(bool: false)
+            }
+            
+            
+        }
+    }
+    
+    func detectNewFolder(exsistFolder:[String])->[String]{
+        var holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun","uploads","backup"]
+        for i in 0..<exsistFolder.count{
+            holderName.remove(at: holderName.index(of: exsistFolder[i])!)
+        }
+        return holderName
+    }
+    
+    
+    func makeDropboxFolder(){
         var dattaName:[String] = []
-        
+        let client = DropboxClientsManager.authorizedClient
+        hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+        self.hud.label.text = "フォルダ作成中"
+
         let _ = client?.files.listFolder(path: "").response { response, error in
             if let error = error {
+                self.makeFolderResultHUD(bool: false)
                 // エラーの場合、処理を終了します。
                 // 必要ならばエラー処理してください。
                 return
             }
             
+            
             guard let respone = response else{
+                self.makeFolderResultHUD(bool: false)
                 return
             }
             
@@ -329,250 +517,117 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 dattaName.append(name)
                 //print(entry.name)
             }
-            self.detectNewFolder(exsistFolder: dattaName)
-            
-            print(self.holderName)
-            for i in 0..<self.holderName.count{
-                self.makeFolder(path: "/" + self.holderName[i])
+            let holderName = self.detectNewFolder(exsistFolder: dattaName)
+            self.failed = false
+            self.finishCount = 0
+            if holderName.count != 0{
+                for i in 0..<holderName.count{
+                    self.makeFolder(path: "/" + holderName[i],count:holderName.count)
+                }
+            }else{
+                self.makeFolderResultHUD(bool: true)
             }
         }
         
+    }
+    
+    
+    func makeUploadsResultHUD(bool:Bool){
+        self.hud.hide(animated: false)
+        hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+        self.hud.mode = .customView
+        if bool{
+            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
+            self.hud.label.text = "アップロード成功"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }else{
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "アップロード失敗"
+            self.hud.detailsLabel.text = "アップロードし直してください"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }
         
     }
     
-
-    
-    
-    @IBAction func upload(_ sender: Any) {
-        self.checkSignIn()
-        var dattaName:[String] = []
-    
-            //dattaName = self.exsistDirectoryData(path: "/" + self.selectedDirectoryName)
-        if selectedDirectoryName == "All"{
-            holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun"]
-            for j in 0..<holderName.count{
-                dattaName = []
-                let _ = client?.files.listFolder(path: "/" + holderName[j]).response { response, error in
+    func upload(type:String,detta:[(name:String,date:String,modify:Date,image:UIImage?)]) {
+        
+        if detta.count == 0{
+            hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+            self.hud.mode = .customView
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "アップロードする写真がありません"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+            return
+        }
+        
+        self.hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+        self.hud.label.text = "アップロード中"
+        hud.detailsLabel.text = "戻るとバックグラウンドで実行されます"
+        hud.button.addTarget(self, action: #selector(syncBackGround), for: .touchUpInside)
+        hud.button.setTitle("バックグラウンド", for: UIControl.State.normal)
+        
+        let client = DropboxClientsManager.authorizedClient
+        let f = DateFormatter()
+        f.dateFormat = "yyyy_MM_dd_HH:mm"
+        f.locale = Locale(identifier: "ja_JP")
+        let now = Date()
+        let path = "/" + type + "/" + self.selectedDirectoryName + "-" + f.string(from: now)
+        failed = false
+        client?.files.createFolderV2(path: path).response { response, error in
+            if let error = error {
+                self.makeUploadsResultHUD(bool: false)
+                return
+            }
+            
+            guard let respone = response else{
+                self.makeUploadsResultHUD(bool: false)
+                return
+            }
+            var count = 0
+            for i in 0..<detta.count{
+                let data:Data = detta[i].image!.pngData()!
+                
+                self.client?.files.upload(path: path + "/" + detta[i].name, input: data).response { response, error in
                     if let error = error {
+                        self.failed = true
+                        count = count + 1
+                        if count == detta.count{
+                             self.makeUploadsResultHUD(bool: false)
+                        }
                         // エラーの場合、処理を終了します。
                         // 必要ならばエラー処理してください。
                         return
                     }
                     
-                    guard let respone = response else{
+                    guard let response = response else {
+                        self.failed = true
+                        count = count + 1
+                        if count == detta.count{
+                            self.makeUploadsResultHUD(bool: false)
+                        }
                         return
                     }
-                    
-                    // エントリー数分繰り返します。
-                    // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
-                    for entry in (response?.entries)!{
-                        // 名前
-                        let name = entry.name
-                        dattaName.append(name)
-                        //print(entry.name)
-                    }
-                    
-                    
-                    
-                    var detta:[(name:String,date:String,modify:Date,image:UIImage?)] = []
-                    
-                    for i in 0..<self.file.count{
-                        if dattaName.contains(self.file[i].name) != true && self.file[i].date == self.holderName[j]{
-                            detta.append(self.file[i])
-                        }
-                    }
-
-                    for i in 0..<detta.count{
-                        let data:Data = detta[i].image!.pngData()!
-                        
-                        self.client?.files.upload(path: "/" + detta[i].date + "/" + detta[i].name, input: data).response { response, error in
-                            if let error = error {
-                                // エラーの場合、処理を終了します。
-                                // 必要ならばエラー処理してください。
-                                return
-                            }
-                            
-                            guard let response = response else {
-                                return
-                            }
-                        }
-                    }
-                }
-            }
-        }else{
-            let _ = client?.files.listFolder(path: "/" + self.selectedDirectoryName).response { response, error in
-                if let error = error {
-                    // エラーの場合、処理を終了します。
-                    // 必要ならばエラー処理してください。
-                    return
-                }
-                
-                guard let respone = response else{
-                    return
-                }
-                
-                // エントリー数分繰り返します。
-                // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
-                for entry in (response?.entries)!{
-                    // 名前
-                    let name = entry.name
-                    dattaName.append(name)
-                    //print(entry.name)
-                }
-                
-                
-                
-                var detta:[(name:String,date:String,modify:Date,image:UIImage?)] = []
-                
-                for i in 0..<self.file.count{
-                    if dattaName.contains(self.file[i].name) != true{
-                        detta.append(self.file[i])
-                    }
-                }
-                
-                for i in 0..<detta.count{
-                    let data:Data = detta[i].image!.pngData()!
-                    
-                    self.client?.files.upload(path: "/" + detta[i].date + "/" + detta[i].name, input: data).response { response, error in
-                        if let error = error {
-                            // エラーの場合、処理を終了します。
-                            // 必要ならばエラー処理してください。
-                            return
-                        }
-                        
-                        guard let response = response else {
-                            return
-                        }
+                    count = count + 1
+                    if count == detta.count && self.failed{
+                        self.makeUploadsResultHUD(bool: false)
+                    }else if count == detta.count{
+                        self.makeUploadsResultHUD(bool: true)
                     }
                 }
             }
         }
     }
-    
-    @IBAction func download(_ sender: Any) {
-        var dattaName:[String] = []
-        let fileManager = FileManager.default
-        
-        if selectedDirectoryName == "All"{
-            holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun"]
-            for j in 0..<holderName.count{
-                dattaName = []
-                let _ = client?.files.listFolder(path: "/" + holderName[j]).response { response, error in
-                    if let error = error {
-                        // エラーの場合、処理を終了します。
-                        // 必要ならばエラー処理してください。
-                        return
-                    }
-                    
-                    guard let respone = response else{
-                        return
-                    }
-                    
-                    let localFolderDirectory = self.DocumentPath + "/" + self.holderName[j]
-                    
-                    // エントリー数分繰り返します。
-                    // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
-                    for entry in (response?.entries)!{
-                        // 名前
-                        let name = entry.name
-                        
-                        if fileManager.fileExists(atPath: localFolderDirectory + "/" + name) != true{
-                            dattaName.append(name)
-                        }
-                    }
-                    print(dattaName)
-                    
-                    for i in 0..<dattaName.count{
-                        let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
-                            let path = "file://" + localFolderDirectory + "/" + dattaName[i]
-                            let directoryURL = NSURL(string: path)! as URL
-                            
-                            return directoryURL
-                        }
-                        
-                        self.client?.files.download(path: "/" + self.holderName[j] + "/" + dattaName[i], destination: destination).response { response, error in
-                            if let error = error {
-                                // エラーの場合、処理を終了します。
-                                // 必要ならばエラー処理してください。
-                                return
-                            }
-                            
-                            guard let response = response else {
-                                // レスポンスがない場合、処理を終了します。
-                                // 必要ならばエラー処理してください。
-                                return
-                            }
-                            self.loadImage()
-                            self.thumbmnailImages = []
-                            self.cv.reloadData()
-                        }
-                    }
+           
 
-                    
-                    
-                }
-            }
-        }else{
-            
-            let _ = client?.files.listFolder(path: "/" + self.selectedDirectoryName).response { response, error in
-                if let error = error {
-                    // エラーの場合、処理を終了します。
-                    // 必要ならばエラー処理してください。
-                    return
-                }
-                
-                guard let respone = response else{
-                    return
-                }
-                
-                let localFolderDirectory = self.DocumentPath + "/" + self.selectedDirectoryName
-                
-                // エントリー数分繰り返します。
-                // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
-                for entry in (response?.entries)!{
-                    // 名前
-                    let name = entry.name
-                    
-                    if fileManager.fileExists(atPath: localFolderDirectory + "/" + name) != true{
-                        dattaName.append(name)
-                    }
-                }
-                print(dattaName)
-                
-                for i in 0..<dattaName.count{
-                    let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
-                        let path = "file://" + localFolderDirectory + "/" + dattaName[i]
-                        let directoryURL = NSURL(string: path)! as URL
-                        
-                        return directoryURL
-                    }
-                    
-                    self.client?.files.download(path: "/" + self.selectedDirectoryName + "/" + dattaName[i], destination: destination).response { response, error in
-                        if let error = error {
-                            // エラーの場合、処理を終了します。
-                            // 必要ならばエラー処理してください。
-                            return
-                        }
-                        
-                        guard let response = response else {
-                            // レスポンスがない場合、処理を終了します。
-                            // 必要ならばエラー処理してください。
-                            return
-                        }
-                    }
-                    
-                    self.loadImage()
-                    self.thumbmnailImages = []
-                    self.cv.reloadData()
-                }
-                
-                
-                
-            }
-        }
-        
-        
-    }
     
     @objc private func editButtonTapped(){
         let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneButtonTapped))
@@ -588,14 +643,14 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     var hud = MBProgressHUD()
 
     
-    @IBAction func syncDropbox(){
+    @objc func syncDropbox(){
         
         
         hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         
         hud.label.text = "同期中"
         hud.detailsLabel.text = "戻るとバックグラウンドで実行されます"
-        hud.button.addTarget(self, action: #selector(syncCancel), for: .touchUpInside)
+        hud.button.addTarget(self, action: #selector(syncBackGround), for: .touchUpInside)
         hud.button.setTitle("バックグラウンド", for: UIControl.State.normal)
         
         let defaults = UserDefaults.standard
@@ -968,20 +1023,21 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         defaults.synchronize()
     }
     
-    @objc func syncCancel(){
+    @objc func syncBackGround(){
         self.hud.hide(animated: false)
         self.hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         self.hud.mode = .customView
         //self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
         self.hud.label.numberOfLines = 2
         self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-        self.hud.label.text = "同期処理はアプリを開いている間\nバックグラウンドで行われます"
+        self.hud.label.text = "処理はアプリを開いている間\nバックグラウンドで行われます"
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.hud.animationType = MBProgressHUDAnimation.fade
             self.hud.hide(animated: true)
         }
     }
+    
     
     //現在いるビューコントローラーを取ってくる
     func getTopViewController() -> UIViewController? {
@@ -1025,6 +1081,5 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             }
         }
     }
-    
 }
 
