@@ -637,7 +637,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         for j in 0..<holderName.count{
             
             directoryIsSync = defaults.array(forKey: "selectedDirectorySync") as? [Bool] ?? boolArry
-            guard directoryIsSync[j] == false else{
+             if directoryIsSync[j]{
                 break
             }
             directoryIsSync[j] = true
@@ -664,32 +664,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     
                     if filterDirectoryIsSync.count == directoryIsSync.count{
                         self.hud.hide(animated: false)
-                        
-                        if errorFolder.count != 0{
-                            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                            self.hud.mode = .customView
-                            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                            self.hud.label.text = "一部同期失敗"
-                            let string = errorFolder.joined(separator: ",")
-                            self.hud.detailsLabel.numberOfLines = 2
-                            self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                            self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                self.hud.animationType = MBProgressHUDAnimation.fade
-                                self.hud.hide(animated: true)
-                            }
-                        }else{
-                            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                            self.hud.mode = .customView
-                            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                            self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                self.hud.animationType = MBProgressHUDAnimation.fade
-                                self.hud.hide(animated: true)
-                            }
-                        }
+                        self.finishedSyncHUD(errorFolder: errorFolder)
                     }
                     // エラーの場合、処理を終了します。
                     // 必要ならばエラー処理してください。
@@ -710,32 +685,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     
                     if filterDirectoryIsSync.count == directoryIsSync.count{
                         self.hud.hide(animated: false)
-                        
-                        if errorFolder.count != 0{
-                            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                            self.hud.mode = .customView
-                            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                            self.hud.label.text = "一部同期失敗"
-                            let string = errorFolder.joined(separator: ",")
-                            self.hud.detailsLabel.numberOfLines = 2
-                            self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                            self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                self.hud.animationType = MBProgressHUDAnimation.fade
-                                self.hud.hide(animated: true)
-                            }
-                        }else{
-                            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                            self.hud.mode = .customView
-                            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                            self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                self.hud.animationType = MBProgressHUDAnimation.fade
-                                self.hud.hide(animated: true)
-                            }
-                        }
+                        self.finishedSyncHUD(errorFolder: errorFolder)
                     }
                     print("response")
                     return
@@ -827,32 +777,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     
                     if filterDirectoryIsSync.count == directoryIsSync.count{
                         self.hud.hide(animated: false)
-                        
-                        if errorFolder.count != 0{
-                            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                            self.hud.mode = .customView
-                            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                            self.hud.label.text = "一部同期失敗"
-                            let string = errorFolder.joined(separator: ",")
-                            self.hud.detailsLabel.numberOfLines = 2
-                            self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                            self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                self.hud.animationType = MBProgressHUDAnimation.fade
-                                self.hud.hide(animated: true)
-                            }
-                        }else{
-                            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                            self.hud.mode = .customView
-                            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                            self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                self.hud.animationType = MBProgressHUDAnimation.fade
-                                self.hud.hide(animated: true)
-                            }
-                        }
+                        self.finishedSyncHUD(errorFolder: errorFolder)
                     }
                 }
                 
@@ -880,32 +805,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 
                                 if filterDirectoryIsSync.count == directoryIsSync.count{
                                     self.hud.hide(animated: false)
-                                    
-                                    if errorFolder.count != 0{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                                        self.hud.label.text = "一部同期失敗"
-                                        let string = errorFolder.joined(separator: ",")
-                                        self.hud.detailsLabel.numberOfLines = 2
-                                        self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                                        self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }else{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                                        self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }
+                                    self.finishedSyncHUD(errorFolder: errorFolder)
                                 }
                                 // エラーの場合、処理を終了します。
                                 // 必要ならばエラー処理してください。
@@ -925,32 +825,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 
                                 if filterDirectoryIsSync.count == directoryIsSync.count{
                                     self.hud.hide(animated: false)
-                                    
-                                    if errorFolder.count != 0{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                                        self.hud.label.text = "一部同期失敗"
-                                        let string = errorFolder.joined(separator: ",")
-                                        self.hud.detailsLabel.numberOfLines = 2
-                                        self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                                        self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }else{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                                        self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }
+                                    self.finishedSyncHUD(errorFolder: errorFolder)
                                 }
                                 return
                             }
@@ -1021,32 +896,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 
                                 if filterDirectoryIsSync.count == directoryIsSync.count{
                                     self.hud.hide(animated: false)
-                                    
-                                    if errorFolder.count != 0{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                                        self.hud.label.text = "一部同期失敗"
-                                        let string = errorFolder.joined(separator: ",")
-                                        self.hud.detailsLabel.numberOfLines = 2
-                                        self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                                        self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }else{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                                        self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }
+                                    self.finishedSyncHUD(errorFolder: errorFolder)
                                 }
                                 // エラーの場合、処理を終了します。
                                 // 必要ならばエラー処理してください。
@@ -1068,32 +918,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 
                                 if filterDirectoryIsSync.count == directoryIsSync.count{
                                     self.hud.hide(animated: false)
-                                    
-                                    if errorFolder.count != 0{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                                        self.hud.label.text = "一部同期失敗"
-                                        let string = errorFolder.joined(separator: ",")
-                                        self.hud.detailsLabel.numberOfLines = 2
-                                        self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                                        self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }else{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                                        self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }
+                                    self.finishedSyncHUD(errorFolder: errorFolder)
                                 }
                                 // レスポンスがない場合、処理を終了します。
                                 // 必要ならばエラー処理してください。
@@ -1118,32 +943,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 //全体同期完了
                                 if filterDirectoryIsSync.count == directoryIsSync.count{
                                     self.hud.hide(animated: false)
-                                    
-                                    if errorFolder.count != 0{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "failed"))
-                                        self.hud.label.text = "一部同期失敗"
-                                        let string = errorFolder.joined(separator: ",")
-                                        self.hud.detailsLabel.numberOfLines = 2
-                                        self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
-                                        self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }else{
-                                        self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
-                                        self.hud.mode = .customView
-                                        self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
-                                        self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                            self.hud.animationType = MBProgressHUDAnimation.fade
-                                            self.hud.hide(animated: true)
-                                        }
-                                    }
+                                    self.finishedSyncHUD(errorFolder: errorFolder)
                                 }
                             }
                             
@@ -1198,6 +998,33 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }
     }
 
+    func finishedSyncHUD(errorFolder:[String]){
+        if errorFolder.count != 0{
+            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
+            self.hud.mode = .customView
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "一部同期失敗"
+            let string = errorFolder.joined(separator: ",")
+            self.hud.detailsLabel.numberOfLines = 2
+            self.hud.detailsLabel.adjustsFontSizeToFitWidth = true
+            self.hud.detailsLabel.text = "\(string)の同期に失敗しました\n同期し直してください"
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }else{
+            self.hud = MBProgressHUD.showAdded(to:(self.getTopViewController()?.view)!,animated: true)
+            self.hud.mode = .customView
+            self.hud.customView = UIImageView(image: UIImage(named: "checkMark"))
+            self.hud.label.text = "\(self.selectedDirectoryName)の同期完了"
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+        }
+    }
     
 }
 
