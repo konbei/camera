@@ -9,12 +9,14 @@
 import UIKit
 
 class DirectoryViewrCell: UICollectionViewCell {
-    
-    @IBOutlet weak var thumnailImagre: UIImageView!
+    var backView:UIView?
+    var testView : UIView?
+
     
     //セルが再利用される時呼ばれる、このタイミングで初期化する
     override func prepareForReuse() {
         super.prepareForReuse()
-        thumnailImagre.image = nil
+  
     }
+    
 }

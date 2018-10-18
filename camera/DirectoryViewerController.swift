@@ -203,7 +203,12 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }else{
             return cell
         }
+        
+        
        
+        let selectView = CheckBoxView(frame: CGRect(x:0,y:0,width:23,height:23), selected: true)
+        cell.selectedBackgroundView = selectView
+        
         var thumbnail:UIImage? = nil
         let group = DispatchGroup()
         let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
@@ -214,7 +219,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 group.leave()
             }
             group.notify(queue: .main){
-                cell.thumnailImagre.image = thumbnail
+                let thumbnailImage = cell.backgroundView as! UIImageView
+                thumbnailImage.image = thumbnail
             }
         
         return cell
@@ -241,22 +247,46 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     //var selectFile:(date:String,name:String)
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if selectedDirectoryName == "All"{
-            selectImagePath = DocumentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
-            selectImageDropboxPath = "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
-        
+        if cv.allowsMultipleSelection{
+            let cell:DirectoryViewrCell =
+                collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
+            print(cv.indexPathsForSelectedItems)
         }else{
-            //選択した写真のパス
-            selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
-            selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+            if selectedDirectoryName == "All"{
+                selectImagePath = DocumentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
+                selectImageDropboxPath = "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
+                
+            }else{
+                //選択した写真のパス
+                selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+                selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+            }
+            
+            // [indexPath.row] から画像名を探し、UImage を設定
+            selectImage = file[indexPath.row].image
+            if selectImage != nil {
+                // SubViewController へ遷移するために Segue を呼び出す
+                performSegue(withIdentifier: "selectedImage",sender: nil)
+            }
         }
         
-        // [indexPath.row] から画像名を探し、UImage を設定
-        selectImage = file[indexPath.row].image
-        if selectImage != nil {
-            // SubViewController へ遷移するために Segue を呼び出す
-            performSegue(withIdentifier: "selectedImage",sender: nil)
+    }
+    
+    @objc private func editButtonTapped(){
+        
+        cv.allowsMultipleSelection = true
+        
+        let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneButtonTapped))
+        self.navigationItem.setRightBarButton(doneBarButtonItem, animated: true)
+    }
+    
+    @objc private func doneButtonTapped(){
+        for indexpath in (cv?.indexPathsForSelectedItems)!{
+            cv.deselectItem(at: indexpath, animated: false)
         }
+          cv.allowsMultipleSelection = false
+        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
+        self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
     }
     
     //選択した写真と写真のパス送る
@@ -271,7 +301,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
+       
         loadImage()
         thumbmnailImages = []
         cv.reloadData()
@@ -283,7 +313,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
     @IBOutlet weak var dropboxItem: UINavigationItem!
     @objc func dropboxTapped(){
-        let alert = UIAlertController(title:"Dropboxアクション", message: "メッセージ", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title:"Dropboxアクション", message: nil, preferredStyle: UIAlertController.Style.alert)
         
         var title:String = ""
         let defaults = UserDefaults.standard
@@ -308,9 +338,47 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             print("アクション２をタップした時の処理")
         })
         
-        let action3 = UIAlertAction(title: "バックアップ", style: UIAlertAction.Style.default, handler: {
+        var uploadsTitle = ""
+        if cv.allowsMultipleSelection{
+            uploadsTitle = "アップロード"
+        }else{
+            uploadsTitle = "バックアップ"
+        }
+        
+        let action3 = UIAlertAction(title: uploadsTitle, style: UIAlertAction.Style.default, handler: {
             (action: UIAlertAction!) in
-            self.upload(type: "backup", detta: self.file)
+            if uploadsTitle == "アップロード"{
+                if self.cv?.indexPathsForSelectedItems?.count == 0{
+                    self.hud = MBProgressHUD.showAdded(to: (self.getTopViewController()?.view)!, animated: true)
+                    self.hud.mode = .customView
+                    self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+                    self.hud.label.text = "アップロードする写真がありません"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        self.hud.animationType = MBProgressHUDAnimation.fade
+                        self.hud.hide(animated: true)
+                    }
+                    return
+                }
+                var data:[(name:String,date:String,modify:Date,image:UIImage?)] = []
+                for i in (self.cv?.indexPathsForSelectedItems)!{
+                    data.append(self.file[i.row])
+                }
+                self.upload(type: "uploads", detta: data)
+            }else{
+                if self.file.count == 0{
+                    self.hud = MBProgressHUD.showAdded(to: (self.getTopViewController()?.view)!, animated: true)
+                    self.hud.mode = .customView
+                    self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+                    self.hud.label.text = "バックアップする写真がありません"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        self.hud.animationType = MBProgressHUDAnimation.fade
+                        self.hud.hide(animated: true)
+                    }
+                    return
+                }
+                self.upload(type: "backup", detta: self.file)
+            }
+            
             print("アクション３をタップした時の処理")
         })
         
@@ -329,31 +397,84 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
 
 
     @IBAction func trash(_ sender: Any) {
-        let alert: UIAlertController = UIAlertController(title: "写真削除", message: selectedDirectoryName + "の写真を全て削除してもいいですか？", preferredStyle:  UIAlertController.Style.alert)
+        var message = ""
+        if cv.allowsMultipleSelection{
+            if self.cv?.indexPathsForSelectedItems?.count == 0{
+                self.hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+                self.hud.mode = .customView
+                self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+                self.hud.label.text = "削除する写真がありません"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.hud.animationType = MBProgressHUDAnimation.fade
+                    self.hud.hide(animated: true)
+                }
+                return
+            }
+            message = "選択した写真を削除してもいいですか"
+        }else{
+            if self.file.count == 0{
+                self.hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+                self.hud.mode = .customView
+                self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+                self.hud.label.text = "削除する写真がありません"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.hud.animationType = MBProgressHUDAnimation.fade
+                    self.hud.hide(animated: true)
+                }
+                return
+            }
+            message = selectedDirectoryName + "の写真を全て削除してもいいですか？"
+        }
+        let alert: UIAlertController = UIAlertController(title: "写真削除", message: message, preferredStyle:  UIAlertController.Style.alert)
         
         
         // 削除ボタン
         let defaultAction: UIAlertAction = UIAlertAction(title: "削除", style: UIAlertAction.Style.default, handler:{
             // ファイル削除
             (action: UIAlertAction!) -> Void in
-            for i in 0..<self.file.count{
-                do {
-                    try FileManager.default.removeItem( atPath: self.DocumentPath + "/" + self.file[i].date + "/" + self.file[i].name )
-                } catch {
-                    //エラー処理
-                    print("error")
-                }
-                
-                guard let client = DropboxClientsManager.authorizedClient else {
-                    return
-                }
-                
-                client.files.deleteV2(path: "/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
-                    if let error = error {
-                        // エラーの場合、処理を終了します。
-                        // 必要ならばエラー処理してください。
-                        print("dropboxには無いよ〜")
+            if self.cv.allowsMultipleSelection{
+                for i in (self.cv?.indexPathsForSelectedItems)!{
+                    do {
+                        try FileManager.default.removeItem( atPath: self.DocumentPath + "/" + (self.file?[i.row].date)! + "/" + self.file[i.row].name )
+                    } catch {
+                        //エラー処理
+                        print("error")
+                    }
+                    
+                    guard let client = DropboxClientsManager.authorizedClient else {
                         return
+                    }
+                    
+                    client.files.deleteV2(path: "/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                        if let error = error {
+                            // エラーの場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            print("dropboxには無いよ〜")
+                            return
+                        }
+                    }
+                }
+                self.doneButtonTapped()
+            }else{
+                for i in 0..<self.file.count{
+                    do {
+                        try FileManager.default.removeItem( atPath: self.DocumentPath + "/" + self.file[i].date + "/" + self.file[i].name )
+                    } catch {
+                        //エラー処理
+                        print("error")
+                    }
+                    
+                    guard let client = DropboxClientsManager.authorizedClient else {
+                        return
+                    }
+                    
+                    client.files.deleteV2(path: "/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                        if let error = error {
+                            // エラーの場合、処理を終了します。
+                            // 必要ならばエラー処理してください。
+                            print("dropboxには無いよ〜")
+                            return
+                        }
                     }
                 }
             }
@@ -378,20 +499,41 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
      @IBAction func shareAction(_ sender: Any) {
         var image:[UIImage] = []
-        for i in 0..<self.file.count{
-            image.append(file[i].image!)
+        if cv.allowsMultipleSelection{
+            for i in (cv?.indexPathsForSelectedItems)!{
+                image.append(file[i.row].image!)
+            }
+            
+        }else{
+            for i in 0..<self.file.count{
+                image.append(file[i].image!)
+            }
+        }
+        if image.count == 0{
+            self.hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
+            self.hud.mode = .customView
+            self.hud.customView = UIImageView(image: UIImage(named: "failed"))
+            self.hud.label.text = "シェアする写真がありません"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.hud.animationType = MBProgressHUDAnimation.fade
+                self.hud.hide(animated: true)
+            }
+            return
         }
         let activities = image as [Any]
         let activityViewController = UIActivityViewController(activityItems: activities, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
        // activityViewController.popoverPresentationController?.sourceRect = CGRect(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
         self.present(activityViewController,animated: true,completion: nil)
+        if cv.allowsMultipleSelection{
+            self.doneButtonTapped()
+        }
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.underBar.isHidden = false
         cv.delegate = self
         cv.dataSource = self
         
@@ -634,15 +776,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
            
 
     
-    @objc private func editButtonTapped(){
-        let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneButtonTapped))
-        self.navigationItem.setRightBarButton(doneBarButtonItem, animated: true)
-    }
-    
-     @objc private func doneButtonTapped(){
-        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
-        self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
-    }
+   
     
    
     var hud = MBProgressHUD()
