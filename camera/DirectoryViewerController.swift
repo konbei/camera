@@ -296,7 +296,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         let action1 = UIAlertAction(title: title, style: UIAlertAction.Style.default, handler: {
             (action: UIAlertAction!) in
             if title == "ログイン"{
-                self.checkSignIn()
+                self.SignIn()
             }else{
                 self.signOut()
             }
@@ -490,6 +490,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
     
     func makeDropboxFolder(){
+        if !checkSignIN(){
+            return
+        }
         var dattaName:[String] = []
         let client = DropboxClientsManager.authorizedClient
         hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
@@ -556,7 +559,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     func upload(type:String,detta:[(name:String,date:String,modify:Date,image:UIImage?)]) {
-        
+        if !checkSignIN(){
+            return
+        }
         if detta.count == 0{
             hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
             self.hud.mode = .customView
@@ -644,7 +649,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
 
     
     @objc func syncDropbox(){
-        
+        if !checkSignIN(){
+            return
+        }
         
         hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         
