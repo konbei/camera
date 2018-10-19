@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F3D931B21783CDC0024EBFA /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3D931A21783CDC0024EBFA /* CheckBoxView.swift */; };
 		2F502C302171CAB000D69DE9 /* Dropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F502C2F2171CAB000D69DE9 /* Dropbox.swift */; };
 		2F74FAD421731680008D48A5 /* ClassDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F74FAD321731680008D48A5 /* ClassDataManager.swift */; };
 		2F750FBC215F652900C02F3B /* SettingsData2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FBA215F652900C02F3B /* SettingsData2.xcdatamodeld */; };
@@ -60,6 +61,7 @@
 		04B16ED46385897CA5B83CD4 /* Pods-cameraTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cameraTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cameraTests/Pods-cameraTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0A3B42221D2254E32A11B348 /* Pods-camera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-camera.debug.xcconfig"; path = "Pods/Target Support Files/Pods-camera/Pods-camera.debug.xcconfig"; sourceTree = "<group>"; };
 		0FE8ACD59AD6544E63614BFC /* Pods_camera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_camera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F3D931A21783CDC0024EBFA /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		2F502C2F2171CAB000D69DE9 /* Dropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dropbox.swift; sourceTree = "<group>"; };
 		2F74FAD321731680008D48A5 /* ClassDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDataManager.swift; sourceTree = "<group>"; };
 		2F750FBB215F652900C02F3B /* SettingsData2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SettingsData2.xcdatamodel; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				2F74FAD321731680008D48A5 /* ClassDataManager.swift */,
 				2F502C2F2171CAB000D69DE9 /* Dropbox.swift */,
 				2FE921E021644AB900021527 /* DirectoryViewerController.swift */,
+				2F3D931A21783CDC0024EBFA /* CheckBoxView.swift */,
 				2FE921E2216603D000021527 /* DirectoryViewrCell.swift */,
 				2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */,
 				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
@@ -465,6 +468,7 @@
 				2F750FC721609FCC00C02F3B /* SettingsTime+CoreDataClass.swift in Sources */,
 				2FE921E121644AB900021527 /* DirectoryViewerController.swift in Sources */,
 				2FD92771215B2B9800368A6B /* ClassNameSettingViewController.swift in Sources */,
+				2F3D931B21783CDC0024EBFA /* CheckBoxView.swift in Sources */,
 				2FB96BBF216C74D0006E48E0 /* NavigationViewController.swift in Sources */,
 				2F750FC3215F68AC00C02F3B /* SettingsData2+CoreDataClass.swift in Sources */,
 				2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */,

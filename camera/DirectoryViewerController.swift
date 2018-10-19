@@ -296,7 +296,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             (segue.destination as! SelectedImageViewController).selectedImagePath = selectImagePath
             (segue.destination as! SelectedImageViewController).selectedImageDropboxPath = selectImageDropboxPath
             (segue.destination as! SelectedImageViewController).movedPreview = false
-            
+          
+            (segue.destination as! SelectedImageViewController).file = self.file
         }
     }
     
