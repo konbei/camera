@@ -18,10 +18,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
         let cell:CustomCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for:indexPath )as! CustomCell
-        
-            cell.setup()
-        
-            let frame = view.frame.width 
+            let frame = view.frame.width + 10
             var thumbnail:UIImage? = nil
             let group = DispatchGroup()
             let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
@@ -32,7 +29,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
                 group.leave()
             }
             group.notify(queue: .main){
-                cell.imageView.image = thumbnail
+                cell.img.image = thumbnail
         }
             return cell
     }
@@ -74,15 +71,13 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         if UIDevice.current.userInterfaceIdiom == .pad{
-
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
-            print("\(self.CollectionView.contentOffset.x)/\(self.CollectionView.contentSize.width)")
             self.CollectionView.contentSize.width = self.view.frame.width * CGFloat(ax)
             if self.page != 0{
                 self.CollectionView.setContentOffset(CGPoint(x: self.view.frame.width  * CGFloat(self.page) , y: 0.0), animated: false)
             }
-            print("\(self.CollectionView.contentOffset.x)/\(self.CollectionView.contentSize.width)")
+            
         }
         
     }
@@ -100,12 +95,11 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
         if UIDevice.current.userInterfaceIdiom == .phone{
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
-            print("\(self.CollectionView.contentOffset.x)/\(self.CollectionView.contentSize.width)")
             self.CollectionView.contentSize.width = self.view.frame.width * CGFloat(ax)
             if self.page != 0{
                 self.CollectionView.setContentOffset(CGPoint(x: self.view.frame.width  * CGFloat(self.page) , y: 0.0), animated: false)
             }
-            print("\(self.CollectionView.contentOffset.x)/\(self.CollectionView.contentSize.width)")
+            
         }
     }
     
@@ -146,12 +140,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
       //self.navigationController.
     }
     
-    /*
-   func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        let pageNum = mainScrollView.bounds.origin.x / mainScrollView.frame.width;
-        return self.view.viewWithTag(Int(pageNum)+C_IMAGEVIEW_TAG) as! UIImageView;
-    }
- */
+  
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         editBar.isHidden = !editBar.isHidden
@@ -170,13 +159,14 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
         let activityViewController = UIActivityViewController(activityItems: activities, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: self.view.bounds.height, width: 1.0, height: 1.0)
+ 
         self.present(activityViewController,animated: true,completion: nil)
     }
     
     //画像削除機能
     @IBAction func DeleteImage(_ sender: Any) {
         
-        let alert: UIAlertController = UIAlertController(title: "写真削除", message: "表示してる写真を削除してもいいですか？", preferredStyle:  UIAlertController.Style.alert)
+        let alert: UIAlertController = UIAlertController(title: "写真削除", message: "写真を削除してもいいですか？", preferredStyle:  UIAlertController.Style.alert)
         
 
         // 削除ボタン
@@ -276,87 +266,12 @@ extension UIScrollView {
     
 }
 class CustomCell: UICollectionViewCell {
-   // @IBOutlet var img:UIImageView!
-   // @IBOutlet weak var scrool: UIScrollView!
-   
-        var imageView:UIImageView!
-        var scrollView:UIScrollView!
-        
-        required init(coder aDecoder:NSCoder){
-            super.init(coder: aDecoder)!
-        }
-        
-        override init(frame:CGRect){
-            super.init(frame:frame)
-            
-            setup()
-        }
-        
-        func setup() {
-            //スクロールビューを設置
-            scrollView = UIScrollView()
-            scrollView.frame = CGRect(x:0,y:0,width:self.frame.width,height:self.frame.height)
-            
-            //デリゲートを設定
-            scrollView.delegate = self as UIScrollViewDelegate
-            
-            //最大・最小の大きさを決める
-            scrollView.maximumZoomScale = 4.0
-            scrollView.minimumZoomScale = 1.0
-            
-            self.contentView.addSubview(scrollView)
-            
-            //imageViewを生成
-            imageView =  UIImageView()
-            imageView.frame = CGRect(x:0,y:0,width:self.frame.width,height:self.frame.height)
-            scrollView.addSubview(imageView)
-            
-            let doubleTap = UITapGestureRecognizer(target:self,action:#selector(self.doubleTap(gesture:)))
-            doubleTap.numberOfTapsRequired = 2
-            imageView.isUserInteractionEnabled = true
-            imageView.addGestureRecognizer(doubleTap)
-        }
-        
-        
-        // ダブルタップ
-        @objc func doubleTap(gesture: UITapGestureRecognizer){
-            // if ( self.scrollView.zoomScale < self.scrollView.maximumZoomScale ) {
-            if ( self.scrollView.zoomScale < 3 ) {
-                let newScale:CGFloat = self.scrollView.zoomScale * 3
-                let zoomRect:CGRect = self.zoomRectForScale(scale: newScale, center: gesture.location(in: gesture.view))
-                self.scrollView.zoom(to: zoomRect, animated: true)
-                
-            } else {
-                self.scrollView.setZoomScale(1.0, animated: true)
-            }
-        }
-        
-        // 領域
-        func zoomRectForScale(scale:CGFloat, center: CGPoint) -> CGRect{
-            var zoomRect: CGRect = CGRect()
-            zoomRect.size.height = self.scrollView.frame.size.height / scale
-            zoomRect.size.width = self.scrollView.frame.size.width / scale
-            
-            zoomRect.origin.x = center.x - zoomRect.size.width / 2.0
-            zoomRect.origin.y = center.y - zoomRect.size.height / 2.0
-            
-            return zoomRect
-        }
-    }
+    @IBOutlet var img:UIImageView!
     
-    extension CustomCell :UIScrollViewDelegate {
-        func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-            return self.imageView
-        }
-        
-        func scrollViewDidZoom(_ scrollView: UIScrollView) {
-            print("zoomおわり")
-        }
-        
-        func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-            print("zoomするよ")
-        }
-        
-        
+    override init(frame: CGRect){
+        super.init(frame: frame)
     }
-
+    required init(coder aDecoder: NSCoder){
+        super.init(coder: aDecoder)!
+    }
+}

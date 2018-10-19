@@ -229,24 +229,21 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" pagingEnabled="YES" maximumZoomScale="4" translatesAutoresizingMaskIntoConstraints="NO" id="PyK-DI-Zzg">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jas-ap-g4G">
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jas-ap-g4G">
-                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </imageView>
-                                                    </subviews>
-                                                </scrollView>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" red="1" green="0.25462015500000001" blue="0.23705924880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="PyK-DI-Zzg" secondAttribute="bottom" id="FYy-6E-wCw"/>
-                                            <constraint firstItem="PyK-DI-Zzg" firstAttribute="leading" secondItem="n5c-im-g4M" secondAttribute="leading" id="hmO-ja-qyt"/>
-                                            <constraint firstItem="PyK-DI-Zzg" firstAttribute="top" secondItem="n5c-im-g4M" secondAttribute="top" id="jA7-I5-wAG"/>
-                                            <constraint firstAttribute="trailing" secondItem="PyK-DI-Zzg" secondAttribute="trailing" id="tPa-eH-LYL"/>
+                                            <constraint firstAttribute="bottom" secondItem="Jas-ap-g4G" secondAttribute="bottom" id="IzS-vD-iqE"/>
+                                            <constraint firstItem="Jas-ap-g4G" firstAttribute="top" secondItem="n5c-im-g4M" secondAttribute="top" id="NRm-Tr-D87"/>
+                                            <constraint firstAttribute="trailing" secondItem="Jas-ap-g4G" secondAttribute="trailing" id="S4N-bj-4Ct"/>
+                                            <constraint firstItem="Jas-ap-g4G" firstAttribute="leading" secondItem="n5c-im-g4M" secondAttribute="leading" id="hAJ-Q5-G3S"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="img" destination="Jas-ap-g4G" id="SJ1-Gt-RC9"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
