@@ -317,8 +317,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         let alert = UIAlertController(title:"Dropboxアクション", message: nil, preferredStyle: UIAlertController.Style.alert)
         
         var title:String = ""
-        let defaults = UserDefaults.standard
-        if !defaults.bool(forKey: "dropboxLogin"){
+        let client = DropboxClientsManager.authorizedClient
+        if  client == nil{
             title = "ログイン"
         }else{
             title = "ログアウト"

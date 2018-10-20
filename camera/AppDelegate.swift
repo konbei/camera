@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
             switch authResult {
             case .success:
-                let defaults = UserDefaults.standard
-                defaults.set(true, forKey: "dropboxLogin")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     self.LoginResultHUD(bool: true)
                     self.makeDropboxFolder()
