@@ -8,17 +8,20 @@
 
 import UIKit
 import SwiftyDropbox
-
+import SimpleImageViewer
 
 class SelectedImageViewController:UIViewController,UICollectionViewDataSource,
-UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
+UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate{
     
     private let documentPath = NSHomeDirectory() + "/Documents"
+    
+    
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
         let cell:CustomCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for:indexPath )as! CustomCell
-            let frame = view.frame.width + 10
+
+            let frame = view.frame.width
             var thumbnail:UIImage? = nil
             let group = DispatchGroup()
             let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
@@ -33,11 +36,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
         }
             return cell
     }
-    
-  
-    
-    
-    
+   
     @IBOutlet weak var CollectionView: UICollectionView!
     
 
@@ -55,17 +54,10 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = view.frame.width
-        let height: CGFloat = view.bounds.height + editBar.frame.height
+        let height: CGFloat = view.bounds.height//view.bounds.height - collectionView.frame.height //- editBar.frame.height //- topbar.frame.height// + editBar.frame.height
         return CGSize(width: width, height: height)
     }
-    //ImageViewをタップした時barの表示/非表示変更
-    @IBAction func tapImageView(_ sender: UITapGestureRecognizer) {
-        if movedPreview == true{
-            buckComeraBar.isHidden = !buckComeraBar.isHidden
-        }
-        editBar.isHidden = !editBar.isHidden
-        self.navigationController?.isNavigationBarHidden = !(self.navigationController?.isNavigationBarHidden)!
-    }
+
     
     
     override func viewWillLayoutSubviews() {
@@ -103,44 +95,81 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
         }
     }
     
+    @IBOutlet weak var viewrTitle: UINavigationItem!
     @IBOutlet weak var buckComeraBar: UINavigationBar!
     
     @IBOutlet weak var topbar: UINavigationBar!
     @IBOutlet weak var editBar: UINavigationBar!
     
     @IBAction func buck(_ sender: Any) {
-        
-        self.navigationController?.popViewController(animated: true)
-        self.navigationController?.isNavigationBarHidden = false
+        if self.movedPreview == true{
+            self.performSegue(withIdentifier: "comeCamera", sender: self)
+        }else{
+            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.isNavigationBarHidden = false
+        }
     }
-    @IBOutlet weak var imageView: UIImageView!
 
     var deleteImage = false
     //プレビュー画面かどうか
-    var movedPreview = false
+    var movedPreview:Bool!
     //選択した写真と写真のパス得る
+    var selectedDirectory:String!
     var selectedImage:UIImage!
     var selectedImagePath:String!
     var selectedImageDropboxPath:String?
-    var file:[(name:String,date:String,modify:Date,image:UIImage?)]?
+    var file:[(name:String,date:String,modify:Date,image:UIImage?)]!
+    var selectRow:Int!
+
+
+
+    @IBAction func swip(_ sender: UIPinchGestureRecognizer) {
+        let visiblecell = CollectionView.visibleCells.first
+        let indexPath = CollectionView.indexPath(for: visiblecell!)
+        let cell = CollectionView.cellForItem(at: indexPath!) as! CustomCell
+        let configuration = ImageViewerConfiguration { config in
+            config.imageView = cell.img
+        }
+        
+        present(ImageViewerController(configuration: configuration), animated: true)
+        
+    }
+    var swiep = UIPinchGestureRecognizer()
     
-     let C_IMAGEVIEW_TAG = 1000;
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
     
     
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        self.loadImage()
+        CollectionView.reloadData()
+        page = self.selectRow
+
+        
+        
         CollectionView.delegate = self
         CollectionView.dataSource = self
         
-        //最初barは非表示
-   // editBar.isHidden = true
-    self.navigationController?.isNavigationBarHidden = true
-    buckComeraBar.isHidden = true
-      //self.navigationController.
+        self.swiep = UIPinchGestureRecognizer(target: self, action: #selector(swip))
+        self.swiep.delegate = self
+        self.CollectionView.addGestureRecognizer(self.swiep)
+        
+        //controllerbarは非表示
+        self.viewrTitle.title = self.selectedDirectory
+        self.navigationController?.isNavigationBarHidden = true
+        
+        
+
     }
     
   
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         editBar.isHidden = !editBar.isHidden
@@ -150,7 +179,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     
     override var prefersStatusBarHidden: Bool {
-        return navigationController?.isNavigationBarHidden == true
+        return  true
     }
     //画像シェア機能
     @IBAction func shareAction(_ sender: Any) {
@@ -199,6 +228,15 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
             }
             
             if self.movedPreview == true{
+                let defaults = UserDefaults.standard
+                if self.file.count > 1 && index == 0{
+                    defaults.set(self.file[1].image!.reSizeImage(reSize: CGSize(width: 80, height: 80)).pngData(), forKey: "thumbnailImage")
+                    
+                    defaults.synchronize()
+                }else if index == 0{
+                    defaults.set(UIImage(named: "noImage")!.pngData(), forKey: "thumbnailImage")
+                    defaults.synchronize()
+                }
                 self.performSegue(withIdentifier: "comeCamera", sender: self)
             }else{
                 self.navigationController?.popViewController(animated: true)
@@ -222,10 +260,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "comeCamera" && deleteImage == true){
-            (segue.destination as! CameraViewController).thumbnailImage.image = nil
-            deleteImage = false
-        }
+
     }
     
     func resize(image: UIImage, width: Double) -> UIImage {
@@ -246,6 +281,124 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     }
     
   
+    private var daycounts = 7
+    private var classcounts = 6
+    let fileManager = FileManager.default
+    
+    func numberday(num:Int) ->String{
+        switch num{
+        case 0:
+            return "Mon"
+        case 1:
+            return "Tues"
+        case 2:
+            return "Wednes"
+        case 3:
+            return "Thurs"
+        case 4:
+            return "Fri"
+        case 5:
+            return "Satur"
+        case 6:
+            return "Sun"
+        default:
+            return ""
+        }
+        
+    }
+    
+    func stringInt(int:String)->Int{
+        let splitNumbers = (int.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
+        let number = splitNumbers.joined()
+        return Int(number)!
+    }
+    
+    //タップされた授業の写真を取ってくる
+    func loadImage(){
+        let holderDirectory = documentPath + "/" + selectedDirectory
+        var fileNames:[String] = []
+        file = []
+        
+        //ディレクトリからファイルの名前を取ってくる
+        if selectedDirectory == "All"{
+            for day in 0..<daycounts{
+                let directoryPath = documentPath + "/" + numberday(num: day)
+                do{
+                    try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
+                    if fileNames.count != 0{
+                        for i in 0..<fileNames.count{
+                            var item:NSDictionary?
+                            do{
+                                item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
+                            }catch{
+                            }
+                            file.append((name: fileNames[i], date: numberday(num:day), modify: (item?.fileCreationDate())!, image: nil))
+                        }
+                    }
+                }catch{
+                }
+                for classes in 0...classcounts{
+                    let directoryPath = documentPath + "/" + numberday(num: day) + "\(classes)"
+                    do{
+                        try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
+                        if fileNames.count != 0{
+                            for i in 0..<fileNames.count{
+                                var item:NSDictionary?
+                                do{
+                                    item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
+                                }catch{
+                                }
+                                
+                                file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileCreationDate())!, image: nil))
+                            }
+                        }
+                    }catch{
+                    }
+                }
+            }
+        }else{
+            do{
+                try fileNames = FileManager.default.contentsOfDirectory(atPath: holderDirectory)
+                for i in 0..<fileNames.count{
+                    var item:NSDictionary?
+                    do{
+                        item = try fileManager.attributesOfItem(atPath: holderDirectory + "/" + fileNames[i]) as NSDictionary?
+                    }catch{
+                    }
+                    file.append((name: fileNames[i], date: self.selectedDirectory, modify: (item?.fileCreationDate())!, image: nil))
+                }
+            }catch{
+                fileNames = []
+            }
+        }
+        
+        for i in 0..<file.count{
+            for j in (i+1..<file.count).reversed(){
+                if stringInt(int: file[j-1].name) < stringInt(int: file[j].name){
+                    let temp = file[j]
+                    file[j] = file[j-1]
+                    file[j-1] = temp
+                }
+            }
+        }
+        
+        //ファイルパスからファイルデータ(写真イメージ)を取ってくる
+        if selectedDirectory == "All"{
+            for i in 0..<file.count{
+                let filePath = documentPath + "/" + file[i].date + "/" + file[i].name
+                file[i].image = UIImage(contentsOfFile:filePath)!
+            }
+        }else{
+            for i in 0..<fileNames.count{
+                let fileDirectory = holderDirectory + "/" + file[i].name
+                if let image = UIImage(contentsOfFile:fileDirectory){
+                    file[i].image = image
+                }
+            }
+        }
+    }
+    
+    
 }
 
 extension UIScrollView {

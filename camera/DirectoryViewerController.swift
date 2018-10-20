@@ -63,6 +63,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
     private var daycounts = 7
     private var classcounts = 6
+
     func numberday(num:Int) ->String{
         switch num{
         case 0:
@@ -241,6 +242,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         return file.count
     }
     
+    var selectRow = 0
     var selectImage:UIImage!
     var selectImagePath:String!
     var selectImageDropboxPath:String?
@@ -261,7 +263,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
                 selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
             }
-            
+            self.selectRow = indexPath.row
             // [indexPath.row] から画像名を探し、UImage を設定
             selectImage = file[indexPath.row].image
             if selectImage != nil {
@@ -292,12 +294,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     //選択した写真と写真のパス送る
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "selectedImage"){
-            (segue.destination as! SelectedImageViewController).selectedImage = selectImage
-            (segue.destination as! SelectedImageViewController).selectedImagePath = selectImagePath
-            (segue.destination as! SelectedImageViewController).selectedImageDropboxPath = selectImageDropboxPath
+            (segue.destination as! SelectedImageViewController).selectedDirectory = self.selectedDirectoryName
             (segue.destination as! SelectedImageViewController).movedPreview = false
           
-            (segue.destination as! SelectedImageViewController).file = self.file
+            (segue.destination as! SelectedImageViewController).selectRow = self.selectRow
         }
     }
     

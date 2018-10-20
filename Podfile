@@ -7,6 +7,8 @@
   target 'camera' do
      pod 'SwiftyDropbox'
      pod 'MBProgressHUD', '~> 1.1.0'
+     pod 'SimpleImageViewer', '~> 1.1.1'
+
   end
   # Pods for camera
 

@@ -121,8 +121,21 @@ class CameraViewController: UIViewController {
         getClassTimeData()
     }
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //プレビューサムネイルを設定
+        let thumbnailData:Data? = defaults.data(forKey: "thumbnailImage")
+        if thumbnailData != nil{
+            let thumbnail = UIImage(data: thumbnailData!)//?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
+            thumbnailImage.image = thumbnail
+        }else{
+            thumbnailImage.image = UIImage(named: "noImage")
+        }
+        
+        
         
         makeDirectory()
         startClassTime = [9999,9999,9999,9999,9999,9999]
@@ -269,23 +282,32 @@ class CameraViewController: UIViewController {
     var thumbnailPath:String!
     @IBOutlet weak var thumbnailImage: UIImageView!
 
+    
     @IBAction func comeCamera (segue: UIStoryboardSegue){
-        
+        //プレビューサムネイルを設定
+        let thumbnailData:Data? = defaults.data(forKey: "thumbnailImage")
+        if thumbnailData != nil{
+            let thumbnail = UIImage(data: thumbnailData!)//?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
+            thumbnailImage.image = thumbnail
+        }else{
+            thumbnailImage.image = UIImage(named: "noImage")
+        }
     }
     //選択した写真と写真のパス送る
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "previewImage"){
             (segue.destination as! SelectedImageViewController).selectedImage = thumbnailImage.image
             (segue.destination as! SelectedImageViewController).selectedImagePath = thumbnailPath
+            (segue.destination as! SelectedImageViewController).selectedDirectory = "All"
+            
+            (segue.destination as! SelectedImageViewController).selectRow = 0
             (segue.destination as! SelectedImageViewController).movedPreview = true
         }
     }
     
     
     @IBAction func goToPreview(_ sender: Any) {
-        if thumbnailImage.image != nil{
-            performSegue(withIdentifier: "previewImage", sender: nil)
-        }
+       performSegue(withIdentifier: "previewImage", sender: nil)
     }
     
 }

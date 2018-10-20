@@ -76,10 +76,10 @@
                     <connections>
                         <outlet property="previewView" destination="jsd-UE-E4f" id="75Z-CE-lcw"/>
                         <outlet property="thumbnailImage" destination="1Qh-Jc-boI" id="jeM-jf-avC"/>
-                        <segue destination="E4p-3l-hhN" kind="show" identifier="previewImage" id="VHF-vt-ovZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <exit id="FaW-T6-i11" userLabel="Exit" sceneMemberID="exit"/>
                 <pinchGestureRecognizer id="aaH-xt-1mH">
                     <connections>
                         <action selector="pinchZoom:" destination="BYZ-38-t0r" id="yMv-G0-QZz"/>
@@ -87,7 +87,7 @@
                 </pinchGestureRecognizer>
                 <tapGestureRecognizer id="Ftv-ba-5hp">
                     <connections>
-                        <action selector="goToPreview:" destination="BYZ-38-t0r" id="ZL1-YA-R4Z"/>
+                        <segue destination="E4p-3l-hhN" kind="show" identifier="previewImage" id="7xQ-zD-27L"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -211,7 +211,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" pagingEnabled="YES" maximumZoomScale="4" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9rf-og-TWJ">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" pagingEnabled="YES" maximumZoomScale="4" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9rf-og-TWJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="0.25462015500000001" blue="0.23705924880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
@@ -235,6 +235,7 @@
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" red="1" green="0.25462015500000001" blue="0.23705924880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="Jas-ap-g4G" secondAttribute="bottom" id="IzS-vD-iqE"/>
                                             <constraint firstItem="Jas-ap-g4G" firstAttribute="top" secondItem="n5c-im-g4M" secondAttribute="top" id="NRm-Tr-D87"/>
@@ -264,22 +265,10 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wlr-QA-H1M">
-                                <rect key="frame" x="0.0" y="210" width="375" height="44"/>
-                                <items>
-                                    <navigationItem title="Preview" id="WDZ-nm-Bcg">
-                                        <barButtonItem key="leftBarButtonItem" title="Buck" id="BWm-4w-kto">
-                                            <connections>
-                                                <segue destination="SP9-GJ-a8v" kind="unwind" identifier="comeCamera" unwindAction="comeCameraWithSegue:" id="rKc-BP-ZyK"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mq6-dm-6aP">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <items>
-                                    <navigationItem title="Title" id="hut-h0-aYm">
+                                    <navigationItem id="hut-h0-aYm">
                                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="rgg-K4-MYB">
                                             <connections>
                                                 <action selector="buck:" destination="E4p-3l-hhN" id="M3s-yy-tEp"/>
@@ -291,8 +280,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="9rf-og-TWJ" firstAttribute="top" secondItem="x8j-EB-40L" secondAttribute="top" id="2fA-i0-PVY"/>
-                            <constraint firstItem="9rf-og-TWJ" firstAttribute="bottom" secondItem="T6f-iR-Dfc" secondAttribute="bottom" id="5cD-dG-RIm"/>
+                            <constraint firstItem="9rf-og-TWJ" firstAttribute="top" secondItem="x8j-EB-40L" secondAttribute="top" id="1O2-uC-3F5"/>
                             <constraint firstAttribute="trailing" secondItem="mq6-dm-6aP" secondAttribute="trailing" id="6O5-nV-aol"/>
                             <constraint firstItem="yUr-E8-FoD" firstAttribute="leading" secondItem="T6f-iR-Dfc" secondAttribute="leading" id="7mZ-hB-MOL"/>
                             <constraint firstItem="9rf-og-TWJ" firstAttribute="leading" secondItem="T6f-iR-Dfc" secondAttribute="leading" id="9EI-BB-gpt"/>
@@ -300,25 +288,25 @@
                             <constraint firstItem="mq6-dm-6aP" firstAttribute="top" secondItem="x8j-EB-40L" secondAttribute="top" id="YLg-e9-l9p"/>
                             <constraint firstItem="yUr-E8-FoD" firstAttribute="bottom" secondItem="T6f-iR-Dfc" secondAttribute="bottom" id="bVC-n6-pXI"/>
                             <constraint firstItem="9rf-og-TWJ" firstAttribute="trailing" secondItem="T6f-iR-Dfc" secondAttribute="trailing" id="dnw-Zw-meQ"/>
-                            <constraint firstItem="wlr-QA-H1M" firstAttribute="top" secondItem="T6f-iR-Dfc" secondAttribute="top" constant="146" id="eql-E7-dj6"/>
                             <constraint firstItem="mq6-dm-6aP" firstAttribute="leading" secondItem="x8j-EB-40L" secondAttribute="leading" id="jcA-uP-JIl"/>
+                            <constraint firstItem="9rf-og-TWJ" firstAttribute="bottom" secondItem="T6f-iR-Dfc" secondAttribute="bottom" id="qL6-aq-n6D"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="T6f-iR-Dfc"/>
                     </view>
                     <connections>
                         <outlet property="CollectionView" destination="9rf-og-TWJ" id="7Lp-Oa-U0P"/>
                         <outlet property="EditBar" destination="yUr-E8-FoD" id="Aeb-ce-eet"/>
-                        <outlet property="buckComeraBar" destination="wlr-QA-H1M" id="Ted-ig-Lqm"/>
                         <outlet property="topbar" destination="mq6-dm-6aP" id="4BG-d0-PR8"/>
+                        <outlet property="viewrTitle" destination="hut-h0-aYm" id="INn-q6-9rY"/>
+                        <segue destination="FaW-T6-i11" kind="unwind" identifier="comeCamera" unwindAction="comeCameraWithSegue:" id="UAm-pr-3zn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AN9-Bl-W5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="SP9-GJ-a8v" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="OIp-3e-1mR">
+                <swipeGestureRecognizer direction="right" id="v71-OR-qdY">
                     <connections>
-                        <action selector="tapImageView:" destination="E4p-3l-hhN" id="7k7-Rp-xud"/>
+                        <action selector="swip:" destination="E4p-3l-hhN" id="3ow-xL-6KS"/>
                     </connections>
-                </tapGestureRecognizer>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1813.5999999999999" y="-708.39580209895053"/>
         </scene>
@@ -732,6 +720,6 @@
         <image name="maru" width="60" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DF5-fn-uAR"/>
+        <segue reference="7xQ-zD-27L"/>
     </inferredMetricsTieBreakers>
 </document>

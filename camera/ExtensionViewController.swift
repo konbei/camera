@@ -123,8 +123,15 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         let url:URL = NSURL(string: path)! as URL
         print(path)
         
+        
+        
+        let saveImage =
+            image.reSizeImage(reSize: CGSize(width: 80, height: 80))
         //サムネイルセット
-        thumbnailImage.image = image
+        thumbnailImage.image = saveImage
+        
+        self.defaults.set(saveImage.pngData(),forKey: "thumbnailImage")
+        self.defaults.synchronize()
         thumbnailPath = DocumentPath + "/" + directoryName + "/" + fileName
         
         let pngImageData = image.pngData()
