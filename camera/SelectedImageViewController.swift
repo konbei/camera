@@ -15,6 +15,9 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     
     private let documentPath = NSHomeDirectory() + "/Documents"
     
+    override func viewWillDisappear(_ animated: Bool) {
+          self.navigationController?.isNavigationBarHidden = false
+    }
     
     
     func collectionView(_ collectionView: UICollectionView,
@@ -58,10 +61,18 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         return CGSize(width: width, height: height)
     }
 
-    
+    var safes:CGFloat = 0.0
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        
+        print(self.view.safeAreaInsets)
+        
+        if safe == 0.0{
+            safe = self.view.safeAreaInsets.top
+            safes = safe
+        }
+        
         if UIDevice.current.userInterfaceIdiom == .pad{
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
@@ -78,20 +89,28 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     
-    page = Int(floor(CollectionView.contentOffset.x/self.view.bounds.width))
+    page = Int(ceil(CollectionView.contentOffset.x/self.view.bounds.width))
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        
         if UIDevice.current.userInterfaceIdiom == .phone{
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
-            self.CollectionView.contentSize.width = self.view.frame.width * CGFloat(ax)
-            if self.page != 0{
-                self.CollectionView.setContentOffset(CGPoint(x: self.view.frame.width  * CGFloat(self.page) , y: 0.0), animated: false)
-            }
+            self.CollectionView.contentSize.width = (self.view.frame.width ) * CGFloat(ax)
             
+            //navigationcontrollerからの遷移じゃない場合navigationbarの分詰める
+            if movedPreview{
+                if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight{
+                    safe =  safes
+                }else{
+                    safe = -safes
+                }
+                self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page) + safe  , y: 0.0), animated: false)
+            }else{
+                self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page), y: 0.0), animated: false)
+            }
         }
     }
     
@@ -106,7 +125,6 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
             self.performSegue(withIdentifier: "comeCamera", sender: self)
         }else{
             self.navigationController?.popViewController(animated: true)
-            self.navigationController?.isNavigationBarHidden = false
         }
     }
 
@@ -141,7 +159,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     }
     
     
-  
+    var safe:CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -240,7 +258,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
                 self.performSegue(withIdentifier: "comeCamera", sender: self)
             }else{
                 self.navigationController?.popViewController(animated: true)
-                self.navigationController?.isNavigationBarHidden = false
+ 
             }
             
         })
