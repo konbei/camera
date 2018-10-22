@@ -442,7 +442,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         print("error")
                     }
                     
-                   let client = DropboxClientsManager.authorizedClient 
+                   let client = DropboxClientsManager.authorizedClient
                     client?.files.deleteV2(path: "/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                         if let error = error {
                             // エラーの場合、処理を終了します。
@@ -759,6 +759,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         }
                         return
                     }
+                    
+
+                    
                     count = count + 1
                     if count == detta.count && self.failed{
                         self.makeUploadsResultHUD(bool: false)
@@ -843,6 +846,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             //dropboxのファイル一覧取得
             let _ = client?.files.listFolder(path: "/" + self.holderName[j]).response { response, error in
                 if let error = error {
+                    //ファイル更新がない場合
                     errorFolder.append(self.holderName[j])
                     
                     directoryIsSync = defaults.array(forKey: "selectedDirectorySync") as! [Bool]
@@ -900,9 +904,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 
                 
                 //ドロップボックスから削除されたデータをローカルデータも削除
-                if directoryLocalData.isEmpty != true {
+                if !directoryLocalData.isEmpty  {
                     for i in 0..<directoryLocalData.count{
-                        if dropboxFileName.contains(directoryLocalData[i]) != true{
+                        if !dropboxFileName.contains(directoryLocalData[i]){
                             do {
                                 try FileManager.default.removeItem( atPath: localFolderDirectory + "/" + directoryLocalData[i])
                                 
@@ -926,12 +930,19 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 let directoryFile = self.file.filter {$0.date == self.holderName[j]}
                 
                 for i in 0..<directoryFile.count{
-                    if dropboxFileName.contains(directoryFile[i].name) != true{
+                    if !dropboxFileName.contains(directoryFile[i].name) {
                         uploadData?.append(directoryFile[i])
                         
+                    }else{
+                        // アップロード済みのものを追加
+                         directoryLocalData.append(directoryFile[i].name)
                     }
-                    directoryLocalData.append(directoryFile[i].name)
+                   
                 }
+                
+                //ローカルファイル名保存
+                self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
+                defaults.synchronize()
                 
                 //ローカルファイルになく、ドロップボックスにあるファイル一覧をの名前を取得
                 
@@ -944,8 +955,6 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 }
 
                 
-                //ローカルファイル名保存
-                self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
                 
                 var downloadcount = 0
                 var uploadcount = 0
@@ -1021,7 +1030,16 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 }
                                 return
                             }
+                            
                             uploadcount = uploadcount + 1
+                            
+                            //アップロード情報セーブ
+                            directoryLocalData = defaults.stringArray(forKey: self.holderName[j]) ?? []
+                            directoryLocalData.append((uploadData![i].name))
+                            self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
+                            defaults.synchronize()
+                            
+                            
                             if downloadcount == downloadFileName?.count && uploadcount == uploadData?.count{
                                 
                                 directoryCount = directoryCount + 1
@@ -1035,14 +1053,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 //save
                                 defaults.set(directoryIsSync, forKey: "selectedDirectorySync")
                                 defaults.synchronize()
-                                //   }
-                                
-     
-                                    //save
-                                    defaults.set(directoryIsSync, forKey: "selectedDirectorySync")
-                                    defaults.synchronize()
-                                
-                                print(directoryIsSync)
+ 
                                 let filterDirectoryIsSync = directoryIsSync.filter {$0 == false }
                                 //全体同期完了
                                 if filterDirectoryIsSync.count == directoryIsSync.count{
@@ -1139,8 +1150,11 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                                 }
                             }
                             
+                            //ダウンロード情報セーブ
+                            directoryLocalData = defaults.stringArray(forKey: self.holderName[j]) ?? []
                             directoryLocalData.append((downloadFileName?[i])!)
                             self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
+                            defaults.synchronize()
                             
                             self.loadImage()
                             self.thumbmnailImages = []
