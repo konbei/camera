@@ -153,6 +153,11 @@ class CameraViewController: UIViewController {
         setPreviewLayer()
         // セッション開始
         session.startRunning()
+        
+        //ピンチ拡大、縮小追加
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(CameraViewController.pinchedGesture(gestureRecgnizer:)))
+        self.previewView.addGestureRecognizer(pinchGesture)
+        
         // デバイスが回転したときに通知するイベントハンドラを設定する
         notification.addObserver(self,
                                  selector: #selector(self.changedDeviceOrientation(_:)),
@@ -248,41 +253,99 @@ class CameraViewController: UIViewController {
         }
     }
     
-    //ピンチで拡大縮小機能
-     var zoomFactor: CGFloat = 1.0
-    @IBAction func pinchZoom(_ sender: UIPinchGestureRecognizer) {
-        let device = AVCaptureDevice.default(
-            AVCaptureDevice.DeviceType.builtInWideAngleCamera,
-            for: AVMediaType.video, // ビデオ入力
-            position: AVCaptureDevice.Position.back) // バックカメラ
-        
-        func minMaxZoom(_ factor: CGFloat) -> CGFloat { return min(max(factor, 1.0), device!.activeFormat.videoMaxZoomFactor) }
-        
-        func update(scale factor: CGFloat) {
-            do {
-                try device!.lockForConfiguration()
-                defer { device!.unlockForConfiguration() }
-                device!.videoZoomFactor = factor
-            } catch {
-                debugPrint(error)
-            }
-        }
-        
-        let newScaleFactor = minMaxZoom(sender.scale * zoomFactor)
-        
-        switch sender.state {
-        case .began: fallthrough
-        case .changed: update(scale: newScaleFactor)
-        case .ended:
-            zoomFactor = minMaxZoom(newScaleFactor)
-            update(scale: zoomFactor)
-        default: break
-        }
-    }
     var thumbnailPath:String!
     @IBOutlet weak var thumbnailImage: UIImageView!
-
     
+    //ピンチズーム、縮小
+    var oldZoomScale: CGFloat = 1.0
+      var camera:AVCaptureDevice!
+    @objc func pinchedGesture(gestureRecgnizer: UIPinchGestureRecognizer) {
+        do {
+            camera = AVCaptureDevice.default(
+                AVCaptureDevice.DeviceType.builtInWideAngleCamera,
+                for: AVMediaType.video, // ビデオ入力
+                position: AVCaptureDevice.Position.back)
+            try camera.lockForConfiguration()
+            // ズームの最大値
+            let maxZoomScale: CGFloat = 6.0
+            // ズームの最小値
+            let minZoomScale: CGFloat = 1.0
+            // 現在のカメラのズーム度
+            var currentZoomScale: CGFloat = camera.videoZoomFactor
+            // ピンチの度合い
+            let pinchZoomScale: CGFloat = gestureRecgnizer.scale
+            
+            // ピンチアウトの時、前回のズームに今回のズーム-1を指定
+            // 例: 前回3.0, 今回1.2のとき、currentZoomScale=3.2
+            if pinchZoomScale > 1.0 {
+                currentZoomScale = oldZoomScale+pinchZoomScale-1
+            } else {
+                currentZoomScale = oldZoomScale-(1-pinchZoomScale)*oldZoomScale
+            }
+            
+            // 最小値より小さく、最大値より大きくならないようにする
+            if currentZoomScale < minZoomScale {
+                currentZoomScale = minZoomScale
+            }
+            else if currentZoomScale > maxZoomScale {
+                currentZoomScale = maxZoomScale
+            }
+            
+            // 画面から指が離れたとき、stateがEndedになる。
+            if gestureRecgnizer.state == .ended {
+                oldZoomScale = currentZoomScale
+            }
+            
+            camera.videoZoomFactor = currentZoomScale
+            camera.unlockForConfiguration()
+        } catch {
+            // handle error
+            return
+        }
+    }
+    
+    func focusWithMode(focusMode : AVCaptureDevice.FocusMode, exposeWithMode expusureMode :AVCaptureDevice.ExposureMode, atDevicePoint point:CGPoint, motiorSubjectAreaChange monitorSubjectAreaChange:Bool) {
+        DispatchQueue(label: "session queue").async {
+        
+        
+        
+            let device = AVCaptureDevice.default(
+                AVCaptureDevice.DeviceType.builtInWideAngleCamera,
+                for: AVMediaType.video, // ビデオ入力
+                position: AVCaptureDevice.Position.back) // バックカメラ
+        let dispatchQueue = DispatchQueue(label: "queue")
+            
+            print(device!.focusPointOfInterest)
+            print(device!.focusMode)
+            print(device!.exposurePointOfInterest)
+            print(device!.exposureMode)
+            do {
+                try device?.lockForConfiguration()
+                if(device!.isFocusPointOfInterestSupported && device!.isFocusModeSupported(focusMode)){
+                    device!.focusPointOfInterest = point
+                    device!.focusMode = focusMode
+                }
+                if(device!.isExposurePointOfInterestSupported && device!.isExposureModeSupported(expusureMode)){
+                    device!.exposurePointOfInterest = point
+                    device!.exposureMode = expusureMode
+                }
+                
+                device?.focusMode = AVCaptureDevice.FocusMode.continuousAutoFocus
+                
+                device!.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
+                device!.unlockForConfiguration()
+                device?.focusMode = AVCaptureDevice.FocusMode.continuousAutoFocus
+                device!.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+            } catch let error as NSError {
+                print(error.debugDescription)
+            }
+            
+        }
+   
+    }
+    
+    
+    //プレビューに移動
     @IBAction func comeCamera (segue: UIStoryboardSegue){
         //プレビューサムネイルを設定
         let thumbnailData:Data? = defaults.data(forKey: "thumbnailImage")

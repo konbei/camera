@@ -68,8 +68,13 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         
         print(self.view.safeAreaInsets)
         
-        if safe == 0.0{
+        if safes == 0.0{
             safe = self.view.safeAreaInsets.top
+            safes = safe
+        }
+        
+        if safes == 0.0{
+            safe = self.view.safeAreaInsets.left
             safes = safe
         }
         

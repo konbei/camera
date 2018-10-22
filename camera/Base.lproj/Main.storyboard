@@ -656,7 +656,7 @@
                     <navigationItem key="navigationItem" title="授業名称設定" id="HZ3-cU-S6O">
                         <barButtonItem key="rightBarButtonItem" title="授業名称設定" style="plain" id="VtQ-pp-VO1">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
-                                <rect key="frame" x="311" y="5.6666666666666679" width="83" height="33"/>
+                                <rect key="frame" x="359" y="5.6666666666666679" width="35" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="保存"/>
@@ -704,11 +704,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="時刻設定" id="xlD-68-KRP">
-                        <barButtonItem key="rightBarButtonItem" title="保存" id="FU5-tI-UOh">
-                            <connections>
-                                <action selector="saveButton" destination="sYq-gA-OSh" id="WdM-M6-7Uf"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="保存" id="FU5-tI-UOh">
+                                <connections>
+                                    <action selector="saveButton" destination="sYq-gA-OSh" id="WdM-M6-7Uf"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="stop" id="8Xr-vW-d4b">
+                                <connections>
+                                    <action selector="deleteTime:" destination="sYq-gA-OSh" id="Hs6-Vu-9fR"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VLt-7a-RVM" userLabel="First Responder" sceneMemberID="firstResponder"/>

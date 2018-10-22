@@ -56,6 +56,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         try! context.save()
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる

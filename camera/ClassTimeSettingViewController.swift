@@ -111,6 +111,24 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
     }
     
     
+    
+    @IBAction func deleteTime(_ sender: Any) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<SettingsTime> = SettingsTime.fetchRequest()
+        let SettingsData = try! context.fetch(fetchRequest)
+        for i in 0..<SettingsData.count{
+            SettingsData[i].startClassTime = Int16(9999)
+            SettingsData[i].finishClassTime = Int16(9999)
+        }
+        try! context.save()
+        startClassTime = [9999,9999,9999,9999,9999,9999]
+        finishClassTime = [9999,9999,9999,9999,9999,9999]
+        tableView.reloadData()
+        
+        
+    }
+    
+    
     //開始時刻と終了時刻をCoreDataから取得
     func getClassTimeData(){
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

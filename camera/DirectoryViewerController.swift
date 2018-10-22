@@ -442,11 +442,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         print("error")
                     }
                     
-                    guard let client = DropboxClientsManager.authorizedClient else {
-                        return
-                    }
-                    
-                    client.files.deleteV2(path: "/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                   let client = DropboxClientsManager.authorizedClient 
+                    client?.files.deleteV2(path: "/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                         if let error = error {
                             // エラーの場合、処理を終了します。
                             // 必要ならばエラー処理してください。
@@ -465,11 +462,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         print("error")
                     }
                     
-                    guard let client = DropboxClientsManager.authorizedClient else {
-                        return
-                    }
+                    let client = DropboxClientsManager.authorizedClient
                     
-                    client.files.deleteV2(path: "/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                    client?.files.deleteV2(path: "/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                         if let error = error {
                             // エラーの場合、処理を終了します。
                             // 必要ならばエラー処理してください。
