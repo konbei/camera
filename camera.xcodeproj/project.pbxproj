@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F207639217A7B83006338C8 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F207638217A7B83006338C8 /* Collection.swift */; };
 		2F3D931B21783CDC0024EBFA /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3D931A21783CDC0024EBFA /* CheckBoxView.swift */; };
 		2F502C302171CAB000D69DE9 /* Dropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F502C2F2171CAB000D69DE9 /* Dropbox.swift */; };
 		2F74FAD421731680008D48A5 /* ClassDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F74FAD321731680008D48A5 /* ClassDataManager.swift */; };
@@ -62,7 +61,6 @@
 		04B16ED46385897CA5B83CD4 /* Pods-cameraTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cameraTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cameraTests/Pods-cameraTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0A3B42221D2254E32A11B348 /* Pods-camera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-camera.debug.xcconfig"; path = "Pods/Target Support Files/Pods-camera/Pods-camera.debug.xcconfig"; sourceTree = "<group>"; };
 		0FE8ACD59AD6544E63614BFC /* Pods_camera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_camera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F207638217A7B83006338C8 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		2F3D931A21783CDC0024EBFA /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		2F502C2F2171CAB000D69DE9 /* Dropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dropbox.swift; sourceTree = "<group>"; };
 		2F74FAD321731680008D48A5 /* ClassDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDataManager.swift; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 				2F3D931A21783CDC0024EBFA /* CheckBoxView.swift */,
 				2FE921E2216603D000021527 /* DirectoryViewrCell.swift */,
 				2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */,
-				2F207638217A7B83006338C8 /* Collection.swift */,
 				2FD9276E215B17F100368A6B /* SettingsTopViewController.swift */,
 				2FD92770215B2B9800368A6B /* ClassNameSettingViewController.swift */,
 				2F84409A215C8812007A7549 /* ClassNameTableCell.swift */,
@@ -440,6 +437,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-camera/Pods-camera-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SimpleImageViewer/SimpleImageViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyDropbox/SwiftyDropbox.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -448,6 +446,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleImageViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyDropbox.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,7 +480,6 @@
 				2FE921E3216603D000021527 /* DirectoryViewrCell.swift in Sources */,
 				2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */,
 				2FD9276B2159D82B00368A6B /* ClassTimeSettingViewController.swift in Sources */,
-				2F207639217A7B83006338C8 /* Collection.swift in Sources */,
 				2FE921D92163067A00021527 /* AnimatedDatePickerView.swift in Sources */,
 				2FE88D28215744F0004BB3C9 /* AppDelegate.swift in Sources */,
 				2FD9276F215B17F100368A6B /* SettingsTopViewController.swift in Sources */,
