@@ -210,10 +210,20 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
          return sectionTitle.count
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
-    {
-        //セクションタイトルを返す
-        return sectionTitle[section]
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // HeaderのViewを作成してViewを返す
+        let headerView = UIView()
+        let label = UILabel()
+        label.frame.size = tableView.rectForHeader(inSection: section).size
+        label.contentMode = UIView.ContentMode.scaleAspectFit
+        label.text = sectionTitle[section]
+        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor(hex: "C15320")
+        
+        headerView.addSubview(label)
+        return headerView
     }
     
     //オリジナルDatePickerをインスタンス化

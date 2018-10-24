@@ -32,7 +32,8 @@ class SettingsTopViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        tableView.separatorColor = UIColor(hex: "C15320")
         tableData = ["時刻設定","授業名称設定"]
         
         // Uncomment the following line to preserve selection between presentations
@@ -54,12 +55,24 @@ class SettingsTopViewController: UITableViewController {
         return 2
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
-    {
-        //セクションタイトルを返す
-        return "設定項目"
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // HeaderのViewを作成してViewを返す
+        let headerView = UIView()
+        let label = UILabel()
+        label.frame = tableView.rectForHeader(inSection: section)
+        label.contentMode = UIView.ContentMode.scaleAspectFit
+        label.text = "設定項目"
+        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor(hex: "C15320")
+        
+        headerView.addSubview(label)
+        return headerView
     }
+    
 
+    
     override   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         //各行に表示するセルを返す

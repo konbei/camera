@@ -55,6 +55,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     
   //  var mainScrollView: UIScrollView!
     
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = view.frame.width
         let height: CGFloat = view.bounds.height//view.bounds.height - collectionView.frame.height //- editBar.frame.height //- topbar.frame.height// + editBar.frame.height
@@ -64,6 +65,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     var safes:CGFloat = 0.0
     
     override func viewWillLayoutSubviews() {
+        
         super.viewWillLayoutSubviews()
         
         print(self.view.safeAreaInsets)
@@ -104,15 +106,34 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
             self.CollectionView.contentSize.width = (self.view.frame.width ) * CGFloat(ax)
-            
+            self.CollectionView.contentSize.height = self.view.frame.height
             //navigationcontrollerからの遷移じゃない場合navigationbarの分詰める
             if movedPreview{
                 if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight{
-                    safe =  safes
+                    //ベゼルディスプレイか判定
+                    if view.safeAreaInsets.bottom == 0{
+                        safe = 0
+                    }else{
+                        safe = safes
+                    }
+                    if page == 0{
+     
+                        
+                        self.CollectionView.setContentOffset(CGPoint(x:+self.view.safeAreaInsets.left, y: 0), animated: false)
+                    }else{
+                        self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page) + safe  , y: 0.0), animated: false)
+                    }
                 }else{
-                    safe = -safes
+     
+
+                    if view.safeAreaInsets.bottom == 0{
+                        safe = 0
+                    }else{
+                        safe = -safes
+                    }
+                    
+                    self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page) + safe  , y: 0.0), animated: false)
                 }
-                self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page) + safe  , y: 0.0), animated: false)
             }else{
                 self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page), y: 0.0), animated: false)
             }
@@ -122,6 +143,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     @IBOutlet weak var viewrTitle: UINavigationItem!
     @IBOutlet weak var buckComeraBar: UINavigationBar!
     
+    @IBOutlet weak var safeAreaColor: UINavigationBar!
     @IBOutlet weak var topbar: UINavigationBar!
     @IBOutlet weak var editBar: UINavigationBar!
     
@@ -197,7 +219,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         super.touchesBegan(touches, with: event)
         editBar.isHidden = !editBar.isHidden
         topbar.isHidden = !topbar.isHidden
-        
+        safeAreaColor.isHidden = !safeAreaColor.isHidden
     }
     
     

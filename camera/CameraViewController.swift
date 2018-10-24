@@ -114,7 +114,7 @@ class CameraViewController: UIViewController {
         }
         return 0
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる
@@ -163,7 +163,7 @@ class CameraViewController: UIViewController {
                                  selector: #selector(self.changedDeviceOrientation(_:)),
                                  name: UIDevice.orientationDidChangeNotification, object: nil)
     }
-
+    
     //カメラ機能の実装
     
     @IBOutlet weak var previewView: UIView!
@@ -258,7 +258,7 @@ class CameraViewController: UIViewController {
     
     //ピンチズーム、縮小
     var oldZoomScale: CGFloat = 1.0
-      var camera:AVCaptureDevice!
+    var camera:AVCaptureDevice!
     @objc func pinchedGesture(gestureRecgnizer: UIPinchGestureRecognizer) {
         do {
             camera = AVCaptureDevice.default(
@@ -306,14 +306,14 @@ class CameraViewController: UIViewController {
     
     func focusWithMode(focusMode : AVCaptureDevice.FocusMode, exposeWithMode expusureMode :AVCaptureDevice.ExposureMode, atDevicePoint point:CGPoint, motiorSubjectAreaChange monitorSubjectAreaChange:Bool) {
         DispatchQueue(label: "session queue").async {
-        
-        
-        
+            
+            
+            
             let device = AVCaptureDevice.default(
                 AVCaptureDevice.DeviceType.builtInWideAngleCamera,
                 for: AVMediaType.video, // ビデオ入力
                 position: AVCaptureDevice.Position.back) // バックカメラ
-        let dispatchQueue = DispatchQueue(label: "queue")
+            let dispatchQueue = DispatchQueue(label: "queue")
             
             print(device!.focusPointOfInterest)
             print(device!.focusMode)
@@ -341,7 +341,7 @@ class CameraViewController: UIViewController {
             }
             
         }
-   
+        
     }
     
     
@@ -370,7 +370,7 @@ class CameraViewController: UIViewController {
     
     
     @IBAction func goToPreview(_ sender: Any) {
-       performSegue(withIdentifier: "previewImage", sender: nil)
+        performSegue(withIdentifier: "previewImage", sender: nil)
     }
     
 }

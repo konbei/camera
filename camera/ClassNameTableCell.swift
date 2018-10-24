@@ -25,12 +25,14 @@ class ClassNameTableCell: UITableViewCell,UITextFieldDelegate
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
      
     }
     
     //主にビューのフレームが変更された時に呼ばれる
     override func layoutSubviews() {
         super.layoutSubviews()
+ 
         ClassNameText.delegate = self   //textfieldからデリゲート
     }
     

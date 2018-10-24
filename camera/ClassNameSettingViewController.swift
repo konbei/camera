@@ -101,18 +101,26 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         return sectionTitles.count
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
-    {
-        //セクションタイトルを返す
-        return sectionTitles[section]
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // HeaderのViewを作成してViewを返す
+        let headerView = UIView()
+        let label = UILabel()
+        label.frame.size = tableView.rectForHeader(inSection: section).size
+        label.contentMode = UIView.ContentMode.scaleAspectFit
+        label.text = sectionTitles[section]
+        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor(hex: "C15320")
+        
+        headerView.addSubview(label)
+        return headerView
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        tableView.separatorColor = UIColor(hex: "C15320")
         //テーブルデータ初期化
         sectionTitles = ["月曜","火曜","水曜","木曜","金曜"]
         rowTitles = ["1限:","2限:","3限:","4限:","5限:","6限:"]

@@ -9,7 +9,12 @@
 import UIKit
 import CoreData
 //時限ごとの名前
-class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate {
+class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        // ステータスバーの文字色を白で指定
+        return .lightContent
+    }
     
     // 画面を自動で回転させるか
     override var shouldAutorotate: Bool {
@@ -58,49 +63,135 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる
         self.classes = ClassDataManager().fetchAllClasses()
-        // 再読み込みする
         cv.reloadData()
     }
+    
+    var safeAreaHeight:CGFloat!
+    var safeAreaWidth:CGFloat!
+    var cellWidth:CGFloat!
+    var cellHight:CGFloat!
+    var spaceWidth:CGFloat!
+    var spaceHight:CGFloat!
+    var miniWidth:CGFloat!
+    var miniHeight:CGFloat!
+    
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        safeAreaHeight = self.view.frame.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom  -  UIApplication.shared.statusBarFrame.height
+        
+        safeAreaWidth = self.view.bounds.width //- self.view.safeAreaInsets.left - self.additionalSafeAreaInsets.right
+        
+        cellWidth = safeAreaWidth / 6
+        cellHight = safeAreaHeight / 8
+        miniWidth = cellWidth / 3
+        miniHeight = miniWidth
+        spaceWidth = ((cellWidth / 3) * 2) / 6
+        spaceHight = (cellHight - miniHeight) / 8
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: spaceHight, left: 0, bottom: 0, right: 0)
+  
+        layout.minimumInteritemSpacing = spaceWidth
+        print(layout.sectionInset)
+        cv.collectionViewLayout = layout
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+     //cellのサイズを動的に設定
+     if indexPath.row == 0 && indexPath.section == 0{
+     return CGSize(width: miniWidth, height: miniHeight)
+     }else if indexPath.section == 0{
+     return CGSize(width: cellWidth, height: miniHeight)
+     }else if indexPath.row == 0{
+     return CGSize(width: miniWidth, height: cellHight )
+     }else{
+     return CGSize(width: cellWidth, height: cellHight)
+     }
+        
+    }
+    
+  
     
     //コレクションセル作成
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell:UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath)
+        
+        
+        
+        
         let label = cell.contentView.viewWithTag(1) as! UILabel
-        let nameDay = self.numberday(num: indexPath.row)
-        let period = String(indexPath.section + 1)
+        label.adjustsFontSizeToFitWidth = true
+       
         
-        // 特定の曜日、時限に当てはまる授業を探し出す
-        let matchedClass = self.classes?.first { $0.nameday == nameDay && $0.nameclass == period }
-        label.text = matchedClass?.classname ?? ""
-        
+        if indexPath.row == 0 && indexPath.section == 0{
+            cell.backgroundColor = UIColor.clear
+            label.backgroundColor = UIColor.clear
+        }else if indexPath.row == 0{
+            label.adjustsFontSizeToFitWidth = false
+            label.font = UIFont.systemFont(ofSize: miniWidth-6)
+ 
+            label.numberOfLines = 0
+            if indexPath.section != 7{
+                label.text = "\(indexPath.section)"
+            }else{
+                label.text = "他"
+            }
+        }else if indexPath.section == 0{
+            label.font = UIFont(name: "Title 3", size: 5)
+            label.adjustsFontSizeToFitWidth = true
+            label.text = "\(self.numberday(num: indexPath.row-1))"
+        }else{
+            
+            let nameDay = self.numberday(num: indexPath.row - 1)
+            var period:String = ""
+            if indexPath.section == 7{
+                period = "0"
+            }else{
+                period = String(indexPath.section)
+            }
+            if label.backgroundColor == UIColor.clear{
+                label.backgroundColor = UIColor(hex: "1F9956")
+                cell.backgroundColor = UIColor(hex: "C15320")
+            }
+            // 特定の曜日、時限に当てはまる授業を探し出す
+            let matchedClass = self.classes?.first { $0.nameday == nameDay && $0.nameclass == period }
+            label.text = matchedClass?.classname ?? ""
+        }
+
         return cell
     }
     
-    // コレクションセクションの数（今回は1つだけです）
+    // コレクションセクションの数
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // section数は１つ
-        return 7//時限数
+        return 8//時限数 + 次元
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int
     {
         // 要素数を入れる、要素以上の数字を入れると表示でエラーとなる
-        return 5; //曜日数
+        return 6 //曜日数 + 曜日欄
     }
     
     //タップされたセルのindexからディレクトリの名前を取得してビュワーに遷移
     var directoryName = ""
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if(indexPath.section != 6){
-            directoryName = numberday(num: indexPath.row) + "\(indexPath.section+1)"
-            
-        }else{
-            directoryName = numberday(num: indexPath.row) + "0"
+        if indexPath.section != 0 && indexPath.row != 0{
+            if(indexPath.section != 7){
+                directoryName = numberday(num: indexPath.row-1) + "\(indexPath.section)"
+                
+            }else{
+                directoryName = numberday(num: indexPath.row-1) + "0"
+            }
+            performSegue(withIdentifier: "directoryViewr", sender: nil)
         }
-        performSegue(withIdentifier: "directoryViewr", sender: nil)
     }
     
     //全部表示ボタン
@@ -122,23 +213,20 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "directoryViewr"){
+            print(directoryName)
             (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName
         }
     }
     
-    
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let layout = UICollectionViewFlowLayout()
-        //セクション間の余白設定(bottom下)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
-        cv.collectionViewLayout = layout
-        
-        
-    }
+        self.navigationController?.navigationBar.barTintColor = UIColor(hex: "1F9956")
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes  }
     // Do any additional setup after loading the view.
     
     
@@ -152,4 +240,25 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
      }
      */
     
+}
+
+extension UICollectionViewCell{
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        UIFont()
+    }
+}
+
+extension UIColor {
+    convenience init(hex: String, alpha: CGFloat) {
+        let v = hex.map { String($0) } + Array(repeating: "0", count: max(6 - hex.count, 0))
+        let r = CGFloat(Int(v[0] + v[1], radix: 16) ?? 0) / 255.0
+        let g = CGFloat(Int(v[2] + v[3], radix: 16) ?? 0) / 255.0
+        let b = CGFloat(Int(v[4] + v[5], radix: 16) ?? 0) / 255.0
+        self.init(red: r, green: g, blue: b, alpha: alpha)
+    }
+    
+    convenience init(hex: String) {
+        self.init(hex: hex, alpha: 1.0)
+    }
 }

@@ -206,9 +206,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }
         
         
-       
+        
         let selectView = CheckBoxView(frame: CGRect(x:0,y:0,width:23,height:23), selected: true)
         cell.selectedBackgroundView = selectView
+        
         
         var thumbnail:UIImage? = nil
         let group = DispatchGroup()
@@ -220,8 +221,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 group.leave()
             }
             group.notify(queue: .main){
-                let thumbnailImage = cell.backgroundView as! UIImageView
-                thumbnailImage.image = thumbnail
+                cell.img.image = thumbnail
             }
         
         return cell
@@ -302,7 +302,10 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-       
+        //選択解除
+        for indexpath in (cv?.indexPathsForSelectedItems)!{
+            cv.deselectItem(at: indexpath, animated: false)
+        }
         loadImage()
         thumbmnailImages = []
         cv.reloadData()
@@ -536,17 +539,21 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         // Do any additional setup after loading the view.
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+        
         let dropboxImage = UIImage(named: "Dropbox")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
         
         let dropboxButton = UIBarButtonItem(image: dropboxImage, landscapeImagePhone: dropboxImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.dropboxTapped))
         dropboxItem.setLeftBarButton(dropboxButton, animated: false)
+       
         
-        let syncImage = UIImage(named: "sync")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+        
+        let syncImage = UIImage(named: "sync")?.withRenderingMode(UIImage.RenderingMode.automatic)
         let syncButton = UIBarButtonItem(image: syncImage, landscapeImagePhone: syncImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.syncDropbox))
         
         let barButtonItems = [dropboxButton,syncButton]
-        
+        editBarButtonItem.tintColor = UIColor.white
         dropboxItem.setLeftBarButtonItems(barButtonItems, animated: false)
+        
     }
     
     //use DropBox

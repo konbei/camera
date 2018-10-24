@@ -12,6 +12,7 @@ class DirectoryViewrCell: UICollectionViewCell {
     var backView:UIView?
     var testView : UIView?
 
+    @IBOutlet weak var img: UIImageView!
     
     //セルが再利用される時呼ばれる、このタイミングで初期化する
     override func prepareForReuse() {
