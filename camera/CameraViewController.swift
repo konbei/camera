@@ -107,9 +107,7 @@ class CameraViewController: UIViewController {
         }else{
             thumbnailImage.image = UIImage(named: "noImage")
         }
-      
-        
-        
+
         makeDirectory()
         startClassTime = [9999,9999,9999,9999,9999,9999]
         finishClassTime = [9999,9999,9999,9999,9999,9999]
@@ -137,6 +135,11 @@ class CameraViewController: UIViewController {
                                  name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        // CoreDataからデータをfetchしてくる
+        getClassTimeData()
+    }
+    
     //選択した写真と写真のパス送る
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "previewImage"){
@@ -149,10 +152,7 @@ class CameraViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        // CoreDataからデータをfetchしてくる
-        getClassTimeData()
-    }
+    
     
     @IBAction func goToPreview(_ sender: Any) {
         performSegue(withIdentifier: "previewImage", sender: nil)
@@ -160,13 +160,23 @@ class CameraViewController: UIViewController {
     
     //プレビューから戻ってくる
     @IBAction func comeCamera (segue: UIStoryboardSegue){
-        //サムネイル設定
-        let file = self.util.loadImage(selectedDirectoryName: "All")
-        if file?.count != 0{
-            thumbnailImage.image = file?[0].image?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
-        }else{
-            thumbnailImage.image = UIImage(named: "noImage")
+        viewDidLoad()
+    }
+    
+    // メモリ解放
+    override func viewDidDisappear(_ animated: Bool) {
+        // camera stop メモリ解放
+        session.stopRunning()
+        
+        for output in session.outputs {
+            session.removeOutput(output as AVCaptureOutput)
         }
+        
+        for input in session.inputs {
+            session.removeInput(input as AVCaptureInput)
+        }
+        
+        camera = nil
     }
     
     //カメラ機能の実装
