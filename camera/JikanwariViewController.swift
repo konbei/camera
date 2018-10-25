@@ -32,29 +32,8 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     
     // 授業一覧
     private var classes: [SettingsData2]?
-    
-    //曜日と時限数
-    var daycounts = 5
-    var classcounts = 6
-    
-    //数字に対応する曜日のStringを返す
-    func numberday(num:Int) ->String{
-        switch num{
-        case 0:
-            return "Mon"
-        case 1:
-            return "Tues"
-        case 2:
-            return "Wednes"
-        case 3:
-            return "Thurs"
-        case 4:
-            return "Fri"
-        default:
-            return ""
-        }
-        
-    }
+    let util = Util()
+   
     
     @IBOutlet weak var cv: UICollectionView!
     
@@ -144,10 +123,10 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         }else if indexPath.section == 0{
             label.font = UIFont(name: "Title 3", size: 5)
             label.adjustsFontSizeToFitWidth = true
-            label.text = "\(self.numberday(num: indexPath.row-1))"
+            label.text = "\(self.util.numberday(num: indexPath.row-1))"
         }else{
             
-            let nameDay = self.numberday(num: indexPath.row - 1)
+            let nameDay = self.util.numberday(num: indexPath.row - 1)
             var period:String = ""
             if indexPath.section == 7{
                 period = "0"
@@ -185,10 +164,10 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section != 0 && indexPath.row != 0{
             if(indexPath.section != 7){
-                directoryName = numberday(num: indexPath.row-1) + "\(indexPath.section)"
+                directoryName = self.util.numberday(num: indexPath.row-1) + "\(indexPath.section)"
                 
             }else{
-                directoryName = numberday(num: indexPath.row-1) + "0"
+                directoryName = self.util.numberday(num: indexPath.row-1) + "0"
             }
             performSegue(withIdentifier: "directoryViewr", sender: nil)
         }
@@ -245,7 +224,6 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
 extension UICollectionViewCell{
     open override func prepareForReuse() {
         super.prepareForReuse()
-        UIFont()
     }
 }
 

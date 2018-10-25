@@ -30,11 +30,6 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
         }
     }
     
-    
-    
-    private var daycounts = 5
-    private var classcounts = 6
-    
     //TableViewで扱う空の配列(ここで初期化したらコンパイル時にエラーはいたのでViewDidLoadで初期化
     private var sectionTitle: [String] = []  //1限、2限...
     var startClassTime:[Int] = []   //時限ごとの開始時刻データ
@@ -95,7 +90,7 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
                 }
             }else{
                 //Core Dataにデータ格納してない時
-                for row in 0..<classcounts{
+                for row in 0..<6{
                     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
                     let SettingData = SettingsTime(context:context)
                     SettingData.startClassTime = Int16(startClassTime[row])

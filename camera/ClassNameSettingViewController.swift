@@ -28,28 +28,8 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
     
     // 授業一覧
     private var classes: [SettingsData2]?
-    
-    //曜日と時限数
-    private var daycounts = 5
-    private var classcounts = 6
-    
-    //数字に対応する曜日のStringを返す
-    func numberday(num:Int) ->String{
-        switch num{
-        case 0:
-            return "Mon"
-        case 1:
-            return "Tues"
-        case 2:
-            return "Wednes"
-        case 3:
-            return "Thurs"
-        case 4:
-            return "Fri"
-        default:
-            return ""
-        }
-    }
+    let util = Util()
+
     
     //保存ボタン押した時にCoreDataに名前を保存する
     @IBAction func SaveBotton() {
@@ -85,7 +65,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         let rowTitle = rowTitles[indexPath.row]
         cell.ClassNumber!.text = rowTitle  //時限セット
         
-        let nameDay = self.numberday(num: indexPath.section)
+        let nameDay = self.util.numberday(num: indexPath.section)
         let period = String(indexPath.row + 1)
         let matchedClass = self.classes?.first { $0.nameday == nameDay && $0.nameclass == period }
         cell.ClassNameText!.text = matchedClass?.classname ?? ""      //名前セット
@@ -140,7 +120,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         
         let section = index?.section
         let row = index?.row
-        let nameDay = self.numberday(num: section!)
+        let nameDay = self.util.numberday(num: section!)
         let period = String(row! + 1)
         
         // indexPathに対応した授業名、曜日、時限を記録する

@@ -31,40 +31,19 @@ class CameraViewController: UIViewController {
         }
     }
     
-    private var daycounts = 7
-    private var classcounts = 6
+
     private var startClassTime:[Int] = []   //時限ごとの開始時刻データ
     private var finishClassTime:[Int] = []
-    
-    func numberday(num:Int) ->String{
-        switch num{
-        case 0:
-            return "Mon"
-        case 1:
-            return "Tues"
-        case 2:
-            return "Wednes"
-        case 3:
-            return "Thurs"
-        case 4:
-            return "Fri"
-        case 5:
-            return "Satur"
-        case 6:
-            return "Sun"
-        default:
-            return ""
-        }
-        
-    }
+    private let util = Util()
+   
     
     //写真データを格納するディレクトリを作成
     func makeDirectory(){
         let fileManager = FileManager.default
         let DocumentPath = NSHomeDirectory() + "/Documents"
-        for day in 0..<daycounts{
+        for day in 0..<self.util.dayCounts{
             if day > 4{
-                let DirectoryPath = DocumentPath + "/" + numberday(num: day)
+                let DirectoryPath = DocumentPath + "/" + self.util.numberday(num: day)
                 if fileManager.fileExists(atPath: DirectoryPath) == false{
                     do{
                         try fileManager.createDirectory(atPath: DirectoryPath, withIntermediateDirectories: true, attributes: nil)
@@ -73,8 +52,8 @@ class CameraViewController: UIViewController {
                     }
                 }
             }else{
-                for classes in 0...classcounts{
-                    let DirectoryPath = DocumentPath + "/" + numberday(num: day) + "\(classes)"
+                for classes in 0...self.util.classCounts{
+                    let DirectoryPath = DocumentPath + "/" + self.util.numberday(num: day) + "\(classes)"
                     if fileManager.fileExists(atPath: DirectoryPath) == false{
                         do{
                             try fileManager.createDirectory(atPath: DirectoryPath, withIntermediateDirectories: true, attributes: nil)
@@ -103,7 +82,7 @@ class CameraViewController: UIViewController {
     }
     //現時時刻から何限か返す
     func getClassTime(intTime:Int)->Int{
-        for i in 0..<classcounts{
+        for i in 0..<self.util.classCounts{
             if startClassTime[i] != 9999 && finishClassTime[i] != 9999{
                 let  ClassTimeRange = startClassTime[i]...finishClassTime[i]
                 if ClassTimeRange.contains(intTime) == true{
@@ -313,7 +292,7 @@ class CameraViewController: UIViewController {
                 AVCaptureDevice.DeviceType.builtInWideAngleCamera,
                 for: AVMediaType.video, // ビデオ入力
                 position: AVCaptureDevice.Position.back) // バックカメラ
-            let dispatchQueue = DispatchQueue(label: "queue")
+            
             
             print(device!.focusPointOfInterest)
             print(device!.focusMode)

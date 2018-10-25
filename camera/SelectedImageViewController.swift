@@ -13,7 +13,7 @@ import SimpleImageViewer
 class SelectedImageViewController:UIViewController,UICollectionViewDataSource,
 UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate{
     
-    private let documentPath = NSHomeDirectory() + "/Documents"
+  
     
     override func viewWillDisappear(_ animated: Bool) {
           self.navigationController?.isNavigationBarHidden = false
@@ -187,13 +187,12 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     
     
     var safe:CGFloat = 0.0
-    
+    let util = Util()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        self.loadImage()
-        CollectionView.reloadData()
+        file = util.loadImage(selectedDirectoryName: self.selectedDirectory)
+        //CollectionView.reloadData()
         page = self.selectRow
 
         
@@ -250,7 +249,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
             (action: UIAlertAction!) -> Void in
                 let index = Int(self.CollectionView.contentOffset.x/self.view.bounds.width)
                 do {
-                    try FileManager.default.removeItem( atPath: self.documentPath + "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)! )
+                    try FileManager.default.removeItem( atPath: self.util.documentPath + "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)! )
                     self.deleteImage = true
                 } catch {
                     //エラー処理
@@ -325,123 +324,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         return resizedImage!
     }
     
-  
-    private var daycounts = 7
-    private var classcounts = 6
-    let fileManager = FileManager.default
-    
-    func numberday(num:Int) ->String{
-        switch num{
-        case 0:
-            return "Mon"
-        case 1:
-            return "Tues"
-        case 2:
-            return "Wednes"
-        case 3:
-            return "Thurs"
-        case 4:
-            return "Fri"
-        case 5:
-            return "Satur"
-        case 6:
-            return "Sun"
-        default:
-            return ""
-        }
-        
-    }
-    
-    func stringInt(int:String)->Int{
-        let splitNumbers = (int.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
-        let number = splitNumbers.joined()
-        return Int(number)!
-    }
-    
-    //タップされた授業の写真を取ってくる
-    func loadImage(){
-        let holderDirectory = documentPath + "/" + selectedDirectory
-        var fileNames:[String] = []
-        file = []
-        
-        //ディレクトリからファイルの名前を取ってくる
-        if selectedDirectory == "All"{
-            for day in 0..<daycounts{
-                let directoryPath = documentPath + "/" + numberday(num: day)
-                do{
-                    try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
-                    if fileNames.count != 0{
-                        for i in 0..<fileNames.count{
-                            var item:NSDictionary?
-                            do{
-                                item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
-                            }catch{
-                            }
-                            file.append((name: fileNames[i], date: numberday(num:day), modify: (item?.fileCreationDate())!, image: nil))
-                        }
-                    }
-                }catch{
-                }
-                for classes in 0...classcounts{
-                    let directoryPath = documentPath + "/" + numberday(num: day) + "\(classes)"
-                    do{
-                        try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
-                        if fileNames.count != 0{
-                            for i in 0..<fileNames.count{
-                                var item:NSDictionary?
-                                do{
-                                    item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
-                                }catch{
-                                }
-                                
-                                file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileCreationDate())!, image: nil))
-                            }
-                        }
-                    }catch{
-                    }
-                }
-            }
-        }else{
-            do{
-                try fileNames = FileManager.default.contentsOfDirectory(atPath: holderDirectory)
-                for i in 0..<fileNames.count{
-                    var item:NSDictionary?
-                    do{
-                        item = try fileManager.attributesOfItem(atPath: holderDirectory + "/" + fileNames[i]) as NSDictionary?
-                    }catch{
-                    }
-                    file.append((name: fileNames[i], date: self.selectedDirectory, modify: (item?.fileCreationDate())!, image: nil))
-                }
-            }catch{
-                fileNames = []
-            }
-        }
-        
-        for i in 0..<file.count{
-            for j in (i+1..<file.count).reversed(){
-                if stringInt(int: file[j-1].name) < stringInt(int: file[j].name){
-                    let temp = file[j]
-                    file[j] = file[j-1]
-                    file[j-1] = temp
-                }
-            }
-        }
-        
-        //ファイルパスからファイルデータ(写真イメージ)を取ってくる
-        if selectedDirectory == "All"{
-            for i in 0..<file.count{
-                let filePath = documentPath + "/" + file[i].date + "/" + file[i].name
-                file[i].image = UIImage(contentsOfFile:filePath)!
-            }
-        }else{
-            for i in 0..<fileNames.count{
-                let fileDirectory = holderDirectory + "/" + file[i].name
-                if let image = UIImage(contentsOfFile:fileDirectory){
-                    file[i].image = image
-                }
-            }
-        }
-    }
+ 
     
     
 }

@@ -55,142 +55,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     var file:[(name:String,date:String,modify:Date,image:UIImage?)]!
     
      //タップされた授業の曜日と時間を取ってくる
-    var selectedDirectoryName = ""
-    private var fileNames:[String] = []
-    private var fileImages:[UIImage] = []
-    private let DocumentPath = NSHomeDirectory() + "/Documents"
-    let fileManager = FileManager.default
-    
-    private var daycounts = 7
-    private var classcounts = 6
+   var selectedDirectoryName = ""
 
-    func numberday(num:Int) ->String{
-        switch num{
-        case 0:
-            return "Mon"
-        case 1:
-            return "Tues"
-        case 2:
-            return "Wednes"
-        case 3:
-            return "Thurs"
-        case 4:
-            return "Fri"
-        case 5:
-            return "Satur"
-        case 6:
-            return "Sun"
-        default:
-            return ""
-        }
-        
-    }
-    
-    func stringInt(int:String)->Int{
-        let splitNumbers = (int.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
-        let number = splitNumbers.joined()
-        return Int(number)!
-    }
-    
-    //タップされた授業の写真を取ってくる
-    func loadImage(){
-        let holderDirectory = DocumentPath + "/" + selectedDirectoryName
-        fileNames = []
-        fileImages = []
-        file = []
-   
-        //ディレクトリからファイルの名前を取ってくる
-        if selectedDirectoryName == "All"{
-            for day in 0..<daycounts{
-                let directoryPath = DocumentPath + "/" + numberday(num: day)
-                do{
-                    try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
-                    if fileNames.count != 0{
-                        for i in 0..<fileNames.count{
-                            var item:NSDictionary?
-                            do{
-                                item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
-                            }catch{
-                            }
-                            file.append((name: fileNames[i], date: numberday(num:day), modify: (item?.fileCreationDate())!, image: nil))
-                        }
-                    }
-                }catch{
-                }
-                for classes in 0...classcounts{
-                    let directoryPath = DocumentPath + "/" + numberday(num: day) + "\(classes)"
-                    do{
-                        try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
-                        if fileNames.count != 0{
-                            for i in 0..<fileNames.count{
-                                var item:NSDictionary?
-                                do{
-                                    item = try fileManager.attributesOfItem(atPath: directoryPath + "/" + fileNames[i]) as NSDictionary?
-                                }catch{
-                                }
-                                
-                                file.append((name: fileNames[i], date: numberday(num:day) + "\(classes)", modify: (item?.fileCreationDate())!, image: nil))
-                            }
-                        }
-                    }catch{
-                    }
-                }
-            }
-        }else{
-            do{
-                try fileNames = FileManager.default.contentsOfDirectory(atPath: holderDirectory)
-                for i in 0..<fileNames.count{
-                    var item:NSDictionary?
-                    do{
-                        item = try fileManager.attributesOfItem(atPath: holderDirectory + "/" + fileNames[i]) as NSDictionary?
-                    }catch{
-                    }
-                    file.append((name: fileNames[i], date: self.selectedDirectoryName, modify: (item?.fileCreationDate())!, image: nil))
-                }
-            }catch{
-                fileNames = []
-            }
-        }
-        
-        for i in 0..<file.count{
-            for j in (i+1..<file.count).reversed(){
-                if stringInt(int: file[j-1].name) < stringInt(int: file[j].name){
-                    let temp = file[j]
-                    file[j] = file[j-1]
-                    file[j-1] = temp
-                }
-            }
-        }
-        /*/バブルソート・・・
-        for i in 0..<file.count{
-            for j in (i+1..<file.count).reversed(){
-                if file[j-1].modify < file[j].modify{
-                    let temp = file[j]
-                    file[j] = file[j-1]
-                    file[j-1] = temp
-                }
-            }
-        }*/
-
-        //ファイルパスからファイルデータ(写真イメージ)を取ってくる
-        if selectedDirectoryName == "All"{
-            for i in 0..<file.count{
-                let filePath = DocumentPath + "/" + file[i].date + "/" + file[i].name
-                file[i].image = UIImage(contentsOfFile:filePath)!
-            }
-        }else{
-            for i in 0..<fileNames.count{
-                let fileDirectory = holderDirectory + "/" + file[i].name
-                if let image = UIImage(contentsOfFile:fileDirectory){
-                    file[i].image = image
-                }
-            }
-        }
-    }
-    
-    
-
-    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
         
@@ -255,12 +121,12 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             print(cv.indexPathsForSelectedItems)
         }else{
             if selectedDirectoryName == "All"{
-                selectImagePath = DocumentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
+                selectImagePath = self.util.documentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
                 selectImageDropboxPath = "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
                 
             }else{
                 //選択した写真のパス
-                selectImagePath = DocumentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+                selectImagePath = self.util.documentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
                 selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
             }
             self.selectRow = indexPath.row
@@ -300,13 +166,15 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             (segue.destination as! SelectedImageViewController).selectRow = self.selectRow
         }
     }
-    
+    let util = Util()
     override func viewWillAppear(_ animated: Bool) {
         //選択解除
         for indexpath in (cv?.indexPathsForSelectedItems)!{
             cv.deselectItem(at: indexpath, animated: false)
         }
-        loadImage()
+        
+        
+        file = util.loadImage(selectedDirectoryName: self.selectedDirectoryName)
         thumbmnailImages = []
         cv.reloadData()
     }
@@ -439,7 +307,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             if self.cv.allowsMultipleSelection{
                 for i in (self.cv?.indexPathsForSelectedItems)!{
                     do {
-                        try FileManager.default.removeItem( atPath: self.DocumentPath + "/" + (self.file?[i.row].date)! + "/" + self.file[i.row].name )
+                        try self.util.fileManager.removeItem( atPath: self.util.documentPath + "/" + (self.file?[i.row].date)! + "/" + self.file[i.row].name )
                     } catch {
                         //エラー処理
                         print("error")
@@ -459,7 +327,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
             }else{
                 for i in 0..<self.file.count{
                     do {
-                        try FileManager.default.removeItem( atPath: self.DocumentPath + "/" + self.file[i].date + "/" + self.file[i].name )
+                        try self.util.fileManager.removeItem( atPath: self.util.documentPath + "/" + self.file[i].date + "/" + self.file[i].name )
                     } catch {
                         //エラー処理
                         print("error")
@@ -477,7 +345,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     }
                 }
             }
-            self.loadImage()
+            self.file = self.util.loadImage(selectedDirectoryName: self.selectedDirectoryName)
             self.cv.reloadData()
         })
         
@@ -894,7 +762,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     return
                 }
                 
-                let localFolderDirectory = self.DocumentPath + "/" + self.holderName[j]
+                let localFolderDirectory = self.util.documentPath + "/" + self.holderName[j]
                 
                 // エントリー数分繰り返します。
                 // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
@@ -915,9 +783,9 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                     for i in 0..<directoryLocalData.count{
                         if !dropboxFileName.contains(directoryLocalData[i]){
                             do {
-                                try FileManager.default.removeItem( atPath: localFolderDirectory + "/" + directoryLocalData[i])
+                                try self.util.fileManager.removeItem( atPath: localFolderDirectory + "/" + directoryLocalData[i])
                                 
-                                self.loadImage()
+                                self.file = self.util.loadImage(selectedDirectoryName: self.holderName[i])
                                 self.cv.reloadData()
                                 
                             } catch {
@@ -956,7 +824,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                 var downloadFileName:[String]? = []
                 
                 for i in 0..<dropboxFileName.count{
-                    if self.fileManager.fileExists(atPath: localFolderDirectory + "/" + dropboxFileName[i]) != true{
+                    if self.util.fileManager.fileExists(atPath: localFolderDirectory + "/" + dropboxFileName[i]) != true{
                         downloadFileName?.append(dropboxFileName[i])
                     }
                 }
@@ -1163,7 +1031,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                             self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
                             defaults.synchronize()
                             
-                            self.loadImage()
+                            self.file = self.util.loadImage(selectedDirectoryName: self.holderName[i])
                             self.thumbmnailImages = []
                             self.cv.reloadData()
                         }
