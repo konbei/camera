@@ -129,6 +129,9 @@ class CameraViewController: UIViewController {
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(CameraViewController.pinchedGesture(gestureRecgnizer:)))
         self.previewView.addGestureRecognizer(pinchGesture)
         
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.tappedScreen(gestureRecognizer:)))
+        self.previewView.addGestureRecognizer(tapGesture)
         // デバイスが回転したときに通知するイベントハンドラを設定する
         notification.addObserver(self,
                                  selector: #selector(self.changedDeviceOrientation(_:)),
@@ -268,7 +271,35 @@ class CameraViewController: UIViewController {
         }
     }
     
+    let focusView = UIView()
+    
+    @objc func tappedScreen(gestureRecognizer: UITapGestureRecognizer) {
+        let thisFocusPoint = gestureRecognizer.location(in: previewView)
+        
+        let focus_x = thisFocusPoint.x / previewView.frame.size.width
+        let focus_y = thisFocusPoint.y / previewView.frame.size.height
+        let tapCGPoint = gestureRecognizer.location(ofTouch: 0, in: gestureRecognizer.view)
+        focusView.frame.size = CGSize(width: 120, height: 120)
+        focusView.center = tapCGPoint
+        focusView.backgroundColor = UIColor.white.withAlphaComponent(0)
+        focusView.layer.borderColor = UIColor.white.cgColor
+        focusView.layer.borderWidth = 2
+        focusView.alpha = 1
+        previewView.addSubview(focusView)
+        
+        print("touch to focus ", thisFocusPoint)
 
+        self.focusWithMode(focusMode: AVCaptureDevice.FocusMode.autoFocus, exposeWithMode: AVCaptureDevice.ExposureMode.autoExpose, atDevicePoint: CGPoint(x: focus_x, y: focus_y), motiorSubjectAreaChange: true)
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.focusView.frame.size = CGSize(width: 80, height: 80)
+            self.focusView.center = tapCGPoint
+        }, completion: { Void in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.focusView.alpha = 0
+            })
+        })
+    }
     
     //ピンチズーム、縮小
     var oldZoomScale: CGFloat = 1.0
@@ -328,11 +359,6 @@ class CameraViewController: UIViewController {
                 for: AVMediaType.video, // ビデオ入力
                 position: AVCaptureDevice.Position.back) // バックカメラ
             
-            
-            print(device!.focusPointOfInterest)
-            print(device!.focusMode)
-            print(device!.exposurePointOfInterest)
-            print(device!.exposureMode)
             do {
                 try device?.lockForConfiguration()
                 if(device!.isFocusPointOfInterestSupported && device!.isFocusModeSupported(focusMode)){
@@ -344,16 +370,26 @@ class CameraViewController: UIViewController {
                     device!.exposureMode = expusureMode
                 }
                 
-                device?.focusMode = AVCaptureDevice.FocusMode.continuousAutoFocus
+               
                 
                 device!.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
                 device!.unlockForConfiguration()
-                device?.focusMode = AVCaptureDevice.FocusMode.continuousAutoFocus
-                device!.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+                
             } catch let error as NSError {
                 print(error.debugDescription)
             }
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                do{
+                    try device?.lockForConfiguration()
+                    device?.isSubjectAreaChangeMonitoringEnabled  = false
+                    device?.focusMode = AVCaptureDevice.FocusMode.continuousAutoFocus
+                    device!.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+                    device!.unlockForConfiguration()
+                }catch{
+                    
+                }
+                
+            }
         }
         
     }
