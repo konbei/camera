@@ -119,7 +119,7 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // CoreDataからデータをfetchしてくる
+        self.navigationController?.navigationBar.isHidden = false        // CoreDataからデータをfetchしてくる
         getClassTimeData()
         // taskTableViewを再読み込みする
        tableView.reloadData()

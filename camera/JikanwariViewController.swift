@@ -55,16 +55,26 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(self.navigationController)
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.barTintColor = UIColor(hex: "1F9956")
+       
         self.navigationController?.navigationBar.tintColor = UIColor.white
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes  }
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+    }
     
     
     override func viewWillAppear(_ animated: Bool) {
-        // CoreDataからデータをfetchしてくる
         self.classes = ClassDataManager().fetchAllClasses()
+       // cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         cv.reloadData()
+        self.cv.delegate = self
+        self.cv.dataSource = self
+        // CoreDataからデータをfetchしてくる
+       
+        //cv.reloadData()
+        
     }
     
     var safeAreaHeight:CGFloat!
@@ -125,15 +135,14 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell:UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath)
         
         
-        
-        
-        let label = cell.contentView.viewWithTag(1) as! UILabel
-        label.adjustsFontSizeToFitWidth = true
        
-        
+        let label = cell.contentView.viewWithTag(1) as! UILabel
+        //cell.label.adjustsFontSizeToFitWidth = true
+       
+       
         if indexPath.row == 0 && indexPath.section == 0{
             cell.backgroundColor = UIColor.clear
             label.backgroundColor = UIColor.clear
@@ -143,13 +152,11 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
  
             label.numberOfLines = 0
             if indexPath.section != 7{
-                label.text = "\(indexPath.section)"
+            label.text = "\(indexPath.section)"
             }else{
-                label.text = "他"
+            label.text = "他"
             }
         }else if indexPath.section == 0{
-            label.font = UIFont(name: "Title 3", size: 5)
-            label.adjustsFontSizeToFitWidth = true
             label.text = "\(self.util.numberday(num: indexPath.row-1))"
         }else{
             
@@ -166,7 +173,7 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
             }
             // 特定の曜日、時限に当てはまる授業を探し出す
             let matchedClass = self.classes?.first { $0.nameday == nameDay && $0.nameclass == period }
-            label.text = matchedClass?.classname ?? ""
+           label.text = matchedClass?.classname ?? ""
         }
 
         return cell
@@ -201,10 +208,20 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     }
 }
 
-extension UICollectionViewCell{
+class JikanCell:UICollectionViewCell{
+    @IBOutlet weak var label: UILabel!
+    override init(frame: CGRect){
+        super.init(frame: frame)
+    }
+    required init(coder aDecoder: NSCoder){
+        super.init(coder: aDecoder)!
+    }
     open override func prepareForReuse() {
         super.prepareForReuse()
+        label = nil
+        
     }
+    
 }
 
 extension UIColor {

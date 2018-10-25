@@ -194,7 +194,9 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
             self.performSegue(withIdentifier: "comeCamera", sender: self)
         }else{
             self.navigationController?.popViewController(animated: true)
+            
         }
+        
     }
 
 

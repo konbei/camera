@@ -51,6 +51,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
         // CoreDataからデータをfetchしてくる
         self.classes = ClassDataManager().fetchAllClasses()
         // ttableViewを再読み込みする

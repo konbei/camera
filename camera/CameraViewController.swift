@@ -388,10 +388,8 @@ class CameraViewController: UIViewController {
                 }catch{
                     
                 }
-                
             }
         }
-        
     }
     
 

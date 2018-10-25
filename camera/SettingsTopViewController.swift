@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class SettingsTopViewController: UITableViewController {
+class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     // 画面を自動で回転させるか
     override var shouldAutorotate: Bool {
@@ -28,11 +28,13 @@ class SettingsTopViewController: UITableViewController {
     
     private var tableData:[String] = []
    
+    @IBOutlet weak var tableView: UITableView!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.separatorColor = UIColor(hex: "C15320")
         tableData = ["時刻設定","授業名称設定"]
         
@@ -42,20 +44,21 @@ class SettingsTopViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+    }    // MARK: - Table view data source
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
        //セクション数設定
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // 行数設定
         return 2
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // HeaderのViewを作成してViewを返す
         let headerView = UIView()
         let label = UILabel()
@@ -73,7 +76,7 @@ class SettingsTopViewController: UITableViewController {
     
 
     
-    override   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         //各行に表示するセルを返す
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
@@ -84,7 +87,7 @@ class SettingsTopViewController: UITableViewController {
         return cell
     }
     
-   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         switch indexPath.row {
         case 0:
@@ -96,6 +99,10 @@ class SettingsTopViewController: UITableViewController {
         }
     }
     
+    @IBAction func back(_ sender: Any) {
+        let a = UIStoryboard(name:"Main",bundle:nil).instantiateViewController(withIdentifier: "N") as! UINavigationController
+        self.present(a, animated: true, completion: nil)
+    }
     
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

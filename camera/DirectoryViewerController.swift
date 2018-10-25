@@ -52,15 +52,21 @@ UICollectionViewDelegate {
     let util = Util()
     var selectedDirectoryName = ""
     
+    @IBOutlet weak var topBar: UINavigationItem!
     @objc private func editButtonTapped(){
         
         cv.allowsMultipleSelection = true
         
         let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "完了", style: UIBarButtonItem.Style.done, target:self , action: #selector(doneButtonTapped))
         
-        self.navigationItem.setRightBarButton(doneBarButtonItem, animated: true)
+        self.topBar.setRightBarButton(doneBarButtonItem, animated: true)
     }
+
     
+    @IBAction func back(_ sender: Any) {
+        let a = UIStoryboard(name:"Main",bundle:nil).instantiateViewController(withIdentifier: "N") as! UINavigationController
+        self.present(a, animated: true, completion: nil)
+    }
     @objc private func doneButtonTapped(){
         for indexpath in (cv?.indexPathsForSelectedItems)!{
             cv.deselectItem(at: indexpath, animated: false)
@@ -69,7 +75,7 @@ UICollectionViewDelegate {
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "選択", style: UIBarButtonItem.Style.done, target: self, action: #selector(editButtonTapped))
         
         
-        self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+        self.topBar.setRightBarButton(editBarButtonItem, animated: true)
     }
     
     @IBOutlet weak var underBar: UINavigationBar!
@@ -293,10 +299,11 @@ UICollectionViewDelegate {
         self.underBar.isHidden = false
         cv.delegate = self
         cv.dataSource = self
+       
         
         // barのアイテム追加
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "選択", style: UIBarButtonItem.Style.done, target: self, action: #selector(editButtonTapped))
-        self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
+        self.topBar.setRightBarButton(editBarButtonItem, animated: true)
         
         let dropboxImage = UIImage(named: "Dropbox")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
         
@@ -315,6 +322,7 @@ UICollectionViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+         self.navigationController?.isNavigationBarHidden = true
         //選択解除
         for indexpath in (cv?.indexPathsForSelectedItems)!{
             cv.deselectItem(at: indexpath, animated: false)
