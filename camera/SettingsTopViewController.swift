@@ -93,8 +93,7 @@ class SettingsTopViewController: UITableViewController {
             self.performSegue(withIdentifier: "classname", sender: nil)
         default: break
             
-    }
-        
+        }
     }
     
     

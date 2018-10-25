@@ -17,9 +17,6 @@
 		2F750FC821609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */; };
 		2F84409C215C8812007A7549 /* ClassNameTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F84409A215C8812007A7549 /* ClassNameTableCell.swift */; };
 		2F84409D215C8812007A7549 /* ClassNameTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F84409B215C8812007A7549 /* ClassNameTableCell.xib */; };
-		2FA51F94218002EA00CFE1D2 /* kiloji.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FA51F93218002EA00CFE1D2 /* kiloji.ttf */; };
-		2FA51F962180039B00CFE1D2 /* kiloji_b.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FA51F952180039B00CFE1D2 /* kiloji_b.ttf */; };
-		2FA51F982180043300CFE1D2 /* TanukiMagic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FA51F972180043300CFE1D2 /* TanukiMagic.ttf */; };
 		2FA51F9A2181692300CFE1D2 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA51F992181692300CFE1D2 /* Util.swift */; };
 		2FB96BBF216C74D0006E48E0 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB96BBE216C74D0006E48E0 /* NavigationViewController.swift */; };
 		2FD2077521687F1E00B2495B /* SelectedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */; };
@@ -75,9 +72,6 @@
 		2F750FC621609FCC00C02F3B /* SettingsTime+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTime+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2F84409A215C8812007A7549 /* ClassNameTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNameTableCell.swift; sourceTree = "<group>"; };
 		2F84409B215C8812007A7549 /* ClassNameTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassNameTableCell.xib; sourceTree = "<group>"; };
-		2FA51F93218002EA00CFE1D2 /* kiloji.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = kiloji.ttf; path = ../../../../../../Downloads/kiloji_2.1.0/kiloji.ttf; sourceTree = "<group>"; };
-		2FA51F952180039B00CFE1D2 /* kiloji_b.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = kiloji_b.ttf; path = ../../../../../../Downloads/kiloji_b2.1.0/kiloji_b.ttf; sourceTree = "<group>"; };
-		2FA51F972180043300CFE1D2 /* TanukiMagic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = TanukiMagic.ttf; path = ../../../../../../Downloads/TanukiMagic_1_21/TanukiMagic.ttf; sourceTree = "<group>"; };
 		2FA51F992181692300CFE1D2 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		2FB96BBE216C74D0006E48E0 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		2FD2077421687F1E00B2495B /* SelectedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageViewController.swift; sourceTree = "<group>"; };
@@ -169,9 +163,6 @@
 			isa = PBXGroup;
 			children = (
 				2FE88D2B215744F0004BB3C9 /* Main.storyboard */,
-				2FA51F972180043300CFE1D2 /* TanukiMagic.ttf */,
-				2FA51F93218002EA00CFE1D2 /* kiloji.ttf */,
-				2FA51F952180039B00CFE1D2 /* kiloji_b.ttf */,
 				2FE88D27215744F0004BB3C9 /* AppDelegate.swift */,
 				2FA51F992181692300CFE1D2 /* Util.swift */,
 				2FE88D29215744F0004BB3C9 /* CameraViewController.swift */,
@@ -348,11 +339,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FA51F982180043300CFE1D2 /* TanukiMagic.ttf in Resources */,
 				2FE88D32215744F0004BB3C9 /* LaunchScreen.storyboard in Resources */,
-				2FA51F94218002EA00CFE1D2 /* kiloji.ttf in Resources */,
 				2FE88D2F215744F0004BB3C9 /* Assets.xcassets in Resources */,
-				2FA51F962180039B00CFE1D2 /* kiloji_b.ttf in Resources */,
 				2F84409D215C8812007A7549 /* ClassNameTableCell.xib in Resources */,
 				2FE88D2D215744F0004BB3C9 /* Main.storyboard in Resources */,
 			);

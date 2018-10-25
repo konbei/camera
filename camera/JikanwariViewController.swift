@@ -37,6 +37,28 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     
     @IBOutlet weak var cv: UICollectionView!
     
+    //全部表示ボタン
+    @IBAction func allButton(_ sender: Any) {
+        directoryName = "All"
+        performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+    
+    @IBAction func SaturdayButtun(_ sender: Any) {
+        directoryName = "Satur"
+        performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+    
+    @IBAction func SundayButtun(_ sender: Any) {
+        directoryName = "Sun"
+        performSegue(withIdentifier: "directoryViewr", sender: nil)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = UIColor(hex: "1F9956")
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes  }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,7 +114,12 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         
     }
     
-  
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "directoryViewr"){
+            print(directoryName)
+            (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName
+        }
+    }
     
     //コレクションセル作成
     func collectionView(_ collectionView: UICollectionView,
@@ -172,53 +199,6 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
             performSegue(withIdentifier: "directoryViewr", sender: nil)
         }
     }
-    
-    //全部表示ボタン
-    @IBAction func allButton(_ sender: Any) {
-        directoryName = "All"
-        performSegue(withIdentifier: "directoryViewr", sender: nil)
-    }
-    
-    @IBAction func SaturdayButtun(_ sender: Any) {
-        directoryName = "Satur"
-        performSegue(withIdentifier: "directoryViewr", sender: nil)
-    }
-    
-    @IBAction func SundayButtun(_ sender: Any) {
-        directoryName = "Sun"
-        performSegue(withIdentifier: "directoryViewr", sender: nil)
-    }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "directoryViewr"){
-            print(directoryName)
-            (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName
-        }
-    }
-    
-
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(hex: "1F9956")
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes  }
-    // Do any additional setup after loading the view.
-    
-    
-    
-    /*
-     // MARK: - Navigation
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
 extension UICollectionViewCell{

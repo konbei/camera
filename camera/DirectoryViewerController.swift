@@ -25,7 +25,7 @@ extension UIImage {
 
 
 class DirectoryViewerController: UIViewController,UICollectionViewDataSource,
-UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
+UICollectionViewDelegate {
     
     // 画面を自動で回転させるか
     override var shouldAutorotate: Bool {
@@ -41,110 +41,23 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         }
     }
     
-    var thumbmnailImages:[UIImage] = []
-    
-    
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-    
-        
-    }
-    
     
     @IBOutlet weak var cv: UICollectionView!
-    
+    var thumbmnailImages:[UIImage] = []
     var file:[(name:String,date:String,modify:Date,image:UIImage?)]!
-    
-     //タップされた授業の曜日と時間を取ってくる
-   var selectedDirectoryName = ""
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
-        
-        //セルのクラス作ってそこでスクロールした時の初期化実装してます
-        let cell:DirectoryViewrCell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
-        
-        var cellImage:UIImage?
-        if let image = self.file[indexPath.row].image{
-            cellImage = image
-        }else{
-            return cell
-        }
-        
-        
-        
-        let selectView = CheckBoxView(frame: CGRect(x:0,y:0,width:23,height:23), selected: true)
-        cell.selectedBackgroundView = selectView
-        
-        
-        var thumbnail:UIImage? = nil
-        let group = DispatchGroup()
-        let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
-        group.enter()
-        queue.async(group: group) {
-            //サムネイル作成方法変更
-            thumbnail = cellImage?.reSizeImage(reSize:CGSize(width: 81, height: 81))
-                group.leave()
-            }
-            group.notify(queue: .main){
-                cell.img.image = thumbnail
-            }
-        
-        return cell
-    }
-
-    
-
-    
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        //よくよく考えたら1セクションあたりのあセル表示数を固定する必要ないと思ったので変更
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        // 要素数を入れる、要素以上の数字を入れると表示でエラーとなる
-        return file.count
-    }
-    
     var selectRow = 0
     var selectImage:UIImage!
     var selectImagePath:String!
     var selectImageDropboxPath:String?
-    //var selectFile:(date:String,name:String)
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if cv.allowsMultipleSelection{
-            let cell:DirectoryViewrCell =
-                collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
-            print(cv.indexPathsForSelectedItems)
-        }else{
-            if selectedDirectoryName == "All"{
-                selectImagePath = self.util.documentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
-                selectImageDropboxPath = "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
-                
-            }else{
-                //選択した写真のパス
-                selectImagePath = self.util.documentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
-                selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
-            }
-            self.selectRow = indexPath.row
-            // [indexPath.row] から画像名を探し、UImage を設定
-            selectImage = file[indexPath.row].image
-            if selectImage != nil {
-                // SubViewController へ遷移するために Segue を呼び出す
-                performSegue(withIdentifier: "selectedImage",sender: nil)
-            }
-        }
-        
-    }
+    let util = Util()
+    var selectedDirectoryName = ""
     
     @objc private func editButtonTapped(){
         
         cv.allowsMultipleSelection = true
         
-        let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneButtonTapped))
+        let doneBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "完了", style: UIBarButtonItem.Style.done, target:self , action: #selector(doneButtonTapped))
+        
         self.navigationItem.setRightBarButton(doneBarButtonItem, animated: true)
     }
     
@@ -152,35 +65,13 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         for indexpath in (cv?.indexPathsForSelectedItems)!{
             cv.deselectItem(at: indexpath, animated: false)
         }
-          cv.allowsMultipleSelection = false
-        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
+        cv.allowsMultipleSelection = false
+        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "選択", style: UIBarButtonItem.Style.done, target: self, action: #selector(editButtonTapped))
+        
+        
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
     }
     
-    //選択した写真と写真のパス送る
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "selectedImage"){
-            (segue.destination as! SelectedImageViewController).selectedDirectory = self.selectedDirectoryName
-            (segue.destination as! SelectedImageViewController).movedPreview = false
-          
-            (segue.destination as! SelectedImageViewController).selectRow = self.selectRow
-        }
-    }
-    let util = Util()
-    override func viewWillAppear(_ animated: Bool) {
-        //選択解除
-        for indexpath in (cv?.indexPathsForSelectedItems)!{
-            cv.deselectItem(at: indexpath, animated: false)
-        }
-        
-        
-        file = util.loadImage(selectedDirectoryName: self.selectedDirectoryName)
-        thumbmnailImages = []
-        cv.reloadData()
-    }
-    
-    
-
     @IBOutlet weak var underBar: UINavigationBar!
     
     @IBOutlet weak var dropboxItem: UINavigationItem!
@@ -266,8 +157,8 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         
         self.present(alert, animated: true, completion: nil)
     }
-
-
+    
+    
     @IBAction func trash(_ sender: Any) {
         var message = ""
         if cv.allowsMultipleSelection{
@@ -313,7 +204,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                         print("error")
                     }
                     
-                   let client = DropboxClientsManager.authorizedClient
+                    let client = DropboxClientsManager.authorizedClient
                     client?.files.deleteV2(path: "/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                         if let error = error {
                             // エラーの場合、処理を終了します。
@@ -364,7 +255,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         
     }
     
-     @IBAction func shareAction(_ sender: Any) {
+    @IBAction func shareAction(_ sender: Any) {
         var image:[UIImage] = []
         if cv.allowsMultipleSelection{
             for i in (cv?.indexPathsForSelectedItems)!{
@@ -390,13 +281,12 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         let activities = image as [Any]
         let activityViewController = UIActivityViewController(activityItems: activities, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
-       // activityViewController.popoverPresentationController?.sourceRect = CGRect(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
+        // activityViewController.popoverPresentationController?.sourceRect = CGRect(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
         self.present(activityViewController,animated: true,completion: nil)
         if cv.allowsMultipleSelection{
             self.doneButtonTapped()
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -404,15 +294,15 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         cv.delegate = self
         cv.dataSource = self
         
-        // Do any additional setup after loading the view.
-        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped))
+        // barのアイテム追加
+        let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "選択", style: UIBarButtonItem.Style.done, target: self, action: #selector(editButtonTapped))
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
         
         let dropboxImage = UIImage(named: "Dropbox")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
         
         let dropboxButton = UIBarButtonItem(image: dropboxImage, landscapeImagePhone: dropboxImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.dropboxTapped))
         dropboxItem.setLeftBarButton(dropboxButton, animated: false)
-       
+        
         
         
         let syncImage = UIImage(named: "sync")?.withRenderingMode(UIImage.RenderingMode.automatic)
@@ -423,6 +313,104 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
         dropboxItem.setLeftBarButtonItems(barButtonItems, animated: false)
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //選択解除
+        for indexpath in (cv?.indexPathsForSelectedItems)!{
+            cv.deselectItem(at: indexpath, animated: false)
+        }
+        
+        
+        file = util.loadImage(selectedDirectoryName: self.selectedDirectoryName)
+        thumbmnailImages = []
+        cv.reloadData()
+    }
+
+   
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
+        
+        //セルのクラス作ってそこでスクロールした時の初期化実装してます
+        let cell:DirectoryViewrCell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
+        
+        var cellImage:UIImage?
+        if let image = self.file[indexPath.row].image{
+            cellImage = image
+        }else{
+            return cell
+        }
+        
+        let selectView = CheckBoxView(frame: CGRect(x:0,y:0,width:23,height:23), selected: true)
+        cell.selectedBackgroundView = selectView
+        
+        
+        var thumbnail:UIImage? = nil
+        let group = DispatchGroup()
+        let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
+        group.enter()
+        queue.async(group: group) {
+            //サムネイル作成方法変更
+            thumbnail = cellImage?.reSizeImage(reSize:CGSize(width: 81, height: 81))
+            group.leave()
+        }
+        group.notify(queue: .main){
+            cell.img.image = thumbnail
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        //よくよく考えたら1セクションあたりのあセル表示数を固定する必要ないと思ったので変更
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        // 要素数を入れる、要素以上の数字を入れると表示でエラーとなる
+        return file.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if cv.allowsMultipleSelection{
+            let cell:DirectoryViewrCell =
+                collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",for: indexPath) as! DirectoryViewrCell
+            print(cv.indexPathsForSelectedItems)
+        }else{
+            if selectedDirectoryName == "All"{
+                selectImagePath = self.util.documentPath + "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
+                selectImageDropboxPath = "/" + file[indexPath.row].date + "/" + file[indexPath.row].name
+                
+            }else{
+                //選択した写真のパス
+                selectImagePath = self.util.documentPath + "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+                selectImageDropboxPath = "/" + selectedDirectoryName + "/" + file[indexPath.row].name
+            }
+            self.selectRow = indexPath.row
+            // [indexPath.row] から画像名を探し、UImage を設定
+            selectImage = file[indexPath.row].image
+            if selectImage != nil {
+                // SubViewController へ遷移するために Segue を呼び出す
+                performSegue(withIdentifier: "selectedImage",sender: nil)
+            }
+        }
+        
+    }
+    
+    //選択した写真と写真のパス送る
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "selectedImage"){
+            (segue.destination as! SelectedImageViewController).selectedDirectory = self.selectedDirectoryName
+            (segue.destination as! SelectedImageViewController).movedPreview = false
+            
+            (segue.destination as! SelectedImageViewController).selectRow = self.selectRow
+        }
+    }
+    
     
     //use DropBox
     
@@ -652,7 +640,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
     
    
     
-   
+    //Setting Dropbox
     var hud = MBProgressHUD()
 
     
@@ -785,7 +773,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                             do {
                                 try self.util.fileManager.removeItem( atPath: localFolderDirectory + "/" + directoryLocalData[i])
                                 
-                                self.file = self.util.loadImage(selectedDirectoryName: self.holderName[i])
+                                self.file = self.util.loadImage(selectedDirectoryName: self.selectedDirectoryName)
                                 self.cv.reloadData()
                                 
                             } catch {
@@ -1031,7 +1019,7 @@ UICollectionViewDelegate,UICollectionViewDataSourcePrefetching {
                             self.userDefaultSave(data: directoryLocalData, path: self.holderName[j])
                             defaults.synchronize()
                             
-                            self.file = self.util.loadImage(selectedDirectoryName: self.holderName[i])
+                            self.file = self.util.loadImage(selectedDirectoryName: self.selectedDirectoryName)
                             self.thumbmnailImages = []
                             self.cv.reloadData()
                         }

@@ -35,6 +35,29 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
     var startClassTime:[Int] = []   //時限ごとの開始時刻データ
     var finishClassTime:[Int] = []  //時限ごとの終了時刻データ
     
+    //時間をH:mm のStringに変換して返す
+    func convertStringTime(time:Int) -> String{
+        let stringtime = String(time)
+        let zero = stringtime.startIndex
+        let zeroo = stringtime.index(zero,offsetBy:0)
+        var start1 = stringtime.index(zero,offsetBy:0)
+        var start2 = stringtime.index(zero,offsetBy:0)
+        var end = stringtime.index(zero, offsetBy: 0)
+        
+        if stringtime.count == 4{
+            start1 = stringtime.index(zero, offsetBy: 1)
+            start2 = stringtime.index(zero, offsetBy: 2)
+            end = stringtime.index(zero, offsetBy: 3)
+        }else if stringtime.count == 3{
+            start1 = stringtime.index(zero, offsetBy: 0)
+            start2 = stringtime.index(zero, offsetBy: 1)
+            end = stringtime.index(zero, offsetBy: 2)
+        }else{
+            return "0:\(stringtime)"
+        }
+        return "\(stringtime[zeroo...start1]):\(stringtime[start2...end])"
+    }
+    
     //開始時刻が終了時刻を超えてないか、9999(初期価値)以外で複数の範囲が被ってないか調べる関数
     func containRange(a:[Int],b:[Int])->Bool{
         var range = [ClosedRange<Int>](repeating: 0...0, count: a.count)
@@ -70,6 +93,130 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
         return true
     }
     
+    //開始時刻と終了時刻をCoreDataから取得
+    func getClassTimeData(){
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<SettingsTime> = SettingsTime.fetchRequest()
+        let SettingsData = try! context.fetch(fetchRequest)
+        if !SettingsData.isEmpty{
+            for i in 0..<SettingsData.count{
+                startClassTime[i] = Int(SettingsData[i].startClassTime)
+                finishClassTime[i] = Int(SettingsData[i].finishClassTime)
+            }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        
+        //テーブルデータ初期化
+        sectionTitle = ["1限","2限","3限","4限","5限","6限"]
+        
+        startClassTime = [9999,9999,9999,9999,9999,9999]
+        finishClassTime = [9999,9999,9999,9999,9999,9999]
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // CoreDataからデータをfetchしてくる
+        getClassTimeData()
+        // taskTableViewを再読み込みする
+       tableView.reloadData()
+    }
+    
+    
+    //tableView設定
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        //セクション毎の行数を返す
+    
+        return 2 //開始時刻と終了時刻
+       
+    }
+    
+  override   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        //各行に表示するセルを返す
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        
+        if indexPath.row == 0{
+            if startClassTime[indexPath.section] != 9999{
+            cell.textLabel?.text = "開始時刻：" + convertStringTime(time: startClassTime[indexPath.section])
+            }else{
+                cell.textLabel?.text = "開始時刻："
+            }
+        }else{
+            if finishClassTime[indexPath.section] != 9999{
+            cell.textLabel?.text = "終了時刻：" + convertStringTime(time: finishClassTime[indexPath.section])
+            }else{
+                cell.textLabel?.text = "開始時刻："
+            }
+        }
+        
+      
+        return cell
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int // Default is 1 if not implemented
+    {
+        //セクション数を返す
+         return sectionTitle.count
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // HeaderのViewを作成してViewを返す
+        let headerView = UIView()
+        let label = UILabel()
+        label.frame.size = tableView.rectForHeader(inSection: section).size
+        label.contentMode = UIView.ContentMode.scaleAspectFit
+        label.text = sectionTitle[section]
+        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor(hex: "C15320")
+        
+        headerView.addSubview(label)
+        return headerView
+    }
+    
+    //行がタップされた時の動作
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        animatedDatePicker.delegate = self
+        animatedDatePicker.center = self.view.center
+        view.addSubview(animatedDatePicker)
+    }
+    
+    //オリジナルDatePickerをインスタンス化
+    let animatedDatePicker = AnimatedDatePickerView()
+    
+    
+    //datepickerのcancelとDoneを押した時の動作
+    
+    func datePickerViewDidCancel(picker: AnimatedDatePickerView) {
+        picker.hide()
+    }
+    
+    func datePickerViewDidComplete(picker: AnimatedDatePickerView) {
+        let format2 = DateFormatter()
+        format2.dateFormat = "Hmm"
+        let StringTime = format2.string(from: picker.picker.date)
+        let time = Int(StringTime)
+        
+        if let indexpath = self.tableView.indexPathForSelectedRow{
+            if indexpath.row == 0 {
+                startClassTime[indexpath.section] = time!
+            }else{
+                finishClassTime[indexpath.section] = time!
+            }
+            
+        }
+        self.tableView.reloadData()
+        picker.hide()
+    }
+    
+   
+    //ボタンアクション設定
     //開始時間と終了時間をCore Dataに格納
     @IBAction func saveButton(){
         if containRange(a: startClassTime, b: finishClassTime) == true{
@@ -124,151 +271,5 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
     }
     
     
-    //開始時刻と終了時刻をCoreDataから取得
-    func getClassTimeData(){
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<SettingsTime> = SettingsTime.fetchRequest()
-        let SettingsData = try! context.fetch(fetchRequest)
-        if !SettingsData.isEmpty{
-            for i in 0..<SettingsData.count{
-                startClassTime[i] = Int(SettingsData[i].startClassTime)
-                finishClassTime[i] = Int(SettingsData[i].finishClassTime)
-            }
-        }
-    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        // CoreDataからデータをfetchしてくる
-        getClassTimeData()
-        // taskTableViewを再読み込みする
-       tableView.reloadData()
-    }
-    
-    //時間をH:mm のStringに変換して返す
-    func convertStringTime(time:Int) -> String{
-        let stringtime = String(time)
-        let zero = stringtime.startIndex
-        let zeroo = stringtime.index(zero,offsetBy:0)
-        var start1 = stringtime.index(zero,offsetBy:0)
-        var start2 = stringtime.index(zero,offsetBy:0)
-        var end = stringtime.index(zero, offsetBy: 0)
-        
-        if stringtime.count == 4{
-            start1 = stringtime.index(zero, offsetBy: 1)
-            start2 = stringtime.index(zero, offsetBy: 2)
-            end = stringtime.index(zero, offsetBy: 3)
-        }else if stringtime.count == 3{
-            start1 = stringtime.index(zero, offsetBy: 0)
-            start2 = stringtime.index(zero, offsetBy: 1)
-            end = stringtime.index(zero, offsetBy: 2)
-        }else{
-            return "0:\(stringtime)"
-        }
-        return "\(stringtime[zeroo...start1]):\(stringtime[start2...end])"
-    }
-   
-  
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        //セクション毎の行数を返す
-    
-        return 2 //開始時刻と終了時刻
-       
-    }
-    
-  override   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        //各行に表示するセルを返す
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
-        if indexPath.row == 0{
-            if startClassTime[indexPath.section] != 9999{
-            cell.textLabel?.text = "開始時刻：" + convertStringTime(time: startClassTime[indexPath.section])
-            }else{
-                cell.textLabel?.text = "開始時刻："
-            }
-        }else{
-            if finishClassTime[indexPath.section] != 9999{
-            cell.textLabel?.text = "終了時刻：" + convertStringTime(time: finishClassTime[indexPath.section])
-            }else{
-                cell.textLabel?.text = "開始時刻："
-            }
-        }
-        
-      
-        return cell
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int // Default is 1 if not implemented
-    {
-        //セクション数を返す
-         return sectionTitle.count
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // HeaderのViewを作成してViewを返す
-        let headerView = UIView()
-        let label = UILabel()
-        label.frame.size = tableView.rectForHeader(inSection: section).size
-        label.contentMode = UIView.ContentMode.scaleAspectFit
-        label.text = sectionTitle[section]
-        label.adjustsFontSizeToFitWidth = true
-        label.adjustsFontForContentSizeCategory = true
-        label.textColor = UIColor.white
-        label.backgroundColor = UIColor(hex: "C15320")
-        
-        headerView.addSubview(label)
-        return headerView
-    }
-    
-    //オリジナルDatePickerをインスタンス化
-    let animatedDatePicker = AnimatedDatePickerView()
-    
-    
-    //datepickerのcancelとDoneを押した時の動作
-    
-    func datePickerViewDidCancel(picker: AnimatedDatePickerView) {
-        picker.hide()
-    }
-    
-    func datePickerViewDidComplete(picker: AnimatedDatePickerView) {
-        let format2 = DateFormatter()
-        format2.dateFormat = "Hmm"
-        let StringTime = format2.string(from: picker.picker.date)
-        let time = Int(StringTime)
-        
-        if let indexpath = self.tableView.indexPathForSelectedRow{
-            if indexpath.row == 0 {
-                startClassTime[indexpath.section] = time!
-            }else{
-                finishClassTime[indexpath.section] = time!
-            }
-    
-        }
-        self.tableView.reloadData()
-        picker.hide()
-    }
-    
-  
-    
-    //行がタップされた時の動作
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        animatedDatePicker.delegate = self
-        animatedDatePicker.center = self.view.center
-        view.addSubview(animatedDatePicker)
-    }
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        //テーブルデータ初期化
-        sectionTitle = ["1限","2限","3限","4限","5限","6限"]
-
-         startClassTime = [9999,9999,9999,9999,9999,9999]
-         finishClassTime = [9999,9999,9999,9999,9999,9999]
-        
-    }
 }

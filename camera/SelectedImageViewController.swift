@@ -13,92 +13,56 @@ import SimpleImageViewer
 class SelectedImageViewController:UIViewController,UICollectionViewDataSource,
 UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate{
     
-  
-    
-    override func viewWillDisappear(_ animated: Bool) {
-          self.navigationController?.isNavigationBarHidden = false
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
-        let cell:CustomCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for:indexPath )as! CustomCell
-
-            let frame = view.frame.width
-            var thumbnail:UIImage? = nil
-            let group = DispatchGroup()
-            let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
-            group.enter()
-            queue.async(group: group) {
-                //サムネイル作成方法変更
-                thumbnail = self.resize(image: (self.file?[indexPath.row].image)!, width: Double(frame))
-                group.leave()
-            }
-            group.notify(queue: .main){
-                cell.img.image = thumbnail
-        }
-            return cell
-    }
-   
     @IBOutlet weak var CollectionView: UICollectionView!
-    
-
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return (self.file?.count)!
-    }
-    
-  //  var mainScrollView: UIScrollView!
-    
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat = view.frame.width
-        let height: CGFloat = view.bounds.height//view.bounds.height - collectionView.frame.height //- editBar.frame.height //- topbar.frame.height// + editBar.frame.height
-        return CGSize(width: width, height: height)
-    }
-
     var safes:CGFloat = 0.0
-    
-    override func viewWillLayoutSubviews() {
-        
-        super.viewWillLayoutSubviews()
-        
-        print(self.view.safeAreaInsets)
-        
-        if safes == 0.0{
-            safe = self.view.safeAreaInsets.top
-            safes = safe
-        }
-        
-        if safes == 0.0{
-            safe = self.view.safeAreaInsets.left
-            safes = safe
-        }
-        
-        if UIDevice.current.userInterfaceIdiom == .pad{
-            self.CollectionView.collectionViewLayout.invalidateLayout()
-            let ax = self.file!.count
-            self.CollectionView.contentSize.width = self.view.frame.width * CGFloat(ax)
-            if self.page != 0{
-                self.CollectionView.setContentOffset(CGPoint(x: self.view.frame.width  * CGFloat(self.page) , y: 0.0), animated: false)
-            }
-            
-        }
-        
-    }
-    
     var page:Int = 0
-   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    super.viewWillTransition(to: size, with: coordinator)
+    var deleteImage = false
+    //プレビュー画面かどうか
+    var movedPreview:Bool!
+    //選択した写真と写真のパス得る
+    var selectedDirectory:String!
+    var selectedImage:UIImage!
+    var selectedImagePath:String!
+    var selectedImageDropboxPath:String?
+    var file:[(name:String,date:String,modify:Date,image:UIImage?)]!
+    var selectRow:Int!
+    var safe:CGFloat = 0.0
+    let util = Util()
+    var swiep = UIPinchGestureRecognizer()
     
-    page = Int(ceil(CollectionView.contentOffset.x/self.view.bounds.width))
+    @IBOutlet weak var viewrTitle: UINavigationItem!
+    @IBOutlet weak var buckComeraBar: UINavigationBar!
+    
+    @IBOutlet weak var safeAreaColor: UINavigationBar!
+    @IBOutlet weak var topbar: UINavigationBar!
+    @IBOutlet weak var editBar: UINavigationBar!
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    
+        file = util.loadImage(selectedDirectoryName: self.selectedDirectory)
+        //CollectionView.reloadData()
+        page = self.selectRow
+        
+        
+        
+        CollectionView.delegate = self
+        CollectionView.dataSource = self
+        
+        self.swiep = UIPinchGestureRecognizer(target: self, action: #selector(swip))
+        self.swiep.delegate = self
+        self.CollectionView.addGestureRecognizer(self.swiep)
+        
+        //controllerbarは非表示
+        self.viewrTitle.title = self.selectedDirectory
+        self.navigationController?.isNavigationBarHidden = true
+
+        
     }
     
+    //最初にビューに来た時、回転した時の写真の位置設定(iphone)
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
@@ -107,7 +71,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
             let ax = self.file!.count
             self.CollectionView.contentSize.width = (self.view.frame.width ) * CGFloat(ax)
             self.CollectionView.contentSize.height = self.view.frame.height
-            //navigationcontrollerからの遷移じゃない場合navigationbarの分詰める
+            //navigationcontrollerからの遷移じゃない場合ベゼルのsafeAreaの分詰める(ずれ補正)
             if movedPreview{
                 if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight{
                     //ベゼルディスプレイか判定
@@ -117,15 +81,15 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
                         safe = safes
                     }
                     if page == 0{
-     
+                        
                         
                         self.CollectionView.setContentOffset(CGPoint(x:+self.view.safeAreaInsets.left, y: 0), animated: false)
                     }else{
                         self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page) + safe  , y: 0.0), animated: false)
                     }
                 }else{
-     
-
+                    
+                    
                     if view.safeAreaInsets.bottom == 0{
                         safe = 0
                     }else{
@@ -140,12 +104,90 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         }
     }
     
-    @IBOutlet weak var viewrTitle: UINavigationItem!
-    @IBOutlet weak var buckComeraBar: UINavigationBar!
+   
+    override func viewWillLayoutSubviews() {
+        
+        super.viewWillLayoutSubviews()
+        
+        print(self.view.safeAreaInsets)
+        
+        //黒い部分の幅を取得
+        if safes == 0.0{
+            safe = self.view.safeAreaInsets.top
+            safes = safe
+        }
+        
+        if safes == 0.0{
+            safe = self.view.safeAreaInsets.left
+            safes = safe
+        }
+        
+        //最初にビューに来た時、回転した時の写真の位置設定(ipad)
+        if UIDevice.current.userInterfaceIdiom == .pad{
+            self.CollectionView.collectionViewLayout.invalidateLayout()
+            let ax = self.file!.count
+            self.CollectionView.contentSize.width = self.view.frame.width * CGFloat(ax)
+            if self.page != 0{
+                self.CollectionView.setContentOffset(CGPoint(x: self.view.frame.width  * CGFloat(self.page) , y: 0.0), animated: false)
+            }
+            
+        }
+        
+    }
     
-    @IBOutlet weak var safeAreaColor: UINavigationBar!
-    @IBOutlet weak var topbar: UINavigationBar!
-    @IBOutlet weak var editBar: UINavigationBar!
+    
+   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+    
+    page = Int(ceil(CollectionView.contentOffset.x/self.view.bounds.width))
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    //collectionview設定
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
+        let cell:CustomCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for:indexPath )as! CustomCell
+        
+        let frame = view.frame.width
+        var thumbnail:UIImage? = nil
+        let group = DispatchGroup()
+        let queue = DispatchQueue(label: "imageSetting",attributes: .concurrent)
+        group.enter()
+        queue.async(group: group) {
+            //サムネイル作成方法変更
+            thumbnail = self.resize(image: (self.file?[indexPath.row].image)!, width: Double(frame))
+            group.leave()
+        }
+        group.notify(queue: .main){
+            cell.img.image = thumbnail
+        }
+        return cell
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return (self.file?.count)!
+    }
+    
+    //  var mainScrollView: UIScrollView!
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width: CGFloat = view.frame.width
+        let height: CGFloat = view.bounds.height//view.bounds.height - collectionView.frame.height //- editBar.frame.height //- topbar.frame.height// + editBar.frame.height
+        return CGSize(width: width, height: height)
+    }
+    
+   
+    //ボタン、ジェスチャーアクション設定
     
     @IBAction func buck(_ sender: Any) {
         if self.movedPreview == true{
@@ -155,20 +197,9 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         }
     }
 
-    var deleteImage = false
-    //プレビュー画面かどうか
-    var movedPreview:Bool!
-    //選択した写真と写真のパス得る
-    var selectedDirectory:String!
-    var selectedImage:UIImage!
-    var selectedImagePath:String!
-    var selectedImageDropboxPath:String?
-    var file:[(name:String,date:String,modify:Date,image:UIImage?)]!
-    var selectRow:Int!
-
-
 
     @IBAction func swip(_ sender: UIPinchGestureRecognizer) {
+        //表示されてる写真の拡大縮小可能画面(ライブラリSympleImageViewer)へ移動
         let visiblecell = CollectionView.visibleCells.first
         let indexPath = CollectionView.indexPath(for: visiblecell!)
         let cell = CollectionView.cellForItem(at: indexPath!) as! CustomCell
@@ -179,40 +210,11 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         present(ImageViewerController(configuration: configuration), animated: true)
         
     }
-    var swiep = UIPinchGestureRecognizer()
+ 
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
-    
-    var safe:CGFloat = 0.0
-    let util = Util()
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        file = util.loadImage(selectedDirectoryName: self.selectedDirectory)
-        //CollectionView.reloadData()
-        page = self.selectRow
-
-        
-        
-        CollectionView.delegate = self
-        CollectionView.dataSource = self
-        
-        self.swiep = UIPinchGestureRecognizer(target: self, action: #selector(swip))
-        self.swiep.delegate = self
-        self.CollectionView.addGestureRecognizer(self.swiep)
-        
-        //controllerbarは非表示
-        self.viewrTitle.title = self.selectedDirectory
-        self.navigationController?.isNavigationBarHidden = true
-        
-        
-
-    }
-    
-  
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -222,9 +224,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     }
     
     
-    override var prefersStatusBarHidden: Bool {
-        return  true
-    }
+   
     //画像シェア機能
     @IBAction func shareAction(_ sender: Any) {
         let index = Int(self.CollectionView.contentOffset.x/self.view.bounds.width)
@@ -248,44 +248,36 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
             // ファイル削除
             (action: UIAlertAction!) -> Void in
                 let index = Int(self.CollectionView.contentOffset.x/self.view.bounds.width)
+            
+                guard let client = DropboxClientsManager.authorizedClient else {
+                    return
+                }
+            
+                client.files.deleteV2(path: "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)!).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                    if error != nil {
+                        // エラーの場合、処理を終了します。
+                        // 必要ならばエラー処理してください。
+                        print("dropboxには無いよ〜")
+                        return
+                    }
+                
+                }
+            
                 do {
+                    print(self.util.documentPath + "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)!)
+                    
                     try FileManager.default.removeItem( atPath: self.util.documentPath + "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)! )
-                    self.deleteImage = true
+                    
+                    if self.movedPreview == true{
+                        self.performSegue(withIdentifier: "comeCamera", sender: self)
+                    }else{
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    
                 } catch {
                     //エラー処理
                     print("error")
                 }
-            
-            guard let client = DropboxClientsManager.authorizedClient else {
-                return
-            }
-            
-            client.files.deleteV2(path: "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)!).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
-                if let error = error {
-                    // エラーの場合、処理を終了します。
-                    // 必要ならばエラー処理してください。
-                    print("dropboxには無いよ〜")
-                    return
-                }
-                
-                // 正常終了の場合の処理を記述してください。
-            }
-            
-            if self.movedPreview == true{
-                let defaults = UserDefaults.standard
-                if self.file.count > 1 && index == 0{
-                    defaults.set(self.file[1].image!.reSizeImage(reSize: CGSize(width: 80, height: 80)).pngData(), forKey: "thumbnailImage")
-                    
-                    defaults.synchronize()
-                }else if index == 0{
-                    defaults.set(UIImage(named: "noImage")!.pngData(), forKey: "thumbnailImage")
-                    defaults.synchronize()
-                }
-                self.performSegue(withIdentifier: "comeCamera", sender: self)
-            }else{
-                self.navigationController?.popViewController(animated: true)
- 
-            }
             
         })
         // キャンセルボタン
@@ -303,9 +295,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     }
     
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-    }
     
     func resize(image: UIImage, width: Double) -> UIImage {
         

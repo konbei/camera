@@ -29,14 +29,26 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
     // 授業一覧
     private var classes: [SettingsData2]?
     let util = Util()
+    //TableViewで扱う空の配列(ここで初期化したらコンパイル時にエラーはいたのでViewDidLoadで初期化
+    private var sectionTitles: [String] = [] //月火...
+    private var rowTitles:[String] = []     //1限,2限。...
+    private var cellData:[[String]] = []    //曜日ごとの名前データ
+
 
     
-    //保存ボタン押した時にCoreDataに名前を保存する
-    @IBAction func SaveBotton() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        try! context.save()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        tableView.separatorColor = UIColor(hex: "C15320")
+        //テーブルデータ初期化
+        sectionTitles = ["月曜","火曜","水曜","木曜","金曜"]
+        rowTitles = ["1限:","2限:","3限:","4限:","5限:","6限:"]
+        
+        //自作セル追加
+        let classXib = UINib(nibName:"ClassNameTableCell", bundle:nil)
+        tableView.register(classXib, forCellReuseIdentifier:"Cell")
+        
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         // CoreDataからデータをfetchしてくる
@@ -45,10 +57,7 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         tableView.reloadData()
     }
     
-    //TableViewで扱う空の配列(ここで初期化したらコンパイル時にエラーはいたのでViewDidLoadで初期化
-    private var sectionTitles: [String] = [] //月火...
-    private var rowTitles:[String] = []     //1限,2限。...
-    private var cellData:[[String]] = []    //曜日ごとの名前データ
+
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -97,21 +106,12 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         return headerView
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        tableView.separatorColor = UIColor(hex: "C15320")
-        //テーブルデータ初期化
-        sectionTitles = ["月曜","火曜","水曜","木曜","金曜"]
-        rowTitles = ["1限:","2限:","3限:","4限:","5限:","6限:"]
-        
-        //自作セル追加
-        let classXib = UINib(nibName:"ClassNameTableCell", bundle:nil)
-        tableView.register(classXib, forCellReuseIdentifier:"Cell")
-        
+    
+    //保存ボタン押した時にCoreDataに名前を保存する
+    @IBAction func SaveBotton() {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        try! context.save()
     }
-    
-    
     
     //returnキー押した後の動作(ClassNameTableCellのtextfieldデリゲートメソッドtextFieldDidEndEditing(return内のキーを押した後の動作)からデリゲート)
     func textFieldDidEndEditing(cell: ClassNameTableCell, value: String) {

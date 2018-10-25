@@ -130,10 +130,6 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         //サムネイルセット
         thumbnailImage.image = saveImage
         
-        self.defaults.set(saveImage.pngData(),forKey: "thumbnailImage")
-        self.defaults.synchronize()
-        thumbnailPath = DocumentPath + "/" + directoryName + "/" + fileName
-        
         let pngImageData = image.pngData()
         
         do{

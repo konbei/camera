@@ -35,7 +35,8 @@ class CameraViewController: UIViewController {
     private var startClassTime:[Int] = []   //時限ごとの開始時刻データ
     private var finishClassTime:[Int] = []
     private let util = Util()
-   
+    var thumbnailPath:String!
+    @IBOutlet weak var thumbnailImage: UIImageView!
     
     //写真データを格納するディレクトリを作成
     func makeDirectory(){
@@ -82,7 +83,7 @@ class CameraViewController: UIViewController {
     }
     //現時時刻から何限か返す
     func getClassTime(intTime:Int)->Int{
-        for i in 0..<self.util.classCounts{
+        for i in 0..<self.util.classCounts-1{
             if startClassTime[i] != 9999 && finishClassTime[i] != 9999{
                 let  ClassTimeRange = startClassTime[i]...finishClassTime[i]
                 if ClassTimeRange.contains(intTime) == true{
@@ -94,26 +95,19 @@ class CameraViewController: UIViewController {
         return 0
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        // CoreDataからデータをfetchしてくる
-        getClassTimeData()
-    }
-    
-    let defaults = UserDefaults.standard
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //プレビューサムネイルを設定
-        let thumbnailData:Data? = defaults.data(forKey: "thumbnailImage")
-        if thumbnailData != nil{
-            let thumbnail = UIImage(data: thumbnailData!)//?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
-            thumbnailImage.image = thumbnail
+        let file = self.util.loadImage(selectedDirectoryName: "All")
+        
+        if file?.count != 0{
+            thumbnailImage.image = file?[0].image?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
         }else{
             thumbnailImage.image = UIImage(named: "noImage")
         }
-        
+      
         
         
         makeDirectory()
@@ -141,6 +135,38 @@ class CameraViewController: UIViewController {
         notification.addObserver(self,
                                  selector: #selector(self.changedDeviceOrientation(_:)),
                                  name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    //選択した写真と写真のパス送る
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "previewImage"){
+            (segue.destination as! SelectedImageViewController).selectedImage = thumbnailImage.image
+            (segue.destination as! SelectedImageViewController).selectedImagePath = thumbnailPath
+            (segue.destination as! SelectedImageViewController).selectedDirectory = "All"
+            
+            (segue.destination as! SelectedImageViewController).selectRow = 0
+            (segue.destination as! SelectedImageViewController).movedPreview = true
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // CoreDataからデータをfetchしてくる
+        getClassTimeData()
+    }
+    
+    @IBAction func goToPreview(_ sender: Any) {
+        performSegue(withIdentifier: "previewImage", sender: nil)
+    }
+    
+    //プレビューから戻ってくる
+    @IBAction func comeCamera (segue: UIStoryboardSegue){
+        //サムネイル設定
+        let file = self.util.loadImage(selectedDirectoryName: "All")
+        if file?.count != 0{
+            thumbnailImage.image = file?[0].image?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
+        }else{
+            thumbnailImage.image = UIImage(named: "noImage")
+        }
     }
     
     //カメラ機能の実装
@@ -232,8 +258,7 @@ class CameraViewController: UIViewController {
         }
     }
     
-    var thumbnailPath:String!
-    @IBOutlet weak var thumbnailImage: UIImageView!
+
     
     //ピンチズーム、縮小
     var oldZoomScale: CGFloat = 1.0
@@ -323,34 +348,7 @@ class CameraViewController: UIViewController {
         
     }
     
-    
-    //プレビューに移動
-    @IBAction func comeCamera (segue: UIStoryboardSegue){
-        //プレビューサムネイルを設定
-        let thumbnailData:Data? = defaults.data(forKey: "thumbnailImage")
-        if thumbnailData != nil{
-            let thumbnail = UIImage(data: thumbnailData!)//?.reSizeImage(reSize: CGSize(width: thumbnailImage.frame.width, height: thumbnailImage.frame.height))
-            thumbnailImage.image = thumbnail
-        }else{
-            thumbnailImage.image = UIImage(named: "noImage")
-        }
-    }
-    //選択した写真と写真のパス送る
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "previewImage"){
-            (segue.destination as! SelectedImageViewController).selectedImage = thumbnailImage.image
-            (segue.destination as! SelectedImageViewController).selectedImagePath = thumbnailPath
-            (segue.destination as! SelectedImageViewController).selectedDirectory = "All"
-            
-            (segue.destination as! SelectedImageViewController).selectRow = 0
-            (segue.destination as! SelectedImageViewController).movedPreview = true
-        }
-    }
-    
-    
-    @IBAction func goToPreview(_ sender: Any) {
-        performSegue(withIdentifier: "previewImage", sender: nil)
-    }
-    
+
+
 }
 
