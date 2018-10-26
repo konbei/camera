@@ -294,12 +294,15 @@ UICollectionViewDelegate {
         }
     }
     
+    @IBOutlet weak var bar: UINavigationBar!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.underBar.isHidden = false
         cv.delegate = self
         cv.dataSource = self
        
+        topBar.title = self.selectedDirectoryName
+        
         
         // barのアイテム追加
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "選択", style: UIBarButtonItem.Style.done, target: self, action: #selector(editButtonTapped))

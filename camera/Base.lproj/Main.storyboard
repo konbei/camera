@@ -12,7 +12,7 @@
         <!--Camera View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="CameraViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="camera" id="BYZ-38-t0r" customClass="CameraViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -83,7 +83,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <exit id="FaW-T6-i11" userLabel="Exit" sceneMemberID="exit"/>
                 <pinchGestureRecognizer id="aaH-xt-1mH">
                     <connections>
                         <action selector="pinchZoom:" destination="BYZ-38-t0r" id="yMv-G0-QZz"/>
@@ -206,6 +205,9 @@
                                 <textAttributes key="titleTextAttributes">
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </textAttributes>
+                                <textAttributes key="largeTitleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </textAttributes>
                                 <items>
                                     <navigationItem id="6I4-gr-gcd">
                                         <barButtonItem key="leftBarButtonItem" title="時間割" id="KXa-CO-HRb">
@@ -239,6 +241,7 @@
                         <viewLayoutGuide key="safeArea" id="Ay9-c7-yKO"/>
                     </view>
                     <connections>
+                        <outlet property="bar" destination="dBF-wE-kde" id="MO8-7V-znL"/>
                         <outlet property="cv" destination="Sbx-yx-1pA" id="AYH-fH-Gdk"/>
                         <outlet property="dropboxItem" destination="2O3-Eb-Qix" id="DDa-tp-YMD"/>
                         <outlet property="topBar" destination="6I4-gr-gcd" id="GWB-Vb-KAb"/>
@@ -316,7 +319,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pk1-pN-a1p">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                 <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -325,7 +328,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mq6-dm-6aP">
-                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textAttributes key="titleTextAttributes">
@@ -367,7 +370,6 @@
                         <outlet property="safeAreaColor" destination="Pk1-pN-a1p" id="lMi-2s-BW6"/>
                         <outlet property="topbar" destination="mq6-dm-6aP" id="4BG-d0-PR8"/>
                         <outlet property="viewrTitle" destination="8nS-kB-2dQ" id="cbD-Df-IdX"/>
-                        <segue destination="FaW-T6-i11" kind="unwind" identifier="comeCamera" unwindAction="comeCameraWithSegue:" id="UAm-pr-3zn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AN9-Bl-W5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -506,8 +508,11 @@
                                 <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </textAttributes>
                                 <items>
-                                    <navigationItem id="W9o-Sz-i5f">
+                                    <navigationItem title="設定" id="W9o-Sz-i5f">
                                         <barButtonItem key="leftBarButtonItem" title="時間割" id="FRD-l0-IU7">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
@@ -670,6 +675,6 @@
         <image name="schedule" width="102.40000152587891" height="102.40000152587891"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DF5-fn-uAR"/>
+        <segue reference="7xQ-zD-27L"/>
     </inferredMetricsTieBreakers>
 </document>

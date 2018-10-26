@@ -31,11 +31,17 @@ class CameraViewController: UIViewController {
         }
     }
     
-
+   
+   
+    
     private var startClassTime:[Int] = []   //時限ごとの開始時刻データ
     private var finishClassTime:[Int] = []
     private let util = Util()
     var thumbnailPath:String!
+    var movedPreview = false
+    let defaults = UserDefaults.standard
+    var oriantationRowValue:Int?
+    
     @IBOutlet weak var thumbnailImage: UIImageView!
     
     //写真データを格納するディレクトリを作成
@@ -152,6 +158,10 @@ class CameraViewController: UIViewController {
             
             (segue.destination as! SelectedImageViewController).selectRow = 0
             (segue.destination as! SelectedImageViewController).movedPreview = true
+           
+            
+        }else{
+            defaults.set(false, forKey: "movedPreview")
         }
     }
     
@@ -161,10 +171,30 @@ class CameraViewController: UIViewController {
         performSegue(withIdentifier: "previewImage", sender: nil)
     }
     
+    /*
     //プレビューから戻ってくる
     @IBAction func comeCamera (segue: UIStoryboardSegue){
-        viewDidLoad()
+        setupInputOutput()
+
+      
+        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        
+        if(UIDevice.current.orientation.rawValue == 3 || UIDevice.current.orientation.rawValue == 4){
+            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.height, height: view.frame.width)
+        }else{
+            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        }
+        
+      
+        previewLayer.masksToBounds = true
+        previewLayer.connection?.videoOrientation = .portrait
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        // previewViewに追加する
+        previewView.layer.addSublayer(previewLayer)
+        
+        session.startRunning()
     }
+    */
     
     // メモリ解放
     override func viewDidDisappear(_ animated: Bool) {
@@ -244,27 +274,50 @@ class CameraViewController: UIViewController {
         // プレビューレイヤを作る
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
         
+       
+        movedPreview = defaults.bool(forKey: "movedPreview")
+        oriantationRowValue = defaults.integer(forKey: "deviceOrientation")
         
-        previewLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
         
+        if(oriantationRowValue == 3 && movedPreview) {
+            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.height, height: view.frame.width)
+            defaults.set(false, forKey: "movedPreview")
+            defaults.synchronize()
+        }else if (oriantationRowValue == 4 && movedPreview){
+            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.height, height: view.frame.width)
+        }else{
+            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        }
+        
+       
+  
         previewLayer.masksToBounds = true
+        previewLayer.connection?.videoOrientation = .portrait
         previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+     
         // previewViewに追加する
         previewView.layer.addSublayer(previewLayer)
+       //
     }
     // デバイスの向きが変わったときに呼び出すメソッド
     @objc func changedDeviceOrientation(_ notification :Notification) {
         // photoOutputObj.connectionの回転向きをデバイスと合わせる
         if let photoOutputConnection = self.photoOutputObj.connection(with: AVMediaType.video) {
+            movedPreview = false
+            defaults.set(false, forKey: "movedPreview")
             switch UIDevice.current.orientation {
             case .portrait:
                 photoOutputConnection.videoOrientation = .portrait
+                oriantationRowValue = UIDevice.current.orientation.rawValue
             case .portraitUpsideDown:
                 photoOutputConnection.videoOrientation = .portraitUpsideDown
+                oriantationRowValue = UIDevice.current.orientation.rawValue
             case .landscapeLeft:
                 photoOutputConnection.videoOrientation = .landscapeRight
+                oriantationRowValue = UIDevice.current.orientation.rawValue
             case .landscapeRight:
                 photoOutputConnection.videoOrientation = .landscapeLeft
+                oriantationRowValue = UIDevice.current.orientation.rawValue
             default:
                 break
             }

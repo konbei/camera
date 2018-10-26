@@ -102,6 +102,7 @@ class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableVie
     @IBAction func back(_ sender: Any) {
         let a = UIStoryboard(name:"Main",bundle:nil).instantiateViewController(withIdentifier: "N") as! UINavigationController
         self.present(a, animated: true, completion: nil)
+        
     }
     
     /*

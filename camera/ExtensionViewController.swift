@@ -67,12 +67,20 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         if var stillImage = UIImage(data: photoData){
             //AVCapturePhotoOutputで持ってきたUIImageの向きはlandscapcLeftで固定されてしまうので向きによってUIImage回転
             
-            switch UIDevice.current.orientation{
-            case .portraitUpsideDown:
+            let rowValue = oriantationRowValue ?? UIDevice.current.orientation.rawValue
+            print(oriantationRowValue,UIDevice.current.orientation.rawValue)
+            
+            switch rowValue{
+            case 2:
                 stillImage = stillImage.rotated(degrees: 270, width: stillImage.size.height, height: stillImage.size.width)!
-            case .landscapeRight:
-                stillImage = stillImage.rotated(degrees: 180, width: stillImage.size.width, height: stillImage.size.height)!
-            case .portrait, .faceUp, .faceUp:
+            case 4:
+                if movedPreview{
+                    stillImage = stillImage.rotated(degrees:180, width: stillImage.size.height, height: stillImage.size.width)!
+                    
+                }else{
+                    stillImage = stillImage.rotated(degrees: 180, width: stillImage.size.width, height: stillImage.size.height)!
+                }
+            case 1:
                 stillImage = stillImage.rotated(degrees: 90, width: stillImage.size.height, height: stillImage.size.width)!
             default: break
             }

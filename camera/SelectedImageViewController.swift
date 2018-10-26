@@ -29,6 +29,10 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     var safe:CGFloat = 0.0
     let util = Util()
     var swiep = UIPinchGestureRecognizer()
+    var resultHandler: ((String) -> Void)?
+    let defaults = UserDefaults.standard
+    var orientationRowValue = 0
+    
     
     @IBOutlet weak var viewrTitle: UINavigationItem!
     @IBOutlet weak var buckComeraBar: UINavigationBar!
@@ -46,7 +50,10 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         //CollectionView.reloadData()
         page = self.selectRow
         
-        
+        print(UIDeviceOrientation.portrait.rawValue)
+        print(UIDeviceOrientation.portraitUpsideDown.rawValue)
+        print(UIDeviceOrientation.landscapeLeft.rawValue)
+        print(UIDeviceOrientation.landscapeRight.rawValue)
         
         CollectionView.delegate = self
         CollectionView.dataSource = self
@@ -62,9 +69,16 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         
     }
     
+    func saveDeviceOrientation (){
+        defaults.set(orientationRowValue, forKey: "deviceOrientation")
+        defaults.synchronize()
+    }
+    
     //最初にビューに来た時、回転した時の写真の位置設定(iphone)
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        
+        orientationRowValue =  (UIDevice.current.orientation.rawValue)
         
         if UIDevice.current.userInterfaceIdiom == .phone{
             self.CollectionView.collectionViewLayout.invalidateLayout()
@@ -191,13 +205,23 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     
     @IBAction func buck(_ sender: Any) {
         if self.movedPreview == true{
-            self.performSegue(withIdentifier: "comeCamera", sender: self)
+            let defaults = UserDefaults.standard
+            defaults.set(true, forKey: "movedPreview")
+            defaults.synchronize()
+            saveDeviceOrientation()
+            let a = UIStoryboard(name:"Main",bundle:nil).instantiateViewController(withIdentifier: "camera") as! UIViewController
+            self.present(a, animated: true, completion: nil)
+            
+            //self.performSegue(withIdentifier: "comeCamera", sender: self)
+        
+            
         }else{
             self.navigationController?.popViewController(animated: true)
             
         }
         
     }
+
 
 
     @IBAction func swip(_ sender: UIPinchGestureRecognizer) {
