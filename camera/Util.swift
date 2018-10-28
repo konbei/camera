@@ -47,7 +47,7 @@ class Util{
         
         //ディレクトリからファイルの名前を取ってくる
         if selectedDirectoryName == "All"{
-            for day in 0..<dayCounts{
+            for day in 0...dayCounts{
                 let directoryPath = documentPath + "/" + numberday(num: day)
                 do{
                     try fileNames = FileManager.default.contentsOfDirectory(atPath: directoryPath)
