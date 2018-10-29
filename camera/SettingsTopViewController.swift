@@ -45,7 +45,7 @@ class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableVie
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
+        
     }    // MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -99,11 +99,7 @@ class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableVie
         }
     }
     
-    @IBAction func back(_ sender: Any) {
-        let a = UIStoryboard(name:"Main",bundle:nil).instantiateViewController(withIdentifier: "N") as! UINavigationController
-        self.present(a, animated: true, completion: nil)
-        
-    }
+
     
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -121,7 +121,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Sbx-yx-1pA">
-                                <rect key="frame" x="0.0" y="132" width="414" height="720"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="764"/>
                                 <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mKH-eL-qdb">
                                     <size key="itemSize" width="80" height="80"/>
@@ -189,62 +189,24 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bDa-D3-Sd7">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
-                                <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <items>
-                                    <navigationItem id="RYI-Vk-Jx7"/>
-                                </items>
-                            </navigationBar>
-                            <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBF-wE-kde">
-                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <textAttributes key="largeTitleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem id="6I4-gr-gcd">
-                                        <barButtonItem key="leftBarButtonItem" title="時間割" id="KXa-CO-HRb">
-                                            <connections>
-                                                <action selector="back:" destination="liW-DM-doI" id="6yH-Tu-Ecs"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="dBF-wE-kde" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" id="0cB-NT-k5i"/>
                             <constraint firstItem="Vqb-Ss-ryf" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" id="0ge-h5-Y53"/>
-                            <constraint firstItem="bDa-D3-Sd7" firstAttribute="top" secondItem="CyM-YH-ZoL" secondAttribute="top" id="7yS-EY-fea"/>
-                            <constraint firstItem="bDa-D3-Sd7" firstAttribute="leading" secondItem="CyM-YH-ZoL" secondAttribute="leading" id="C2h-i1-Iu6"/>
+                            <constraint firstItem="Sbx-yx-1pA" firstAttribute="top" secondItem="Ay9-c7-yKO" secondAttribute="top" id="1Cd-5S-Crn"/>
                             <constraint firstItem="Sbx-yx-1pA" firstAttribute="trailing" secondItem="Ay9-c7-yKO" secondAttribute="trailing" id="DZM-GB-A4a"/>
                             <constraint firstItem="Vqb-Ss-ryf" firstAttribute="top" secondItem="Sbx-yx-1pA" secondAttribute="bottom" id="JbW-gu-FgE"/>
                             <constraint firstItem="Sbx-yx-1pA" firstAttribute="leading" secondItem="Ay9-c7-yKO" secondAttribute="leading" id="Ka2-at-XcV"/>
                             <constraint firstItem="Vqb-Ss-ryf" firstAttribute="trailing" secondItem="Ay9-c7-yKO" secondAttribute="trailing" id="NJ5-iP-SuE"/>
-                            <constraint firstItem="dBF-wE-kde" firstAttribute="trailing" secondItem="Ay9-c7-yKO" secondAttribute="trailing" id="ThV-0d-DIf"/>
                             <constraint firstItem="Vqb-Ss-ryf" firstAttribute="bottom" secondItem="CyM-YH-ZoL" secondAttribute="bottom" id="ejE-jv-drm"/>
-                            <constraint firstItem="Ay9-c7-yKO" firstAttribute="top" secondItem="bDa-D3-Sd7" secondAttribute="bottom" id="l6j-Jc-bTs"/>
-                            <constraint firstItem="dBF-wE-kde" firstAttribute="top" secondItem="Ay9-c7-yKO" secondAttribute="top" id="ok3-bT-Feg"/>
                             <constraint firstItem="Vqb-Ss-ryf" firstAttribute="top" secondItem="Sbx-yx-1pA" secondAttribute="bottom" id="tbZ-Bm-yAX"/>
-                            <constraint firstAttribute="trailing" secondItem="bDa-D3-Sd7" secondAttribute="trailing" id="x1L-Gu-CLs"/>
-                            <constraint firstItem="Sbx-yx-1pA" firstAttribute="top" secondItem="dBF-wE-kde" secondAttribute="bottom" id="xXk-z2-OEK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ay9-c7-yKO"/>
                     </view>
                     <connections>
-                        <outlet property="bar" destination="dBF-wE-kde" id="MO8-7V-znL"/>
                         <outlet property="cv" destination="Sbx-yx-1pA" id="AYH-fH-Gdk"/>
                         <outlet property="dropboxItem" destination="2O3-Eb-Qix" id="DDa-tp-YMD"/>
-                        <outlet property="topBar" destination="6I4-gr-gcd" id="GWB-Vb-KAb"/>
                         <outlet property="underBar" destination="Vqb-Ss-ryf" id="OQ1-Et-QLY"/>
                         <segue destination="E4p-3l-hhN" kind="show" identifier="selectedImage" id="DF5-fn-uAR"/>
                     </connections>
@@ -319,7 +281,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pk1-pN-a1p">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
                                 <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -328,7 +290,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mq6-dm-6aP">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textAttributes key="titleTextAttributes">
@@ -391,7 +353,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Rbk-oP-TQb">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <color key="backgroundColor" red="1" green="0.43921568630000002" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.72025697969543145" green="0.69924748501872203" blue="0.65067938244879642" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="JYS-bJ-lf3">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -492,38 +454,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TB-ZO-IzJ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem id="TzY-Y2-BAs"/>
-                                </items>
-                            </navigationBar>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvb-u1-9Kd">
-                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
-                                <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="設定" id="W9o-Sz-i5f">
-                                        <barButtonItem key="leftBarButtonItem" title="時間割" id="FRD-l0-IU7">
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <connections>
-                                                <action selector="back:" destination="oY1-4t-G4y" id="ywM-Lk-Mse"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9fm-iI-fYL">
-                                <rect key="frame" x="0.0" y="132" width="414" height="764"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="UOG-qK-MAa" style="IBUITableViewCellStyleDefault" id="roX-Bc-rDq">
@@ -550,17 +482,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="7TB-ZO-IzJ" secondAttribute="trailing" id="8GB-fI-xDO"/>
-                            <constraint firstItem="7TB-ZO-IzJ" firstAttribute="leading" secondItem="GFw-4u-iNR" secondAttribute="leading" id="C1u-Kl-5ZG"/>
-                            <constraint firstItem="bvb-u1-9Kd" firstAttribute="leading" secondItem="UM5-5o-wWz" secondAttribute="leading" id="CGs-Pm-ep8"/>
-                            <constraint firstItem="9fm-iI-fYL" firstAttribute="top" secondItem="bvb-u1-9Kd" secondAttribute="bottom" id="PXI-2u-3AO"/>
                             <constraint firstItem="9fm-iI-fYL" firstAttribute="leading" secondItem="UM5-5o-wWz" secondAttribute="leading" id="Suc-yR-ht3"/>
-                            <constraint firstItem="bvb-u1-9Kd" firstAttribute="trailing" secondItem="UM5-5o-wWz" secondAttribute="trailing" id="VbE-Wi-LQO"/>
-                            <constraint firstItem="UM5-5o-wWz" firstAttribute="top" secondItem="7TB-ZO-IzJ" secondAttribute="bottom" id="XG4-pS-cDu"/>
-                            <constraint firstItem="7TB-ZO-IzJ" firstAttribute="top" secondItem="GFw-4u-iNR" secondAttribute="top" id="aTz-LL-c3s"/>
+                            <constraint firstItem="9fm-iI-fYL" firstAttribute="top" secondItem="UM5-5o-wWz" secondAttribute="top" id="bV9-8T-qrN"/>
                             <constraint firstItem="9fm-iI-fYL" firstAttribute="trailing" secondItem="UM5-5o-wWz" secondAttribute="trailing" id="e6G-zX-TM3"/>
                             <constraint firstAttribute="bottom" secondItem="9fm-iI-fYL" secondAttribute="bottom" id="m8G-nM-XIh"/>
-                            <constraint firstItem="bvb-u1-9Kd" firstAttribute="top" secondItem="UM5-5o-wWz" secondAttribute="top" id="zgp-Xv-ti8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UM5-5o-wWz"/>
                     </view>
@@ -675,6 +600,6 @@
         <image name="schedule" width="102.40000152587891" height="102.40000152587891"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7xQ-zD-27L"/>
+        <segue reference="DF5-fn-uAR"/>
     </inferredMetricsTieBreakers>
 </document>

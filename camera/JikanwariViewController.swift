@@ -140,15 +140,18 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         
        
         let label = cell.contentView.viewWithTag(1) as! UILabel
-        //cell.label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontSizeToFitWidth = true
        
        
         if indexPath.row == 0 && indexPath.section == 0{
+            label.font = UIFont(name: "Title 3", size: 40)
             cell.backgroundColor = UIColor.clear
             label.backgroundColor = UIColor.clear
         }else if indexPath.row == 0{
             label.adjustsFontSizeToFitWidth = false
-            label.font = UIFont.systemFont(ofSize: miniWidth-6)
+            label.font = UIFont(name: "Title 3", size: miniWidth-6)
+
+           // label.font = UIFont.systemFont(ofSize: miniWidth-6)
  
             label.numberOfLines = 0
             if indexPath.section != 7{
@@ -157,9 +160,10 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
             label.text = "他"
             }
         }else if indexPath.section == 0{
+            label.font = UIFont(name: "Title 3", size: 40)
             label.text = "\(self.util.numberday(num: indexPath.row-1))"
         }else{
-            
+            label.font = UIFont(name: "Title 3", size: 40)
             let nameDay = self.util.numberday(num: indexPath.row - 1)
             var period:String = ""
             if indexPath.section == 7{
