@@ -37,10 +37,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hS4-Oh-JkA">
-                                <rect key="frame" x="284.66666666666669" y="743" width="87" height="87"/>
+                                <rect key="frame" x="294.66666666666669" y="767" width="45" height="45"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="87" id="GAC-9h-1A4"/>
-                                    <constraint firstAttribute="height" constant="87" id="kXb-HJ-SYE"/>
+                                    <constraint firstAttribute="height" constant="45" id="WCR-QU-d7J"/>
+                                    <constraint firstAttribute="width" constant="45" id="YIS-ve-lzC"/>
                                 </constraints>
                                 <state key="normal" image="schedule">
                                     <color key="titleColor" red="1" green="0.25462015500000001" blue="0.23705924880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -50,12 +50,12 @@
                                 </connections>
                             </button>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Qh-Jc-boI" userLabel="thumbnailImage">
-                                <rect key="frame" x="49.666666666666657" y="750" width="80" height="80"/>
-                                <color key="backgroundColor" red="1" green="0.25462015500000001" blue="0.23705924880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="69.666666666666671" y="767" width="50" height="50"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="57g-FB-31v"/>
-                                    <constraint firstAttribute="width" constant="80" id="dkz-sv-CqX"/>
+                                    <constraint firstAttribute="height" constant="50" id="DOI-Dy-Vva"/>
+                                    <constraint firstAttribute="width" constant="50" id="wqu-kf-QWe"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="Ftv-ba-5hp" appends="YES" id="rOX-Zm-37v"/>
@@ -64,16 +64,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="qME-NH-YbL" firstAttribute="leading" secondItem="1Qh-Jc-boI" secondAttribute="trailing" constant="40" id="4Jp-ZO-kJF"/>
                             <constraint firstAttribute="bottom" secondItem="jsd-UE-E4f" secondAttribute="bottom" id="6ii-py-WP2"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hS4-Oh-JkA" secondAttribute="bottom" constant="32" id="9CX-mn-NHe"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="qME-NH-YbL" secondAttribute="bottom" constant="32" id="CG2-LS-I5p"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1Qh-Jc-boI" secondAttribute="bottom" constant="32" id="FEw-E2-MXd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1Qh-Jc-boI" secondAttribute="bottom" constant="45" id="Dfc-Jz-WEr"/>
                             <constraint firstItem="jsd-UE-E4f" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="J1M-ae-5Yu"/>
+                            <constraint firstItem="hS4-Oh-JkA" firstAttribute="leading" secondItem="qME-NH-YbL" secondAttribute="trailing" constant="50" id="N9w-pt-Nce"/>
                             <constraint firstItem="qME-NH-YbL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="P2c-K7-fOR"/>
                             <constraint firstItem="jsd-UE-E4f" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="SfY-YG-BBO"/>
                             <constraint firstItem="jsd-UE-E4f" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="bqZ-Sb-xjw"/>
-                            <constraint firstItem="hS4-Oh-JkA" firstAttribute="leading" secondItem="qME-NH-YbL" secondAttribute="trailing" constant="40" id="wWi-4Y-tj8"/>
+                            <constraint firstItem="qME-NH-YbL" firstAttribute="leading" secondItem="1Qh-Jc-boI" secondAttribute="trailing" constant="50" id="dlm-q8-nMB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hS4-Oh-JkA" secondAttribute="bottom" constant="50" id="v7J-O7-t6U"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -281,7 +281,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pk1-pN-a1p">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                 <color key="backgroundColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -290,7 +290,7 @@
                                 </items>
                             </navigationBar>
                             <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mq6-dm-6aP">
-                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" red="0.1215686275" green="0.59999999999999998" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textAttributes key="titleTextAttributes">
@@ -597,9 +597,9 @@
     </scenes>
     <resources>
         <image name="maru" width="60" height="60"/>
-        <image name="schedule" width="102.40000152587891" height="102.40000152587891"/>
+        <image name="schedule" width="60" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DF5-fn-uAR"/>
+        <segue reference="7xQ-zD-27L"/>
     </inferredMetricsTieBreakers>
 </document>

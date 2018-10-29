@@ -134,7 +134,7 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         
         
         let saveImage =
-            image.reSizeImage(reSize: CGSize(width: 80, height: 80))
+            image.reSizeImage(reSize: CGSize(width: 45, height: 45))
         //サムネイルセット
         thumbnailImage.image = saveImage
         
