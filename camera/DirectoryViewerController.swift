@@ -208,7 +208,7 @@ UICollectionViewDelegate {
                     }
                     
                     let client = DropboxClientsManager.authorizedClient
-                    client?.files.deleteV2(path: "/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                    client?.files.deleteV2(path: "/sync/" + self.file[i.row].date + "/" + self.file[i.row].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                         if let error = error {
                             // エラーの場合、処理を終了します。
                             // 必要ならばエラー処理してください。
@@ -229,7 +229,7 @@ UICollectionViewDelegate {
                     
                     let client = DropboxClientsManager.authorizedClient
                     
-                    client?.files.deleteV2(path: "/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                    client?.files.deleteV2(path: "/sync/" + self.file[i].date + "/" + self.file[i].name ).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                         if let error = error {
                             // エラーの場合、処理を終了します。
                             // 必要ならばエラー処理してください。
@@ -425,7 +425,7 @@ UICollectionViewDelegate {
     
     var holderName:[String] = []
     var exsistFolderName:[String] = []
-    //var exsistDataName:[String] = []
+    
     
     func makeFolderResultHUD(bool:Bool){
         self.hud.hide(animated: false)
@@ -489,9 +489,14 @@ UICollectionViewDelegate {
     }
     
     func detectNewFolder(exsistFolder:[String])->[String]{
-        var holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun","uploads","backup"]
+        var holderName = ["sync/Mon1","sync/Mon2","sync/Mon3","sync/Mon4","sync/Mon5","sync/Mon6","sync/Mon0","sync/Tues1","sync/Tues2","sync/Tues3","sync/Tues4","sync/Tues5","sync/Tues6","sync/Tues0","sync/Wednes1","sync/Wednes2","sync/Wednes3","sync/Wednes4","sync/Wednes5","sync/Wednes6","sync/Wednes0","sync/Thurs1","sync/Thurs2","sync/Thurs3","sync/Thurs4","sync/Thurs5","sync/Thurs6","sync/Thurs0","sync/Fri1","sync/Fri2","sync/Fri3","sync/Fri4","sync/Fri5","sync/Fri6","sync/Fri0","sync/Satur","sync/Sun","uploads","backup"]
+        
         for i in 0..<exsistFolder.count{
-            holderName.remove(at: holderName.index(of: exsistFolder[i])!)
+            if exsistFolder[i] != "uploads" && exsistFolder[i] != "backup"{
+                holderName.remove(at: holderName.index(of:"sync/" + exsistFolder[i])!)
+            }else{
+                holderName.remove(at: holderName.index(of:exsistFolder[i])!)
+            }
         }
         return holderName
     }
@@ -506,7 +511,8 @@ UICollectionViewDelegate {
         hud = MBProgressHUD.showAdded(to: (getTopViewController()?.view)!, animated: true)
         self.hud.label.text = "フォルダ作成中"
 
-        let _ = client?.files.listFolder(path: "").response { response, error in
+        
+        let _ = client?.files.listFolder(path: "", recursive: true, includeMediaInfo: false, includeDeleted: false, includeHasExplicitSharedMembers: false, includeMountedFolders: false, limit: nil, sharedLink: nil, includePropertyGroups: nil).response { response, error in
             if let error = error {
                 self.makeFolderResultHUD(bool: false)
                 // エラーの場合、処理を終了します。
@@ -524,11 +530,18 @@ UICollectionViewDelegate {
             // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
             for entry in (response?.entries)!{
                 // 名前
+                if let folder = entry as? Files.FolderMetadata{
                 let name = entry.name
-                dattaName.append(name)
-                //print(entry.name)
+                    //syncのサブディレクトリのフォルダ、/uploads、backupのフォルダがあったら入れる
+                    if !((entry.pathLower?.contains("backup"))! && name != "backup") && !((entry.pathLower?.contains("uploads"))! && name != "uploads") && name != "sync" {
+                    dattaName.append(name)
+                    }
+ 
+                }
             }
+            
             let holderName = self.detectNewFolder(exsistFolder: dattaName)
+            //let holderName = ["sync/Mon1","sync/Mon2","sync/Mon3","sync/Mon4","sync/Mon5","sync/Mon6","sync/Mon0","sync/Tues1","sync/Tues2","sync/Tues3","sync/Tues4","sync/Tues5","sync/Tues6","sync/Tues0","sync/Wednes1","sync/Wednes2","sync/Wednes3","sync/Wednes4","sync/Wednes5","sync/Wednes6","sync/Wednes0","sync/Thurs1","sync/Thurs2","sync/Thurs3","sync/Thurs4","sync/Thurs5","sync/Thurs6","sync/Thurs0","sync/Fri1","sync/Fri2","sync/Fri3","sync/Fri4","sync/Fri5","sync/Fri6","sync/Fri0","sync/Satur","sync/Sun","uploads","backup"]
             self.failed = false
             self.finishCount = 0
             if holderName.count != 0{
@@ -714,7 +727,7 @@ UICollectionViewDelegate {
 
             
             //dropboxのファイル一覧取得
-            let _ = client?.files.listFolder(path: "/" + self.holderName[j]).response { response, error in
+            let _ = client?.files.listFolder(path: "/sync/" + self.holderName[j]).response { response, error in
                 if let error = error {
                     //ファイル更新がない場合
                     errorFolder.append(self.holderName[j])
@@ -862,7 +875,7 @@ UICollectionViewDelegate {
                     for i in 0..<uploadData!.count{
                         let data:Data = (uploadData?[i].image!.pngData()!)!
                         
-                        self.client?.files.upload(path: "/" + (uploadData?[i].date)! + "/" + (uploadData?[i].name)!, input: data).response { response, error in
+                        self.client?.files.upload(path: "/sync/" + (uploadData?[i].date)! + "/" + (uploadData?[i].name)!, input: data).response { response, error in
                             if let error = error {
                                 errorFolder.append(self.holderName[j])
                                 directoryIsSync = defaults.array(forKey: "selectedDirectorySync") as! [Bool]
@@ -955,7 +968,7 @@ UICollectionViewDelegate {
                             return directoryURL
                         }
                         
-                        self.client?.files.download(path: "/" + self.holderName[j] + "/" + (downloadFileName?[i])!, destination: destination).response { response, error in
+                        self.client?.files.download(path: "/sync/" + self.holderName[j] + "/" + (downloadFileName?[i])!, destination: destination).response { response, error in
                             if let error = error {
                                 errorFolder.append(self.holderName[j])
                                 directoryIsSync = defaults.array(forKey: "selectedDirectorySync") as! [Bool]

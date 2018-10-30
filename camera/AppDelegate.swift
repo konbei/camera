@@ -121,9 +121,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func detectNewFolder(exsistFolder:[String])->[String]{
-       var holderName = ["Mon1","Mon2","Mon3","Mon4","Mon5","Mon6","Mon0","Tues1","Tues2","Tues3","Tues4","Tues5","Tues6","Tues0","Wednes1","Wednes2","Wednes3","Wednes4","Wednes5","Wednes6","Wednes0","Thurs1","Thurs2","Thurs3","Thurs4","Thurs5","Thurs6","Thurs0","Fri1","Fri2","Fri3","Fri4","Fri5","Fri6","Fri0","Satur","Sun","uploads","backup"]
+        var holderName = ["sync/Mon1","sync/Mon2","sync/Mon3","sync/Mon4","sync/Mon5","sync/Mon6","sync/Mon0","sync/Tues1","sync/Tues2","sync/Tues3","sync/Tues4","sync/Tues5","sync/Tues6","sync/Tues0","sync/Wednes1","sync/Wednes2","sync/Wednes3","sync/Wednes4","sync/Wednes5","sync/Wednes6","sync/Wednes0","sync/Thurs1","sync/Thurs2","sync/Thurs3","sync/Thurs4","sync/Thurs5","sync/Thurs6","sync/Thurs0","sync/Fri1","sync/Fri2","sync/Fri3","sync/Fri4","sync/Fri5","sync/Fri6","sync/Fri0","sync/Satur","sync/Sun","uploads","backup"]
+        
         for i in 0..<exsistFolder.count{
-            holderName.remove(at: holderName.index(of: exsistFolder[i])!)
+            if exsistFolder[i] != "uploads" && exsistFolder[i] != "backup"{
+                holderName.remove(at: holderName.index(of:"sync/" + exsistFolder[i])!)
+            }else{
+                holderName.remove(at: holderName.index(of:exsistFolder[i])!)
+            }
         }
         return holderName
     }
@@ -132,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var dattaName:[String] = []
         let client = DropboxClientsManager.authorizedClient
         
-        let _ = client?.files.listFolder(path: "").response { response, error in
+        let _ = client?.files.listFolder(path: "", recursive: true, includeMediaInfo: false, includeDeleted: false, includeHasExplicitSharedMembers: false, includeMountedFolders: false, limit: nil, sharedLink: nil, includePropertyGroups: nil).response { response, error in
             if let error = error {
                 self.makeFolderResultHUD(bool: false)
                 // エラーの場合、処理を終了します。
@@ -150,9 +155,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // entryオブジェクトからディレクトリ、ファイル情報が取得できます。
             for entry in (response?.entries)!{
                 // 名前
-                let name = entry.name
-                dattaName.append(name)
-                //print(entry.name)
+                if let folder = entry as? Files.FolderMetadata{
+                    let name = entry.name
+                    //syncのサブディレクトリのフォルダ、/uploads、backupのフォルダがあったら入れる
+                    if !((entry.pathLower?.contains("backup"))! && name != "backup") && !((entry.pathLower?.contains("uploads"))! && name != "uploads") && name != "sync" {
+                        dattaName.append(name)
+                    }
+                }
             }
             let holderName = self.detectNewFolder(exsistFolder: dattaName)
            self.finishCount = 0

@@ -279,7 +279,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
                     return
                 }
             
-                client.files.deleteV2(path: "/" + (self.file?[index].date)! + "/" + (self.file?[index].name)!).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
+                client.files.deleteV2(path: "/sync/" + (self.file?[index].date)! + "/" + (self.file?[index].name)!).response { (result: Files.DeleteResult?, error: CallError<Files.DeleteError>?) in
                     if error != nil {
                         // エラーの場合、処理を終了します。
                         // 必要ならばエラー処理してください。
