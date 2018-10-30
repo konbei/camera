@@ -67,8 +67,8 @@ extension CameraViewController:AVCapturePhotoCaptureDelegate {
         if var stillImage = UIImage(data: photoData){
             //AVCapturePhotoOutputで持ってきたUIImageの向きはlandscapcLeftで固定されてしまうので向きによってUIImage回転
             
-            let rowValue = oriantationRowValue ?? UIDevice.current.orientation.rawValue
-            print(oriantationRowValue,UIDevice.current.orientation.rawValue)
+            let rowValue = oriantationRowValue 
+            
             
             switch rowValue{
             case 2:

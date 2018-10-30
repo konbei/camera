@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
             switch authResult {
             case .success:
@@ -195,6 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         // アプリキーを登録します。
         // アプリキーは事前準備で入手してください。
         DropboxClientsManager.setupWithAppKey("o95fn67p67nb8xr")
@@ -204,7 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         defaults.set(boolArry, forKey: "selectedDirectorySync")
         defaults.synchronize()
-    
+ 
             // Override point for customization after application launch.
             return true
     }

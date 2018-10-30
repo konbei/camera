@@ -32,7 +32,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     var resultHandler: ((String) -> Void)?
     let defaults = UserDefaults.standard
     var orientationRowValue = 0
-    
+    var device:UIUserInterfaceIdiom?
     
     @IBOutlet weak var viewrTitle: UINavigationItem!
     @IBOutlet weak var buckComeraBar: UINavigationBar!
@@ -50,11 +50,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         //CollectionView.reloadData()
         page = self.selectRow
         
-        print(UIDeviceOrientation.portrait.rawValue)
-        print(UIDeviceOrientation.portraitUpsideDown.rawValue)
-        print(UIDeviceOrientation.landscapeLeft.rawValue)
-        print(UIDeviceOrientation.landscapeRight.rawValue)
-        
+  
         CollectionView.delegate = self
         CollectionView.dataSource = self
         
@@ -66,7 +62,8 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         self.viewrTitle.title = self.selectedDirectory
         self.navigationController?.isNavigationBarHidden = true
 
-        
+        device = UIDevice.current.userInterfaceIdiom
+       
     }
     
     func saveDeviceOrientation (){
@@ -80,7 +77,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         
         orientationRowValue =  (UIDevice.current.orientation.rawValue)
         
-        if UIDevice.current.userInterfaceIdiom == .phone{
+        if device == .phone{
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
             self.CollectionView.contentSize.width = (self.view.frame.width ) * CGFloat(ax)
@@ -95,15 +92,11 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
                         safe = safes
                     }
                     if page == 0{
-                        
-                        
                         self.CollectionView.setContentOffset(CGPoint(x:+self.view.safeAreaInsets.left, y: 0), animated: false)
                     }else{
                         self.CollectionView.setContentOffset(CGPoint(x: (self.view.frame.width)  * CGFloat(self.page) + safe  , y: 0.0), animated: false)
                     }
                 }else{
-                    
-                    
                     if view.safeAreaInsets.bottom == 0{
                         safe = 0
                     }else{
@@ -137,7 +130,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         }
         
         //最初にビューに来た時、回転した時の写真の位置設定(ipad)
-        if UIDevice.current.userInterfaceIdiom == .pad{
+        if device == .pad{
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
             self.CollectionView.contentSize.width = self.view.frame.width * CGFloat(ax)
@@ -149,6 +142,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         
     }
     
+
     
    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
@@ -191,12 +185,11 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         return (self.file?.count)!
     }
     
-    //  var mainScrollView: UIScrollView!
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = view.frame.width
-        let height: CGFloat = view.bounds.height//view.bounds.height - collectionView.frame.height //- editBar.frame.height //- topbar.frame.height// + editBar.frame.height
+        let height: CGFloat = view.frame.height
         return CGSize(width: width, height: height)
     }
     

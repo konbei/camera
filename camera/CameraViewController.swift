@@ -138,10 +138,12 @@ class CameraViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.tappedScreen(gestureRecognizer:)))
         self.previewView.addGestureRecognizer(tapGesture)
+        oriantationRowValue = UIDevice.current.orientation.rawValue
         // デバイスが回転したときに通知するイベントハンドラを設定する
         notification.addObserver(self,
                                  selector: #selector(self.changedDeviceOrientation(_:)),
                                  name: UIDevice.orientationDidChangeNotification, object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -171,30 +173,7 @@ class CameraViewController: UIViewController {
         performSegue(withIdentifier: "previewImage", sender: nil)
     }
     
-    /*
-    //プレビューから戻ってくる
-    @IBAction func comeCamera (segue: UIStoryboardSegue){
-        setupInputOutput()
 
-      
-        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        
-        if(UIDevice.current.orientation.rawValue == 3 || UIDevice.current.orientation.rawValue == 4){
-            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.height, height: view.frame.width)
-        }else{
-            previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
-        }
-        
-      
-        previewLayer.masksToBounds = true
-        previewLayer.connection?.videoOrientation = .portrait
-        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        // previewViewに追加する
-        previewView.layer.addSublayer(previewLayer)
-        
-        session.startRunning()
-    }
-    */
     
     // メモリ解放
     override func viewDidDisappear(_ animated: Bool) {
