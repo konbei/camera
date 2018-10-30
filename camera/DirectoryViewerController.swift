@@ -541,7 +541,7 @@ UICollectionViewDelegate {
             }
             
             let holderName = self.detectNewFolder(exsistFolder: dattaName)
-            //let holderName = ["sync/Mon1","sync/Mon2","sync/Mon3","sync/Mon4","sync/Mon5","sync/Mon6","sync/Mon0","sync/Tues1","sync/Tues2","sync/Tues3","sync/Tues4","sync/Tues5","sync/Tues6","sync/Tues0","sync/Wednes1","sync/Wednes2","sync/Wednes3","sync/Wednes4","sync/Wednes5","sync/Wednes6","sync/Wednes0","sync/Thurs1","sync/Thurs2","sync/Thurs3","sync/Thurs4","sync/Thurs5","sync/Thurs6","sync/Thurs0","sync/Fri1","sync/Fri2","sync/Fri3","sync/Fri4","sync/Fri5","sync/Fri6","sync/Fri0","sync/Satur","sync/Sun","uploads","backup"]
+
             self.failed = false
             self.finishCount = 0
             if holderName.count != 0{

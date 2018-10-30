@@ -151,6 +151,19 @@ class ClassNameSettingViewController: UITableViewController,TextEditedDelegate{
         context.delete(duplicated)
     }
 
+    @IBAction func deleteName(_ sender: Any) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        guard let deleteData = classes else {
+            return
+        }
+        for element in deleteData{
+            context.delete(element)
+        }
+        classes = []
+        try! context.save()
+        tableView.reloadData()
+    }
+    
     
 }
 /*

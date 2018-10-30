@@ -525,17 +525,24 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="授業名称設定" id="HZ3-cU-S6O">
-                        <barButtonItem key="rightBarButtonItem" title="授業名称設定" style="plain" id="VtQ-pp-VO1">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
-                                <rect key="frame" x="359" y="5.6666666666666679" width="35" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="保存"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="授業名称設定" style="plain" id="VtQ-pp-VO1">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G0f-xZ-xuK">
+                                    <rect key="frame" x="359" y="5.6666666666666679" width="35" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" title="保存"/>
+                                    <connections>
+                                        <action selector="SaveBotton" destination="16G-tw-rXh" eventType="touchUpInside" id="TaI-2P-s4L"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem systemItem="stop" id="ePr-mj-U1m">
                                 <connections>
-                                    <action selector="SaveBotton" destination="16G-tw-rXh" eventType="touchUpInside" id="TaI-2P-s4L"/>
+                                    <action selector="deleteName:" destination="16G-tw-rXh" id="zSB-ND-XmC"/>
                                 </connections>
-                            </button>
-                        </barButtonItem>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmA-u1-nK7" userLabel="First Responder" sceneMemberID="firstResponder"/>
