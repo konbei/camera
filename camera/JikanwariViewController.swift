@@ -40,22 +40,24 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     //全部表示ボタン
     @IBAction func allButton(_ sender: Any) {
         directoryName = "All"
+        selectClassName = "All"
         performSegue(withIdentifier: "directoryViewr", sender: nil)
     }
     
     @IBAction func SaturdayButtun(_ sender: Any) {
         directoryName = "Satur"
+        selectClassName = "Satur"
         performSegue(withIdentifier: "directoryViewr", sender: nil)
     }
     
     @IBAction func SundayButtun(_ sender: Any) {
         directoryName = "Sun"
+        selectClassName = "Sun"
         performSegue(withIdentifier: "directoryViewr", sender: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.navigationController)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.barTintColor = UIColor(hex: "1F9956")
        
