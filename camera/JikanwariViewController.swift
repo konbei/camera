@@ -144,7 +144,7 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
        
        
         if indexPath.row == 0 && indexPath.section == 0{
-            label.font = UIFont(name: "Title 3", size: 40)
+            label.text = ""
             cell.backgroundColor = UIColor.clear
             label.backgroundColor = UIColor.clear
         }else if indexPath.row == 0{
