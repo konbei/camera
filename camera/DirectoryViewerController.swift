@@ -51,6 +51,7 @@ UICollectionViewDelegate {
     var selectImageDropboxPath:String?
     let util = Util()
     var selectedDirectoryName = ""
+    var selectedClassName = ""
     
     @IBOutlet weak var topBar: UINavigationItem!
     @objc private func editButtonTapped(){
@@ -299,7 +300,7 @@ UICollectionViewDelegate {
         cv.delegate = self
         cv.dataSource = self
         
-        self.navigationItem.title = self.selectedDirectoryName
+        self.navigationItem.title = self.selectedClassName
         // barのアイテム追加
         let editBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "選択", style: UIBarButtonItem.Style.done, target: self, action: #selector(editButtonTapped))
         self.navigationItem.setRightBarButton(editBarButtonItem, animated: true)
@@ -415,6 +416,7 @@ UICollectionViewDelegate {
             (segue.destination as! SelectedImageViewController).movedPreview = false
             
             (segue.destination as! SelectedImageViewController).selectRow = self.selectRow
+            (segue.destination as! SelectedImageViewController).selectedClassName = self.selectedClassName
         }
     }
     

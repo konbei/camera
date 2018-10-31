@@ -160,7 +160,7 @@ class CameraViewController: UIViewController {
             
             (segue.destination as! SelectedImageViewController).selectRow = 0
             (segue.destination as! SelectedImageViewController).movedPreview = true
-           
+            (segue.destination as! SelectedImageViewController).selectedClassName = "All"
             
         }else{
             defaults.set(false, forKey: "movedPreview")

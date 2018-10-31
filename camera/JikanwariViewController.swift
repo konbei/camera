@@ -128,6 +128,8 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
         if(segue.identifier == "directoryViewr"){
             print(directoryName)
             (segue.destination as! DirectoryViewerController).selectedDirectoryName = directoryName
+            (segue.destination as! DirectoryViewerController).selectedClassName = selectClassName
+            
         }
     }
     
@@ -198,14 +200,25 @@ class JikanwariViewController: UIViewController,UICollectionViewDataSource,UICol
     
     //タップされたセルのindexからディレクトリの名前を取得してビュワーに遷移
     var directoryName = ""
+    var selectClassName = ""
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
         if indexPath.section != 0 && indexPath.row != 0{
             if(indexPath.section != 7){
                 directoryName = self.util.numberday(num: indexPath.row-1) + "\(indexPath.section)"
                 
             }else{
                 directoryName = self.util.numberday(num: indexPath.row-1) + "0"
+            }
+            
+            let cell = collectionView.cellForItem(at: indexPath)
+            let label = cell!.contentView.viewWithTag(1) as! UILabel
+            if label.text != ""{
+                self.selectClassName = label.text!
+            }else{
+                self.selectClassName = self.directoryName
             }
             performSegue(withIdentifier: "directoryViewr", sender: nil)
         }

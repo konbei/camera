@@ -33,6 +33,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
     let defaults = UserDefaults.standard
     var orientationRowValue = 0
     var device:UIUserInterfaceIdiom?
+    var selectedClassName = ""
     
     @IBOutlet weak var viewrTitle: UINavigationItem!
     @IBOutlet weak var buckComeraBar: UINavigationBar!
@@ -59,7 +60,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         self.CollectionView.addGestureRecognizer(self.swiep)
         
         //controllerbarは非表示
-        self.viewrTitle.title = self.selectedDirectory
+        self.viewrTitle.title = self.selectedClassName
         self.navigationController?.isNavigationBarHidden = true
 
         device = UIDevice.current.userInterfaceIdiom
