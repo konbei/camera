@@ -395,11 +395,19 @@
                                     <outlet property="delegate" destination="Q79-DO-Odz" id="pSb-lA-tH4"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuX-hG-awd">
+                                <rect key="frame" x="0.0" y="813" width="414" height="83"/>
+                                <color key="backgroundColor" red="0.72025697970000002" green="0.699247485" blue="0.65067938240000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="iuX-hG-awd" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="bottom" id="2zg-IF-whA"/>
                             <constraint firstItem="Rbk-oP-TQb" firstAttribute="bottom" secondItem="Yo0-01-kNT" secondAttribute="bottom" id="BWV-h2-e0r"/>
                             <constraint firstItem="Rbk-oP-TQb" firstAttribute="top" secondItem="Yo0-01-kNT" secondAttribute="top" id="BdH-Zk-90N"/>
+                            <constraint firstItem="iuX-hG-awd" firstAttribute="leading" secondItem="e3g-5d-9ib" secondAttribute="leading" id="E8Y-3A-Itt"/>
+                            <constraint firstAttribute="trailing" secondItem="iuX-hG-awd" secondAttribute="trailing" id="JUb-D9-pO7"/>
                             <constraint firstItem="Rbk-oP-TQb" firstAttribute="trailing" secondItem="Yo0-01-kNT" secondAttribute="trailing" id="UvP-cR-3hA"/>
+                            <constraint firstAttribute="bottom" secondItem="iuX-hG-awd" secondAttribute="bottom" id="WGR-VX-j2J"/>
                             <constraint firstItem="Rbk-oP-TQb" firstAttribute="leading" secondItem="Yo0-01-kNT" secondAttribute="leading" id="lkt-kf-vvJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Yo0-01-kNT"/>
@@ -444,7 +452,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JuX-eF-ndQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1336.8" y="135.38230884557723"/>
+            <point key="canvasLocation" x="1336.2318840579712" y="135.26785714285714"/>
         </scene>
         <!--Settings Top View Controller-->
         <scene sceneID="KMl-qv-vzu">
