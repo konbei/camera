@@ -150,7 +150,7 @@ class ClassTimeSettingViewController: UITableViewController,DatePickerViewDelega
             if finishClassTime[indexPath.section] != 9999{
             cell.textLabel?.text = "終了時刻：" + convertStringTime(time: finishClassTime[indexPath.section])
             }else{
-                cell.textLabel?.text = "開始時刻："
+                cell.textLabel?.text = "終了時刻："
             }
         }
         

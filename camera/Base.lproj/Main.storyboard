@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -501,6 +502,7 @@
                         <outlet property="tableView" destination="9fm-iI-fYL" id="oby-RZ-IAp"/>
                         <segue destination="16G-tw-rXh" kind="show" identifier="classname" id="EGU-gt-IKI"/>
                         <segue destination="sYq-gA-OSh" kind="show" identifier="timetable" id="as1-LD-gH9"/>
+                        <segue destination="lUn-Ox-1lk" kind="show" identifier="use" id="A7J-Q9-3xW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IXg-bU-bEe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -608,6 +610,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VLt-7a-RVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3374" y="131"/>
+        </scene>
+        <!--使い方説明動画-->
+        <scene sceneID="D73-fD-c1G">
+            <objects>
+                <viewController title="使い方説明動画" id="lUn-Ox-1lk" customClass="UseWebViewController" customModule="camera" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nXM-Jo-E8F">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="T47-Bz-wMN">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="T47-Bz-wMN" firstAttribute="leading" secondItem="pED-pa-hsw" secondAttribute="leading" id="XEp-jd-cyu"/>
+                            <constraint firstItem="T47-Bz-wMN" firstAttribute="trailing" secondItem="pED-pa-hsw" secondAttribute="trailing" id="hyb-NM-1bG"/>
+                            <constraint firstItem="pED-pa-hsw" firstAttribute="bottom" secondItem="T47-Bz-wMN" secondAttribute="bottom" id="irn-a6-7vg"/>
+                            <constraint firstItem="T47-Bz-wMN" firstAttribute="top" secondItem="pED-pa-hsw" secondAttribute="top" id="spq-mI-ED6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pED-pa-hsw"/>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="T47-Bz-wMN" id="pds-AR-LqV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hn7-yA-qEr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3198.5507246376815" y="811.60714285714278"/>
         </scene>
     </scenes>
     <resources>

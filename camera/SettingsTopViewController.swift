@@ -36,7 +36,7 @@ class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableVie
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorColor = UIColor(hex: "C15320")
-        tableData = ["時刻設定","授業名称設定"]
+        tableData = ["時刻設定","授業名称設定","使い方"]
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -55,7 +55,7 @@ class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableVie
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // 行数設定
-        return 2
+        return 3
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -94,6 +94,8 @@ class SettingsTopViewController: UIViewController,UITableViewDelegate,UITableVie
             self.performSegue(withIdentifier: "timetable", sender: nil)
         case 1:
             self.performSegue(withIdentifier: "classname", sender: nil)
+        case 2:
+            self.performSegue(withIdentifier: "use", sender: nil)
         default: break
             
         }

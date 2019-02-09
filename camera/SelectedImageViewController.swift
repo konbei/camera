@@ -78,7 +78,7 @@ UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIGestureRecognizerD
         
         orientationRowValue =  (UIDevice.current.orientation.rawValue)
         
-        if device == .phone{
+        if device == .phone || (device == .pad && view.safeAreaInsets.bottom != 0 ){
             self.CollectionView.collectionViewLayout.invalidateLayout()
             let ax = self.file!.count
             self.CollectionView.contentSize.width = (self.view.frame.width ) * CGFloat(ax)

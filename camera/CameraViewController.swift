@@ -131,6 +131,16 @@ class CameraViewController: UIViewController {
         // セッション開始
         session.startRunning()
         
+        //flashサポートしてるかの確認
+        let device = AVCaptureDevice.default(
+            AVCaptureDevice.DeviceType.builtInWideAngleCamera,
+            for: AVMediaType.video, // ビデオ入力
+            position: AVCaptureDevice.Position.back)
+        if !device!.hasFlash{
+            let captureSetting = AVCapturePhotoSettings()
+            captureSetting.flashMode = .off
+        }
+        
         //ピンチ拡大、縮小追加
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(CameraViewController.pinchedGesture(gestureRecgnizer:)))
         self.previewView.addGestureRecognizer(pinchGesture)
@@ -198,7 +208,23 @@ class CameraViewController: UIViewController {
     //シャッターボタン押した時の動作
     @IBAction func takePhoto(_ sender: Any) {
         let captureSetting = AVCapturePhotoSettings()
-        captureSetting.flashMode = .auto
+        
+        let device = AVCaptureDevice.default(
+            AVCaptureDevice.DeviceType.builtInWideAngleCamera,
+            for: AVMediaType.video, // ビデオ入力
+            position: AVCaptureDevice.Position.back)
+        
+        //現在flashが使えるかの確認
+        if device!.hasFlash{
+            let isFlashEnable = device?.isFlashAvailable
+            
+            if isFlashEnable!{
+                captureSetting.flashMode = .auto
+            }else{
+                captureSetting.flashMode = .off
+            }
+        }
+        
         captureSetting.isAutoStillImageStabilizationEnabled = true
         captureSetting.isHighResolutionPhotoEnabled = false
         // キャプチャのイメージ処理はデリゲートに任せる
@@ -225,6 +251,7 @@ class CameraViewController: UIViewController {
                 AVCaptureDevice.DeviceType.builtInWideAngleCamera,
                 for: AVMediaType.video, // ビデオ入力
                 position: AVCaptureDevice.Position.back) // バックカメラ
+            
             
             // 入力元
             let input = try AVCaptureDeviceInput(device: device!)
